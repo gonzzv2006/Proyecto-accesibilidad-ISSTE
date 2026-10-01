@@ -1,5 +1,4 @@
-// Pantallas de Estancias (lista, editar y nueva). Solo las edita el supervisor porque él las
-// administra; la docente nada más lee los nombres para los filtros y columnas.
+// CRUD de estancias que solo edita el supervisor y la docente lee
 import {
   List,
   DataTable,
@@ -20,11 +19,10 @@ import {
   TituloFormulario,
 } from "./comunes";
 
-// Lista de estancias: tabla en pantallas grandes y lista simple en pantalla chica para que no haya
-// scroll de lado.
+// useMediaQuery alterna DataTable y SimpleList para evitar scroll lateral
 export const EstanciaList = () => {
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  // Si no hay estancias, sale un mensaje con el botón para crear la primera.
+  // empty con ListaVacia y botón para crear la primera estancia
   return (
     <Stack sx={{ maxWidth: 1280 }}>
       <Encabezado
@@ -72,7 +70,7 @@ export const EstanciaList = () => {
   );
 };
 
-// Editar estancia. El ID se ve como texto pero no se edita, y el nombre es obligatorio.
+// Edit de estancia con ID de solo lectura y nombre con required()
 export const EstanciaEdit = () => (
   <Edit title="Editar estancia" sx={{ maxWidth: 720 }}>
     <SimpleForm>
@@ -87,7 +85,7 @@ export const EstanciaEdit = () => (
   </Edit>
 );
 
-// Nueva estancia: sin el ID porque lo pone el backend, y al guardar regreso a la lista.
+// Create sin ID asignado por el backend y redirect a la lista
 export const EstanciaCreate = () => (
   <Create title="Nueva estancia" redirect="list" sx={{ maxWidth: 720 }}>
     <SimpleForm>
