@@ -1,4 +1,4 @@
-// CRUD de estancias que solo edita el supervisor y la docente lee
+// CRUD de estancias que solo edita el administrador y la docente lee
 import {
   List,
   DataTable,
