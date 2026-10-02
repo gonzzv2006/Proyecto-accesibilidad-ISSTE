@@ -178,9 +178,24 @@ Las de desarrollo (`devDependencies`) solo se usan mientras programamos, no lleg
 |---|---|---|---|
 | `docente` | `sirai2026` | Docente (Ana López) | Inicio, Pase de lista, Seguimiento de faltas (solo lectura), Historial de pases, Alumnos, Tutores |
 | `enfermeria` | `sirai2026` | Enfermería / Trabajo social (Marta Ruiz) | Inicio, Seguimiento de faltas (llamar, clasificar y dar alta) |
-| `supervisor` | `sirai2026` | Supervisor (Carlos Méndez) | Tablero, Seguimiento de faltas, Historial de pases, Estancias, Grupos, Alumnos, Tutores, Registrar usuario |
+| `admin` | `sirai2026` | Administrador (Sofía Torres) | Tablero, Historial de pases (con corrección), Estancias, Grupos, Alumnos, Tutores |
+| `supervisor` | `sirai2026` | Supervisor (Carlos Méndez) | Tablero (solo números), Usuarios, Bitácora, Registrar usuario |
 
 Los otros docentes de los datos de ejemplo (`rhernandez`, `jramirez`, `lsanchez`) también usan `sirai2026`. El supervisor puede crear más usuarios en «Registrar usuario».
+
+### Pantallas por rol
+
+| Pantalla | docente | enfermeria | administrador | supervisor |
+|---|---|---|---|---|
+| Inicio | Pases de hoy, Alumnos con seguimiento, Mis alumnos | Sin clasificar, Requieren alta, Seguimientos abiertos | Tablero de asistencia | Tablero de asistencia |
+| Pase de lista | marcar, escanear, terminar, exportar | — | — | — |
+| Seguimiento de faltas | solo alumno y estado | llamar, clasificar, dar alta, nuevo, exportar | — | — |
+| Historial de pases | ver y exportar | — | ver, exportar y corregir pases cerrados | — |
+| Estancias, Grupos | — | — | ver, crear, editar, eliminar | — |
+| Alumnos, Tutores | ver, crear, editar | — | ver, crear, editar, eliminar | — |
+| Usuarios | — | — | — | ver (sin contraseña) |
+| Registrar usuario | — | — | — | crear cuentas de los 4 roles |
+| Bitácora | — | — | — | ver y filtrar (solo lectura) |
 
 La sesión dura 15 minutos (lo que dura el token). Dos minutos antes, SIRAI pregunta si quieres seguir conectado; si no respondes, te regresa al login.
 
@@ -191,30 +206,35 @@ La sesión dura 15 minutos (lo que dura el token). Dos minutos antes, SIRAI preg
 - **Token:** todos los endpoints piden el token en el header `Authentication`; solo `/login` está libre. Sin token o con un token inválido, el backend responde **401** y React Admin te regresa al login.
 - **Permisos por rol:** si el rol no tiene permiso, el backend responde **403**. React Admin avisa «No tienes permiso para esta acción» (o el mensaje que mande el backend, como el del candado) y el usuario sigue dentro.
 - **Logs:** cada consulta, alta, cambio, borrado, exportación, login e intento sin permiso se guarda en la colección `logs` con `timestamp`, `sujeto`, `rol`, `ip`, `navegador` (user-agent), `accion`, `objeto` y `registro`. Al editar también guarda `antes` y `despues` completos (sin contraseña ni `codigoQR`).
+- **Bitácora:** el supervisor ve los logs en la pantalla «Bitácora». El backend solo tiene `GET /logs`; no hay `POST`, `PUT` ni `DELETE` de logs (responden 404), así que nadie la puede editar ni borrar desde SIRAI. Consultarla también queda en el log.
 - **Borrado lógico:** «Eliminar» ya no borra. Marca el registro con `eliminado: true`, `fechaEliminado` y `eliminadoPor`; las listas, el detalle y los conteos ya no lo muestran (ver más abajo).
 
 ### Permisos
 
-| Recurso | docente | enfermeria | supervisor |
-|---|---|---|---|
-| estancias, grupos | leer | leer | leer, crear, editar, borrar |
-| alumnos, tutores | leer, crear, editar | leer | leer, crear, editar, borrar |
-| asistencias (incluye «Marcar a todos presentes») | leer, crear\*, editar\* (solo sus grupos) | — | leer, crear\*, editar\*\*, borrar\* |
-| asistencias · marcar por QR (`POST /asistencias/qr`) | solo sus grupos\* | — | cualquier grupo\* |
-| seguimientos | leer (solo alumno y estado) | leer, crear, editar, ver detalle (llamar, clasificar, dar alta) | leer, crear, editar, borrar, ver detalle |
-| pases (pases de lista cerrados) | leer, crear (solo sus grupos) | — | leer, crear, editar, borrar |
-| credenciales (`GET /credenciales/:id`, el único lugar con `codigoQR`) | leer | — | leer |
-| usuarios | — | — | leer (sin contraseña), crear (`/registrarse`) |
+| Recurso | docente | enfermeria | administrador | supervisor |
+|---|---|---|---|---|
+| estadisticas (`GET /estadisticas`, solo números por estancia) | — | — | leer | leer |
+| estancias, grupos | leer | leer | leer, crear, editar, borrar | — |
+| alumnos, tutores | leer, crear, editar | leer | leer, crear, editar, borrar | — |
+| asistencias (incluye «Marcar a todos presentes») | leer, crear\*, editar\* (solo sus grupos) | — | leer, editar\*\* (cualquier grupo), borrar\* | — |
+| asistencias · marcar por QR (`POST /asistencias/qr`) | solo sus grupos\* | — | — | — |
+| seguimientos | leer (solo alumno y estado) | leer, crear, editar, ver detalle (llamar, clasificar, dar alta) | — | — |
+| pases (pases de lista cerrados) | leer, crear (solo sus grupos) | — | leer, editar, borrar | — |
+| credenciales (`GET /credenciales/:id`, el único lugar con `codigoQR`) | leer | — | leer | — |
+| usuarios | — | — | leer (sin contraseña) | leer (sin contraseña), crear (`/registrarse`) |
+| logs (`GET /logs`, la bitácora) | — | — | — | leer |
 
 \* Solo mientras el pase de ese grupo y fecha no esté cerrado. Si ya se cerró, el backend responde 403 y lo guarda en el log como «acceso denegado: editar pase cerrado», aunque alguien se salte el botón. Además, a un alumno con el candado de «Requiere alta para ingresar» no se le puede poner Presente (403 y log «acceso denegado: presente sin alta»).
-\*\* El supervisor sí puede corregir un pase cerrado. Queda en el log como «corregir pase cerrado» con antes y después, y los totales del pase se recalculan.
+\*\* El administrador sí puede corregir un pase cerrado. Queda en el log como «corregir pase cerrado» con antes y después, y los totales del pase se recalculan.
 
 - **«Borrar» siempre es borrado lógico.**
 - **Docente y grupos:** el docente solo edita asistencias de sus grupos. Si edita una de otro grupo, el backend responde 403 y deja el log «acceso denegado: editar asistencia de otro grupo».
 - **«Ver detalle»:** sin este permiso (el docente), los GET de seguimientos no regresan `notas`, `causa`, `fechaLlamada` ni `fechaRetorno`, y tampoco se puede filtrar ni ordenar por esos campos.
-- **Pase cerrado:** no gana ni pierde alumnos. Crear o borrar asistencias en él da 403 a cualquier rol, y el grupo, la fecha y el alumno de una asistencia nunca se cambian (el servidor los toma de la base). Si de verdad hay que reabrirlo, el supervisor borra el pase.
+- **Pase cerrado:** no gana ni pierde alumnos. Crear o borrar asistencias en él da 403 a cualquier rol, y el grupo, la fecha y el alumno de una asistencia nunca se cambian (el servidor los toma de la base). Si de verdad hay que reabrirlo, el administrador borra el pase.
 
-El docente lee estancias y grupos aunque no estén en su menú, porque los necesitan los filtros y las columnas de Alumnos y Pase de lista.
+- **Supervisor solo con estadísticas:** no lee alumnos, tutores, asistencias, seguimientos, pases ni credenciales (403 y log). Su tablero usa `GET /estadisticas`, que regresa por estancia solo números (inscritos, presentes, marcados, grupos, pases cerrados y seguimientos abiertos), sin ningún nombre de alumno.
+
+El docente lee estancias y grupos aunque no estén en su menú, porque los necesitan los filtros y las columnas de Alumnos y Pase de lista. El administrador lee usuarios para elegir al docente de cada grupo y ver quién cerró cada pase.
 
 ### Cerrar el pase de lista e historial
 
@@ -222,8 +242,8 @@ El docente lee estancias y grupos aunque no estén en su menú, porque los neces
 - Al cerrar, **cada falta abre un seguimiento** para Enfermería, o se suma al que el alumno ya tenía abierto (ver «Seguimiento de faltas»).
 - Ya cerrado, el docente ve «Pase cerrado a las 09:42» y la incidencia de cada alumno como chip, sin poder cambiarla.
 - El docente solo ve sus grupos en el filtro y solo puede cerrar los pases de esos grupos.
-- **Historial de pases** (en el menú de los dos roles) lista los pases cerrados con filtros por fecha y grupo. Al abrir uno se ven sus alumnos; el supervisor puede corregirlos desde ahí.
-- En el **tablero**, la columna «Pase de lista» dice «Completo» solo cuando todos los grupos de la estancia tienen su pase cerrado ese día.
+- **Historial de pases** (en el menú del docente y del administrador) lista los pases cerrados con filtros por fecha y grupo. Al abrir uno se ven sus alumnos; el administrador puede corregirlos desde ahí.
+- En el **tablero** (inicio del administrador y del supervisor), la columna «Pase de lista» dice «Completo» solo cuando todos los grupos de la estancia tienen su pase cerrado ese día.
 - `npm run cargar` crea los pases cerrados de los días de demo (22 al 29 de septiembre): 54 pases.
 
 ### Las 5 incidencias del pase de lista
