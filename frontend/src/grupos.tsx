@@ -1,4 +1,4 @@
-// CRUD de grupos donde el supervisor asigna docentes y la docente lee
+// CRUD de grupos donde el administrador asigna docentes y la docente lee
 import {
   List,
   DataTable,
