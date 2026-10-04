@@ -1,5 +1,4 @@
-// Pantallas de Grupos (lista, editar y nuevo). Solo el supervisor las tiene en el menú porque
-// él asigna los grupos a las docentes; la docente solo puede leerlos.
+// CRUD de grupos donde el supervisor asigna docentes y la docente lee
 import {
   List,
   DataTable,
@@ -24,14 +23,14 @@ import {
   SelectNativo,
 } from "./comunes";
 
-// Los niveles de un grupo: id es lo que se guarda en Mongo y name lo que se ve.
+// Choices de nivel con id guardado en Mongo y name visible
 const niveles = [
   { id: "lactantes", name: "Lactantes" },
   { id: "maternal", name: "Maternal" },
   { id: "preescolar", name: "Preescolar" },
 ];
 
-// Filtro por estancia siempre visible; la opción vacía quita el filtro.
+// Filtro de estancia alwaysOn con select nativo y opción vacía sin filtro
 const grupoFilters = [
   <ReferenceInput
     key="estanciaId"
@@ -43,11 +42,10 @@ const grupoFilters = [
   </ReferenceInput>,
 ];
 
-// Lista de grupos: tabla en pantallas grandes y lista simple en pantalla chica para que no haya
-// scroll de lado.
+// useMediaQuery elige DataTable o SimpleList para evitar scroll lateral
 export const GrupoList = () => {
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  // Si todavía no hay grupos, sale un mensaje con el botón para crear el primero.
+  // Lista vacía con ListaVacia y botón para crear el primer grupo
   return (
     <Stack sx={{ maxWidth: 1280 }}>
       <Encabezado
@@ -107,8 +105,7 @@ export const GrupoList = () => {
   );
 };
 
-// Editar grupo: aquí el supervisor le asigna la docente. El ID se ve pero no se edita, y en
-// Docente solo salen usuarios docentes para no darle un grupo a un supervisor.
+// Edit de grupo con ID en Labeled y docentes filtrados por rol
 export const GrupoEdit = () => (
   <Edit title="Editar grupo" sx={{ maxWidth: 720 }}>
     <SimpleForm>
@@ -133,7 +130,7 @@ export const GrupoEdit = () => (
   </Edit>
 );
 
-// Nuevo grupo: los mismos campos sin el ID, porque ese lo pone el backend al guardar.
+// Create con los mismos campos sin ID porque lo asigna el backend
 export const GrupoCreate = () => (
   <Create title="Nuevo grupo" redirect="list" sx={{ maxWidth: 720 }}>
     <SimpleForm>
