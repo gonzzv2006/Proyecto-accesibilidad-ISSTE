@@ -1,4 +1,4 @@
-// Pantallas de tutores (mamá, papá o quien recoge al alumno): la lista y los formularios.
+// CRUD de tutores con buscador y formularios con validación
 import {
   List,
   DataTable,
@@ -23,7 +23,7 @@ import {
   SelectNativo,
 } from "./comunes";
 
-// Opciones de parentesco: id es lo que se guarda en la base y name lo que se ve.
+// Choices de parentesco con id guardado en Mongo y name visible
 const parentescos = [
   { id: "madre", name: "Madre" },
   { id: "padre", name: "Padre" },
@@ -31,12 +31,12 @@ const parentescos = [
   { id: "otro", name: "Otro" },
 ];
 
-// Solo un buscador siempre visible; el backend busca en nombre y apellidos.
+// Filtro q alwaysOn buscado en backend con regex en nombre y apellidos
 const tutorFilters = [<TextInput key="q" source="q" label="Buscar" alwaysOn />];
 
-// Lista de tutores con buscador y el botón para agregar uno nuevo.
+// List de tutores por apellidos con buscador y AccionesLista
 export const TutorList = () => {
-  // Debajo de 900 px la tabla ya no cabe, así que uso una lista simple sin scroll de lado.
+  // Debajo de md useMediaQuery cambia a SimpleList sin scroll lateral
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
   return (
     <Stack sx={{ maxWidth: 1280 }}>
@@ -93,8 +93,7 @@ export const TutorList = () => {
   );
 };
 
-// Editar tutor. El ID va como texto y no como campo gris deshabilitado que casi no se leía.
-// Uso select nativo porque el de MUI no conectaba bien la etiqueta y WAVE marcaba error.
+// Edit con ID en Labeled y select nativo en parentesco por accesibilidad
 export const TutorEdit = () => (
   <Edit title="Editar tutor" sx={{ maxWidth: 720 }}>
     <SimpleForm>
@@ -115,7 +114,7 @@ export const TutorEdit = () => (
   </Edit>
 );
 
-// Alta de tutor con los mismos campos y validaciones que editar, pero sin el ID.
+// Create con las mismas validaciones required() y email() pero sin ID
 export const TutorCreate = () => (
   <Create title="Nuevo tutor" redirect="list" sx={{ maxWidth: 720 }}>
     <SimpleForm>
