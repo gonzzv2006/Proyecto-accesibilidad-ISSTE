@@ -1,4 +1,4 @@
-// Pantallas de alumnos: la lista con filtros y los formularios para editar y dar de alta.
+// CRUD de alumnos con List filtrable y formularios Edit y Create
 import {
   List,
   DataTable,
@@ -29,7 +29,7 @@ import {
   SelectNativo,
 } from "./comunes";
 
-// Chip de Inscrito o Baja con ícono y texto, para no depender solo del color.
+// Chip con ícono y texto según activo para no depender del color
 const Inscrito = () => {
   const alumno = useRecordContext();
   if (!alumno) return null;
@@ -46,8 +46,7 @@ const Inscrito = () => {
   return <Chip size="small" icon={<BajaIcon />} label="Baja" />;
 };
 
-// Botón "Ver credencial". Con stopPropagation el clic ya no abre también el editar
-// del renglón. La etiqueta lleva el nombre para que no haya muchos enlaces iguales.
+// stopPropagation evita abrir el editar y aria-label lleva el nombre
 const BotonCredencial = () => {
   const alumno = useRecordContext();
   if (!alumno) return null;
@@ -64,7 +63,7 @@ const BotonCredencial = () => {
   );
 };
 
-// Filtros siempre visibles: buscar por nombre y elegir estancia o grupo.
+// Filtros alwaysOn con buscador q y select nativo de estancia y grupo
 const alumnoFilters = [
   <TextInput key="q" source="q" label="Buscar" alwaysOn />,
   <ReferenceInput
@@ -80,10 +79,9 @@ const alumnoFilters = [
   </ReferenceInput>,
 ];
 
-// Lista de alumnos con buscador, filtros y el botón para ver la credencial.
+// List de alumnos por apellidos con filtros y botón de credencial
 export const AlumnoList = () => {
-  // Con 7 columnas la tabla no cabe debajo de 1200 px (o con zoom), así que ahí uso
-  // una lista simple para que no haya scroll de lado.
+  // Debajo de lg useMediaQuery cambia a SimpleList sin scroll lateral
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("lg"));
   return (
     <Stack sx={{ maxWidth: 1280 }}>
@@ -154,8 +152,7 @@ export const AlumnoList = () => {
   );
 };
 
-// Editar alumno. Arriba va "Ver credencial" porque en la lista de pantalla chica no aparece.
-// El ID se muestra como texto y no hay campo de QR porque lo genera el backend.
+// Edit con BotonCredencial arriba e ID de solo lectura con Labeled
 export const AlumnoEdit = () => (
   <Edit
     title="Editar alumno"
@@ -186,7 +183,7 @@ export const AlumnoEdit = () => (
   </Edit>
 );
 
-// Alta de alumno. "Inscrito" viene prendido y el QR lo genera el backend al guardar.
+// Create con Inscrito en true y el codigoQR lo genera el backend
 export const AlumnoCreate = () => (
   <Create title="Nuevo alumno" redirect="list" sx={{ maxWidth: 720 }}>
     <SimpleForm>
