@@ -186,3 +186,210 @@ async function abrirSeguimientos(req, verifiedToken, grupoId, fecha){
 		if(await db.collection("alumnos").findOne({"id":asistencia.alumnoId, "eliminado":{"$ne":true}})==null){
 			continue;
 		}
+		let abierto=await db.collection("seguimientos").findOne({"alumnoId":asistencia.alumnoId, "estado":"abierto", "eliminado":{"$ne":true}});
+		if(abierto==null){
+			let nuevo={"id":await siguienteId("seguimientos"), "alumnoId":asistencia.alumnoId, "grupoId":grupoId, "estado":"abierto", "fechaApertura":fecha, "fechasFalta":[fecha], "ultimaIncidencia":asistencia.estado, "causa":"SIN_CLASIFICAR", "fechaRetorno":"", "fechaLlamada":null, "notas":"", "requiereAlta":false, "usuarioId":verifiedToken.id, "eliminado":false};
+			// Si insertOne choca con el índice único se suma al abierto
+			try{
+				await db.collection("seguimientos").insertOne(nuevo);
+				await log(req, verifiedToken, "crear seguimiento automático", "seguimientos", nuevo.id);
+				continue;
+			}catch(error){
+				if(error.code!=11000){
+					throw error;
+				}
+				abierto=await db.collection("seguimientos").findOne({"alumnoId":asistencia.alumnoId, "estado":"abierto", "eliminado":{"$ne":true}});
+			}
+		}
+		await db.collection("seguimientos").updateOne({"id":abierto.id}, {"$addToSet":{"fechasFalta":fecha}, "$set":{"ultimaIncidencia":asistencia.estado}});
+		await log(req, verifiedToken, "sumar falta a seguimiento", "seguimientos", abierto.id);
+	}
+}
+
+// Sin ver detalle se quitan campos privados de filtros _sort y proyección
+function consultaDeSeguimientos(verifiedToken, req){
+	let query=Object.assign({}, req.query);
+	if(tienePermiso(verifiedToken.rol, "seguimientos", "ver detalle")){
+		return {"proyeccion":ocultos, "query":query};
+	}
+	for(let campo of camposPrivados){
+		delete query[campo];
+	}
+	if(camposPrivados.includes(query._sort)){
+		query._sort="id";
+	}
+	return {"proyeccion":ocultosSeguimiento, "query":query};
+}
+
+// JsonWebTokenError da 401 y duplicado da 409 y lo demás 500
+function manejarError(error, res){
+	if(error instanceof jwt.JsonWebTokenError){
+		res.sendStatus(401);
+	}else if(error.code==11000){
+		res.sendStatus(409);
+	}else{
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
+// Lista de React Admin con armarFiltro y sort y paginación con slice
+async function getList(collection, req, res, proyeccion=ocultos, query=req.query){
+	// Ordenar por codigoQR se cambia a id para no revelar el código
+	let sortBy=query._sort=="codigoQR"?"id":query._sort;
+	let sortOrder=query._order=="ASC"?1:-1;
+	let inicio=Number(query._start);
+	let fin=Number(query._end);
+	let sorter={}
+	sorter[sortBy]=sortOrder;
+	// id como desempate en sort para no repetir registros entre páginas
+	sorter["id"]=sortOrder;
+	let filtro=armarFiltro(query);
+	let data=await db.collection(collection).find(filtro).sort(sorter).project(proyeccion).toArray();
+	// Total en X-Total-Count expuesto con Access-Control-Expose-Headers para CORS
+	res.set("Access-Control-Expose-Headers", "X-Total-Count");
+	res.set("X-Total-Count", data.length);
+	data=data.slice(inicio, fin);
+	res.json(data);
+}
+
+// getMany busca cada id para ReferenceField sin filtrar eliminados
+async function getMany(collection, req, res, proyeccion=ocultos){
+	// Array.isArray asegura un arreglo aunque llegue un solo id
+	let ids=Array.isArray(req.query.id)?req.query.id:[req.query.id];
+	let data=[]
+	for(let index=0;index<ids.length; index++){
+		let dataParcial=await db.collection(collection).find({"id":Number(ids[index])}).project(proyeccion).toArray();
+		data=data.concat(dataParcial);
+	}
+	res.json(data);
+}
+
+// getManyReference sin paginar con armarFiltro y total en X-Total-Count
+async function getManyReference(collection, req, res, proyeccion=ocultos, query=req.query){
+	let filtro=armarFiltro(query);
+	let data=await db.collection(collection).find(filtro).project(proyeccion).toArray();
+	res.set("Access-Control-Expose-Headers", "X-Total-Count");
+	res.set("X-Total-Count", data.length);
+	res.json(data);
+}
+
+// Busca por id sin eliminados y responde 404 si no existe
+async function getOne(collection, id, req, res, proyeccion=ocultos){
+	let data=await db.collection(collection).find({"id":id, "eliminado":{"$ne":true}}).project(proyeccion).toArray();
+	if(data.length==0){
+		res.sendStatus(404);
+		return;
+	}
+	res.json(data[0]);
+}
+
+// Edición con $set por id y log con antes y después
+async function updateData(collection, id, req, res, verifiedToken){
+	let valores=req.body;
+	// Quita del body los campos de borrado que solo cambia deleteData
+	delete valores["eliminado"];
+	delete valores["fechaEliminado"];
+	delete valores["eliminadoPor"];
+	valores["id"]=id;
+	let antes=await db.collection(collection).findOne({"id":id, "eliminado":{"$ne":true}}, {"projection":ocultos});
+	if(antes==null){
+		res.sendStatus(404);
+		return;
+	}
+	await db.collection(collection).updateOne({"id":id},{"$set":valores});
+	let despues=await db.collection(collection).findOne({"id":id}, {"projection":ocultos});
+	await log(req, verifiedToken, "editar", collection, id, {"antes":antes, "despues":despues});
+	res.json(despues);
+}
+
+// Borrado lógico con $set marcando eliminado y 404 si no existe
+async function deleteData(collection, id, req, res, verifiedToken){
+	let cambio=await db.collection(collection).updateOne({"id":id, "eliminado":{"$ne":true}}, {"$set":{"eliminado":true, "fechaEliminado":new Date(), "eliminadoPor":verifiedToken.usuario}});
+	if(cambio.matchedCount==0){
+		res.sendStatus(404);
+		return;
+	}
+	await log(req, verifiedToken, "borrar", collection, id);
+	let data=await db.collection(collection).findOne({"id":id}, {"projection":ocultos});
+	res.json(data);
+}
+
+// insertOne con siguienteId y eliminado en false y devuelve el id nuevo
+async function createData(collection, req, res){
+	let valores=req.body;
+	valores["id"]=await siguienteId(collection);
+	valores["eliminado"]=false;
+	delete valores["fechaEliminado"];
+	delete valores["eliminadoPor"];
+	await db.collection(collection).insertOne(valores);
+	let data=await db.collection(collection).find({"id":valores["id"]}).project(ocultos).toArray();
+	res.json(data[0]);
+	return valores["id"];
+}
+
+// GET /estancias con el molde jwt.verify tienePermiso log y operación
+app.get("/estancias", async (req,res)=>{
+	try{
+		// Verifica el header Authentication con jwt.verify y el catch da 401
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		// Sin permiso registra acceso denegado en el log y responde 403
+		if(!tienePermiso(verifiedToken.rol, "estancias", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "estancias");
+			res.sendStatus(403);
+			return;
+		}
+		// Cada consulta queda en logs como consultar datos
+		await log(req, verifiedToken, "consultar datos", "estancias");
+		// _sort usa getList y id usa getMany y si no getManyReference
+		if("_sort" in req.query){
+			await getList("estancias", req, res);
+		}else if("id" in req.query){
+			await getMany("estancias", req, res);
+		}else{
+			await getManyReference("estancias", req, res);
+		}
+	}catch(error){
+		// manejarError responde 401 409 o 500 según el error
+		manejarError(error, res);
+	}
+});
+
+// GET /estancias/:id con getOne para el formulario de edición
+app.get("/estancias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "estancias", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "estancias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "estancias", Number(req.params.id));
+		await getOne("estancias", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT /estancias/:id con updateData y solo el supervisor puede editar
+app.put("/estancias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "estancias", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "estancias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await updateData("estancias", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// DELETE /estancias/:id con borrado lógico y sus grupos y alumnos se conservan
+app.delete("/estancias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
