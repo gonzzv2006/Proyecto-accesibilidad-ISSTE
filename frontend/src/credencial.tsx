@@ -1,4 +1,4 @@
-// Credencial imprimible de un alumno con el QR que la docente escanea en el pase de lista.
+// Credencial imprimible con el codigoQR dibujado por QRCodeSVG para el pase
 import { useParams } from "react-router-dom";
 import { useGetOne } from "react-admin";
 import { Button, Card, CardContent, Stack, Typography } from "@mui/material";
@@ -8,10 +8,9 @@ import RegresarIcon from "@mui/icons-material/ArrowBack";
 import { ListaVacia } from "./comunes";
 import { AvisoSesion } from "./sesion";
 
-// Página sin menú ni barra para que al imprimir solo salga la tarjeta. Como no hay Layout,
-// aquí mismo pongo el main y el aviso de que la sesión va a vencer.
+// Ruta noLayout para imprimir solo la tarjeta con main y AvisoSesion
 export const Credencial = () => {
-  // Saco el id de la dirección y pido la credencial; el QR solo llega de este endpoint.
+  // useParams da el id y useGetOne pide la credencial con el codigoQR
   const { id } = useParams();
   const {
     data: credencial,
@@ -26,7 +25,7 @@ export const Credencial = () => {
       </Stack>
     );
   }
-  // Si no se encontró, lo digo y dejo un botón para regresar a Alumnos.
+  // Si hay error o 404 aparece ListaVacia con botón a Alumnos
   if (error || !credencial) {
     return (
       <Stack component="main">
@@ -42,8 +41,7 @@ export const Credencial = () => {
 
   const nombre = `${credencial.nombre} ${credencial.apellidos}`;
 
-  // Al imprimir se esconde todo menos la tarjeta de 85.6 x 54 mm. El QR lleva margen blanco
-  // para que se lea bien y una etiqueta para que el lector de pantalla diga de quién es.
+  // displayPrint none imprime solo la tarjeta y el QR lleva aria-label
   return (
     <Stack component="main" spacing={3} sx={{ p: 2, alignItems: "center" }}>
       <title>{`Credencial de ${nombre} · SIRAI`}</title>
