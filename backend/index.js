@@ -393,3 +393,200 @@ app.put("/estancias/:id", async(req, res)=>{
 app.delete("/estancias/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "estancias", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "estancias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("estancias", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST /estancias con createData y solo el supervisor puede crear
+app.post("/estancias", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "estancias", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "estancias");
+			res.sendStatus(403);
+			return;
+		}
+		// El log va después de createData porque ahí ya existe el id
+		let id=await createData("estancias", req, res);
+		await log(req, verifiedToken, "crear", "estancias", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /grupos para todos los roles en pase historial y tablero
+app.get("/grupos", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "grupos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "grupos");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "consultar datos", "grupos");
+		if("_sort" in req.query){
+			await getList("grupos", req, res);
+		}else if("id" in req.query){
+			await getMany("grupos", req, res);
+		}else{
+			await getManyReference("grupos", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /grupos/:id con getOne para el formulario de edición
+app.get("/grupos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "grupos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "grupos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "grupos", Number(req.params.id));
+		await getOne("grupos", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT /grupos/:id solo supervisor y docenteId define quién cierra el pase
+app.put("/grupos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "grupos", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "grupos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await updateData("grupos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// DELETE /grupos/:id con borrado lógico solo para el supervisor
+app.delete("/grupos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "grupos", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "grupos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("grupos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST /grupos con createData solo supervisor y asigna el docente responsable
+app.post("/grupos", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "grupos", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "grupos");
+			res.sendStatus(403);
+			return;
+		}
+		let id=await createData("grupos", req, res);
+		await log(req, verifiedToken, "crear", "grupos", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /alumnos para lista buscador y pase sin exponer codigoQR
+app.get("/alumnos", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "alumnos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "alumnos");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "consultar datos", "alumnos");
+		if("_sort" in req.query){
+			await getList("alumnos", req, res);
+		}else if("id" in req.query){
+			await getMany("alumnos", req, res);
+		}else{
+			await getManyReference("alumnos", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /alumnos/:id con getOne y ocultos deja fuera el codigoQR
+app.get("/alumnos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "alumnos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "alumnos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "alumnos", Number(req.params.id));
+		await getOne("alumnos", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT /alumnos/:id con updateData para docente y supervisor
+app.put("/alumnos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "alumnos", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "alumnos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		// Elimina codigoQR del body para que la credencial impresa siga válida
+		delete req.body["codigoQR"];
+		await updateData("alumnos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// DELETE /alumnos/:id con borrado lógico y sus asistencias quedan en historial
+app.delete("/alumnos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "alumnos", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "alumnos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("alumnos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST /alumnos con createData para docente y supervisor
+app.post("/alumnos", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
