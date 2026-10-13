@@ -1,5 +1,4 @@
-// Diálogo para escanear las credenciales con la cámara en el pase de lista.
-// Cada QR que lee se manda al backend y ese alumno queda en Presente.
+// Escáner QR con react-qr-scanner que manda cada código a /asistencias/qr
 import { useRef, useState } from "react";
 import { useLogout, useRefresh } from "react-admin";
 import { Stack, Typography } from "@mui/material";
@@ -12,34 +11,32 @@ import type {
 import lectorWasm from "zxing-wasm/reader/zxing_reader.wasm?url";
 import { DialogoAccesible, INCIDENCIAS } from "./comunes";
 
-// El lector de QR usa un .wasm que por defecto se bajaba de un CDN. Lo sirvo desde
-// nuestro propio servidor para no depender de un sitio externo.
+// setZXingModuleOverrides sirve el wasm del lector desde el propio servidor sin CDN
 setZXingModuleOverrides({
   locateFile: (ruta: string, prefijo: string) =>
     ruta.endsWith(".wasm") ? lectorWasm : prefijo + ruta,
 });
 
-// Estas opciones van fuera del componente porque si cambian en cada render la cámara
-// se reinicia. Solo busco QR para que lea más rápido.
+// Opciones fuera del render para no reiniciar la cámara y solo qr_code
 const FORMATOS: IScannerProps["formats"] = ["qr_code"];
-// Uso la cámara de la compu con tamaño ideal y no mínimo, porque con una webcam de 480p fallaba.
+// Resolución ideal en constraints sin mínimo para que sirvan webcams sencillas
 const CAMARA = {
   width: { ideal: 1280 },
   height: { ideal: 720 },
 };
-// Sin el recuadro guía ni los botones de la librería, solo el video de la cámara.
+// Apaga los controles extra de la librería y solo queda el video
 const SIN_EXTRAS = { finder: false, torch: false, onOff: false, zoom: false };
-// La cámara de un tamaño normal, como la vista de una webcam, y no del ancho de todo el diálogo.
+// Video pequeño con aspectRatio 4/3 como una webcam normal
 const TAMANO = {
   container: { width: 320, maxWidth: "100%", aspectRatio: "4/3" },
 };
 
-// Textos que repito; siempre recuerdo que se puede marcar eligiendo la incidencia en la lista.
+// Textos repetidos que mandan a elegir la incidencia en la lista
 const ALTERNATIVA = "Puedes elegir la incidencia de cada alumno en la lista.";
 const SIN_RED =
   "No se pudo marcar (revisa la conexión). Elige la incidencia en la lista.";
 
-// Lo que puede contestar el backend cuando le mando un código.
+// Tipo del JSON que responde POST /asistencias/qr
 type Respuesta = {
   motivo?: string;
   alumno?: string;
@@ -47,8 +44,7 @@ type Respuesta = {
   incidencia?: string;
 };
 
-// Convierto lo que contesta el backend en un mensaje con el nombre del alumno, para que
-// la docente sepa qué pasó con cada credencial.
+// Convierte status y motivo en un mensaje con el nombre del alumno
 const avisoDeRespuesta = (estado: number, datos: Respuesta) => {
   if (estado === 200) return `${datos.alumno}: Presente`;
   if (datos.motivo === "ya presente")
@@ -68,18 +64,18 @@ const avisoDeRespuesta = (estado: number, datos: Respuesta) => {
   if (datos.motivo === "requiere alta") {
     return `${datos.alumno} requiere alta de Enfermería para ingresar.`;
   }
-  // Si ya tiene otra incidencia (por ejemplo Filtro sanitario) no la cambio; la docente decide en la lista.
+  // Con otra incidencia previa el backend la respeta y se muestra cuál
   if (datos.motivo === "tiene incidencia") {
     const incidencia =
       INCIDENCIAS[datos.incidencia ?? ""]?.nombre ?? "otra incidencia";
     return `${datos.alumno} ya tiene «${incidencia}». Si de verdad llegó, cámbialo en la lista.`;
   }
-  // Va después de "pase cerrado" y "requiere alta" porque esos también son 403 pero tienen su propio mensaje.
+  // El 403 genérico va al final porque los otros traen motivo
   if (estado === 403) return "No tienes permiso para marcar a este grupo.";
   return SIN_RED;
 };
 
-// Mensajes si la cámara no arranca; todos dicen que se puede seguir con la lista.
+// Mensaje según error.kind de la cámara con la lista como alternativa
 const avisoDeCamara = (error: IScannerError) => {
   if (error.kind === "permission-denied") {
     return `No diste permiso para usar la cámara. ${ALTERNATIVA} Para usar la cámara, permítela en la configuración del navegador y vuelve a abrir el escáner.`;
@@ -96,8 +92,7 @@ const avisoDeCamara = (error: IScannerError) => {
   return `No se pudo usar la cámara. ${ALTERNATIVA}`;
 };
 
-// Se monta al apretar el botón (ahí se pide la cámara) y al cerrarlo la cámara se apaga.
-// Se queda abierto entre alumno y alumno.
+// Scanner pide la cámara al montarse y la apaga al cerrar
 const EscanerCredencial = ({
   grupoId,
   fecha,
@@ -109,13 +104,12 @@ const EscanerCredencial = ({
 }) => {
   const [aviso, setAviso] = useState("");
   const [sinCamara, setSinCamara] = useState(false);
-  // Códigos de la lectura pasada; uso ref porque cambiarlo no tiene que redibujar nada.
+  // useRef guarda los códigos de la lectura anterior sin redibujar
   const anteriores = useRef<string[]>([]);
   const refresh = useRefresh();
   const logout = useLogout();
 
-  // Uso fetch directo y no el dataProvider para tener mis propios mensajes en el diálogo;
-  // el aviso genérico de React Admin salía detrás y no se leía.
+  // fetch con token de sessionStorage en vez del dataProvider para mensajes propios
   const marcar = async (codigo: string) => {
     try {
       const res = await fetch(
@@ -129,24 +123,23 @@ const EscanerCredencial = ({
           body: JSON.stringify({ codigo, grupoId, fecha }),
         },
       );
-      // Si la sesión ya venció, regreso al login como en el resto de SIRAI.
+      // Con 401 la sesión venció y logout lleva al login
       if (res.status === 401) {
         logout();
         return;
       }
-      // Algunos errores no traen JSON; ahí uso un objeto vacío y sale el mensaje general.
+      // Si la respuesta no trae JSON queda un objeto vacío
       const datos: Respuesta = await res.json().catch(() => ({}));
       setAviso(avisoDeRespuesta(res.status, datos));
-      // Si sí se marcó, recargo la tabla de atrás para que el alumno salga en Presente.
+      // Con res.ok refresh actualiza la tabla para mostrar al alumno Presente
       if (res.ok) refresh();
     } catch {
-      // Si fetch truena es que no hubo respuesta, casi siempre por falta de internet.
+      // Error de fetch sin respuesta casi siempre por falta de red
       setAviso(SIN_RED);
     }
   };
 
-  // La librería manda todos los códigos que ve, así que solo mando los nuevos. No uso paused
-  // porque apaga la cámara y hacía que el mismo código se mandara dos veces.
+  // includes descarta los códigos ya leídos para evitar envíos duplicados
   const alLeer = (codigos: IDetectedBarcode[]) => {
     const valores = codigos.map((codigo) => codigo.rawValue);
     valores
@@ -155,14 +148,13 @@ const EscanerCredencial = ({
     anteriores.current = valores;
   };
 
-  // Si la cámara falla, quito el video para que no quede un cuadro negro y explico qué pasó.
+  // onError activa sinCamara para quitar el video negro y explica el fallo
   const alFallarCamara = (error: IScannerError) => {
     setSinCamara(true);
     setAviso(avisoDeCamara(error));
   };
 
-  // El resultado va como texto normal en un role="status" que ya existe vacío,
-  // así el lector de pantalla lee cada resultado sin mover el foco.
+  // role="status" montado y vacío para que el lector lea cada resultado
   return (
     <DialogoAccesible abierto titulo="Escanear credencial" onClose={onClose}>
       <Stack spacing={2} sx={{ alignItems: "center" }}>
@@ -188,5 +180,5 @@ const EscanerCredencial = ({
   );
 };
 
-// Va como default porque lazy() en asistencias.tsx lo pide así.
+// Export default porque lazy() en asistencias.tsx lo requiere
 export default EscanerCredencial;
