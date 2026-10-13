@@ -1,0 +1,192 @@
+// Diálogo para escanear las credenciales con la cámara en el pase de lista.
+// Cada QR que lee se manda al backend y ese alumno queda en Presente.
+import { useRef, useState } from "react";
+import { useLogout, useRefresh } from "react-admin";
+import { Stack, Typography } from "@mui/material";
+import { Scanner, setZXingModuleOverrides } from "@yudiel/react-qr-scanner";
+import type {
+  IDetectedBarcode,
+  IScannerError,
+  IScannerProps,
+} from "@yudiel/react-qr-scanner";
+import lectorWasm from "zxing-wasm/reader/zxing_reader.wasm?url";
+import { DialogoAccesible, INCIDENCIAS } from "./comunes";
+
+// El lector de QR usa un .wasm que por defecto se bajaba de un CDN. Lo sirvo desde
+// nuestro propio servidor para no depender de un sitio externo.
+setZXingModuleOverrides({
+  locateFile: (ruta: string, prefijo: string) =>
+    ruta.endsWith(".wasm") ? lectorWasm : prefijo + ruta,
+});
+
+// Estas opciones van fuera del componente porque si cambian en cada render la cámara
+// se reinicia. Solo busco QR para que lea más rápido.
+const FORMATOS: IScannerProps["formats"] = ["qr_code"];
+// Uso la cámara de la compu con tamaño ideal y no mínimo, porque con una webcam de 480p fallaba.
+const CAMARA = {
+  width: { ideal: 1280 },
+  height: { ideal: 720 },
+};
+// Sin el recuadro guía ni los botones de la librería, solo el video de la cámara.
+const SIN_EXTRAS = { finder: false, torch: false, onOff: false, zoom: false };
+// La cámara de un tamaño normal, como la vista de una webcam, y no del ancho de todo el diálogo.
+const TAMANO = {
+  container: { width: 320, maxWidth: "100%", aspectRatio: "4/3" },
+};
+
+// Textos que repito; siempre recuerdo que se puede marcar eligiendo la incidencia en la lista.
+const ALTERNATIVA = "Puedes elegir la incidencia de cada alumno en la lista.";
+const SIN_RED =
+  "No se pudo marcar (revisa la conexión). Elige la incidencia en la lista.";
+
+// Lo que puede contestar el backend cuando le mando un código.
+type Respuesta = {
+  motivo?: string;
+  alumno?: string;
+  grupo?: string;
+  incidencia?: string;
+};
+
+// Convierto lo que contesta el backend en un mensaje con el nombre del alumno, para que
+// la docente sepa qué pasó con cada credencial.
+const avisoDeRespuesta = (estado: number, datos: Respuesta) => {
+  if (estado === 200) return `${datos.alumno}: Presente`;
+  if (datos.motivo === "ya presente")
+    return `${datos.alumno} ya estaba presente.`;
+  if (datos.motivo === "otro grupo") {
+    return `${datos.alumno} es de ${datos.grupo}, no de este grupo.`;
+  }
+  if (datos.motivo === "no está en el pase") {
+    return `${datos.alumno} no está en este pase de lista.`;
+  }
+  if (datos.motivo === "no existe") {
+    return "Este código no es de ningún alumno de SIRAI.";
+  }
+  if (datos.motivo === "pase cerrado") {
+    return "El pase de lista ya está cerrado; ya no se puede marcar.";
+  }
+  if (datos.motivo === "requiere alta") {
+    return `${datos.alumno} requiere alta de Enfermería para ingresar.`;
+  }
+  // Si ya tiene otra incidencia (por ejemplo Filtro sanitario) no la cambio; la docente decide en la lista.
+  if (datos.motivo === "tiene incidencia") {
+    const incidencia =
+      INCIDENCIAS[datos.incidencia ?? ""]?.nombre ?? "otra incidencia";
+    return `${datos.alumno} ya tiene «${incidencia}». Si de verdad llegó, cámbialo en la lista.`;
+  }
+  // Va después de "pase cerrado" y "requiere alta" porque esos también son 403 pero tienen su propio mensaje.
+  if (estado === 403) return "No tienes permiso para marcar a este grupo.";
+  return SIN_RED;
+};
+
+// Mensajes si la cámara no arranca; todos dicen que se puede seguir con la lista.
+const avisoDeCamara = (error: IScannerError) => {
+  if (error.kind === "permission-denied") {
+    return `No diste permiso para usar la cámara. ${ALTERNATIVA} Para usar la cámara, permítela en la configuración del navegador y vuelve a abrir el escáner.`;
+  }
+  if (error.kind === "no-camera") {
+    return `No se encontró ninguna cámara. ${ALTERNATIVA}`;
+  }
+  if (error.kind === "in-use") {
+    return `Otra aplicación está usando la cámara; ciérrala y vuelve a abrir el escáner. ${ALTERNATIVA}`;
+  }
+  if (error.kind === "insecure-context") {
+    return `La cámara solo funciona si SIRAI se abre con https. ${ALTERNATIVA}`;
+  }
+  return `No se pudo usar la cámara. ${ALTERNATIVA}`;
+};
+
+// Se monta al apretar el botón (ahí se pide la cámara) y al cerrarlo la cámara se apaga.
+// Se queda abierto entre alumno y alumno.
+const EscanerCredencial = ({
+  grupoId,
+  fecha,
+  onClose,
+}: {
+  grupoId: number;
+  fecha: string;
+  onClose: () => void;
+}) => {
+  const [aviso, setAviso] = useState("");
+  const [sinCamara, setSinCamara] = useState(false);
+  // Códigos de la lectura pasada; uso ref porque cambiarlo no tiene que redibujar nada.
+  const anteriores = useRef<string[]>([]);
+  const refresh = useRefresh();
+  const logout = useLogout();
+
+  // Uso fetch directo y no el dataProvider para tener mis propios mensajes en el diálogo;
+  // el aviso genérico de React Admin salía detrás y no se leía.
+  const marcar = async (codigo: string) => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_BACKEND + "/asistencias/qr",
+        {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authentication: sessionStorage.getItem("auth") ?? "",
+          }),
+          body: JSON.stringify({ codigo, grupoId, fecha }),
+        },
+      );
+      // Si la sesión ya venció, regreso al login como en el resto de SIRAI.
+      if (res.status === 401) {
+        logout();
+        return;
+      }
+      // Algunos errores no traen JSON; ahí uso un objeto vacío y sale el mensaje general.
+      const datos: Respuesta = await res.json().catch(() => ({}));
+      setAviso(avisoDeRespuesta(res.status, datos));
+      // Si sí se marcó, recargo la tabla de atrás para que el alumno salga en Presente.
+      if (res.ok) refresh();
+    } catch {
+      // Si fetch truena es que no hubo respuesta, casi siempre por falta de internet.
+      setAviso(SIN_RED);
+    }
+  };
+
+  // La librería manda todos los códigos que ve, así que solo mando los nuevos. No uso paused
+  // porque apaga la cámara y hacía que el mismo código se mandara dos veces.
+  const alLeer = (codigos: IDetectedBarcode[]) => {
+    const valores = codigos.map((codigo) => codigo.rawValue);
+    valores
+      .filter((valor) => !anteriores.current.includes(valor))
+      .forEach(marcar);
+    anteriores.current = valores;
+  };
+
+  // Si la cámara falla, quito el video para que no quede un cuadro negro y explico qué pasó.
+  const alFallarCamara = (error: IScannerError) => {
+    setSinCamara(true);
+    setAviso(avisoDeCamara(error));
+  };
+
+  // El resultado va como texto normal en un role="status" que ya existe vacío,
+  // así el lector de pantalla lee cada resultado sin mover el foco.
+  return (
+    <DialogoAccesible abierto titulo="Escanear credencial" onClose={onClose}>
+      <Stack spacing={2} sx={{ alignItems: "center" }}>
+        <Typography variant="body2">
+          Pon el código QR de la credencial frente a la cámara.
+        </Typography>
+        {!sinCamara && (
+          <Scanner
+            onScan={alLeer}
+            onError={alFallarCamara}
+            formats={FORMATOS}
+            constraints={CAMARA}
+            components={SIN_EXTRAS}
+            styles={TAMANO}
+            sound={false}
+          />
+        )}
+        <Typography role="status" sx={{ minHeight: 24 }}>
+          {aviso}
+        </Typography>
+      </Stack>
+    </DialogoAccesible>
+  );
+};
+
+// Va como default porque lazy() en asistencias.tsx lo pide así.
+export default EscanerCredencial;
