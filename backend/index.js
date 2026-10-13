@@ -590,3 +590,194 @@ app.delete("/alumnos/:id", async(req, res)=>{
 app.post("/alumnos", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "alumnos", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "alumnos");
+			res.sendStatus(403);
+			return;
+		}
+		// codigoQR con crypto.randomUUID y no con el id para evitar falsificación
+		req.body["codigoQR"]=crypto.randomUUID();
+		let id=await createData("alumnos", req, res);
+		await log(req, verifiedToken, "crear", "alumnos", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /credenciales/:id único que devuelve codigoQR con Cache-Control no-store
+app.get("/credenciales/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "credenciales", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "credenciales", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		let alumno=await db.collection("alumnos").findOne({"id":Number(req.params.id), "eliminado":{"$ne":true}});
+		if(alumno==null || !alumno.codigoQR){
+			res.sendStatus(404);
+			return;
+		}
+		let grupo=await db.collection("grupos").findOne({"id":alumno.grupoId});
+		let estancia=await db.collection("estancias").findOne({"id":alumno.estanciaId});
+		await log(req, verifiedToken, "ver credencial", "alumnos", alumno.id);
+		res.set("Cache-Control", "no-store");
+		res.json({"id":alumno.id, "nombre":alumno.nombre, "apellidos":alumno.apellidos, "grupo":grupo?grupo.nombre:"", "estancia":estancia?estancia.nombre:"", "codigoQR":alumno.codigoQR});
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /tutores con getList getMany o getManyReference según la query
+app.get("/tutores", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "tutores", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "tutores");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "consultar datos", "tutores");
+		if("_sort" in req.query){
+			await getList("tutores", req, res);
+		}else if("id" in req.query){
+			await getMany("tutores", req, res);
+		}else{
+			await getManyReference("tutores", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Tutor por id con getOne para editarlo y 404 si no existe
+app.get("/tutores/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "tutores", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "tutores", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "tutores", Number(req.params.id));
+		await getOne("tutores", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT de tutor con updateData que guarda los cambios con $set
+app.put("/tutores/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "tutores", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "tutores", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await updateData("tutores", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Borrado lógico del tutor con deleteData y solo el supervisor tiene permiso
+app.delete("/tutores/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "tutores", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "tutores", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("tutores", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST de tutor con createData permitido a docente y supervisor
+app.post("/tutores", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "tutores", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "tutores");
+			res.sendStatus(403);
+			return;
+		}
+		let id=await createData("tutores", req, res);
+		await log(req, verifiedToken, "crear", "tutores", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Lista de asistencias con getList o getManyReference para pase e historial
+app.get("/asistencias", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "asistencias");
+			res.sendStatus(403);
+			return;
+		}
+		// Si el query trae _exportar el log registra quién bajó el CSV
+		await log(req, verifiedToken, "_exportar" in req.query?"exportar":"consultar datos", "asistencias");
+		if("_sort" in req.query){
+			await getList("asistencias", req, res);
+		}else if("id" in req.query){
+			await getMany("asistencias", req, res);
+		}else{
+			await getManyReference("asistencias", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Una asistencia por id con getOne cuando React Admin pide un renglón
+app.get("/asistencias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "asistencias", Number(req.params.id));
+		await getOne("asistencias", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT de asistencia con reglas de pase cerrado grupo propio y candado
+app.put("/asistencias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		// Asistencia con findOne y 404 si falta y estado inválido da 400
+		let asistencia=await db.collection("asistencias").findOne({"id":Number(req.params.id), "eliminado":{"$ne":true}});
+		if(asistencia==null){
+			res.sendStatus(404);
+			return;
+		}
+		if(!estadosValidos.includes(req.body.estado)){
+			res.sendStatus(400);
+			return;
+		}
+		// Otro grupo da 403 según grupo.docenteId salvo para el supervisor
