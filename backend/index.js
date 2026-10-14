@@ -781,3 +781,213 @@ app.put("/asistencias/:id", async(req, res)=>{
 			return;
 		}
 		// Otro grupo da 403 según grupo.docenteId salvo para el supervisor
+		let grupo=await db.collection("grupos").findOne({"id":asistencia.grupoId});
+		let esSuGrupo=grupo!=null && verifiedToken.id!=null && grupo.docenteId==verifiedToken.id;
+		if(!esSuGrupo && !tienePermiso(verifiedToken.rol, "asistencias", "marcar cualquier grupo")){
+			await log(req, verifiedToken, "acceso denegado: editar asistencia de otro grupo", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		// Ids y fecha salen de la base y usuarioId del token
+		req.body["alumnoId"]=asistencia.alumnoId;
+		req.body["grupoId"]=asistencia.grupoId;
+		req.body["estanciaId"]=asistencia.estanciaId;
+		req.body["fecha"]=asistencia.fecha;
+		req.body["usuarioId"]=verifiedToken.id;
+		// buscarPaseCerrado limita la corrección al supervisor y el docente recibe 403
+		let pase=await buscarPaseCerrado(asistencia.grupoId, asistencia.fecha);
+		if(pase!=null && !tienePermiso(verifiedToken.rol, "asistencias", "corregir")){
+			await log(req, verifiedToken, "acceso denegado: editar pase cerrado", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		// Con pase abierto un presente con candado recibe 403 de negarSinAlta
+		if(pase==null && req.body.estado=="presente" && await buscarCandado(asistencia.alumnoId)!=null){
+			await negarSinAlta(req, res, verifiedToken, asistencia.alumnoId, asistencia.id);
+			return;
+		}
+		// Pase abierto usa updateData y cerrado aplica $set y luego recontarPase
+		if(pase==null){
+			await updateData("asistencias", Number(req.params.id), req, res, verifiedToken);
+		}else{
+			let antes=await db.collection("asistencias").findOne({"id":asistencia.id}, {"projection":ocultos});
+			req.body["id"]=asistencia.id;
+			delete req.body["eliminado"];
+			delete req.body["fechaEliminado"];
+			delete req.body["eliminadoPor"];
+			await db.collection("asistencias").updateOne({"id":asistencia.id}, {"$set":req.body});
+			await recontarPase(pase);
+			let despues=await db.collection("asistencias").findOne({"id":asistencia.id}, {"projection":ocultos});
+			await log(req, verifiedToken, "corregir pase cerrado", "asistencias", asistencia.id, {"antes":antes, "despues":despues});
+			res.json(despues);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// DELETE de asistencia como borrado lógico con deleteData solo para el supervisor
+app.delete("/asistencias/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		// buscarPaseCerrado impide borrar dentro de un pase cerrado con 403
+		let asistencia=await db.collection("asistencias").findOne({"id":Number(req.params.id), "eliminado":{"$ne":true}});
+		if(asistencia!=null && await buscarPaseCerrado(asistencia.grupoId, asistencia.fecha)!=null){
+			await log(req, verifiedToken, "acceso denegado: borrar en pase cerrado", "asistencias", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("asistencias", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST por alumno al empezar el pase con estado revisado en estadosValidos
+app.post("/asistencias", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "asistencias");
+			res.sendStatus(403);
+			return;
+		}
+		if(!estadosValidos.includes(req.body.estado)){
+			res.sendStatus(400);
+			return;
+		}
+		// Si buscarPaseCerrado halla pase para ese grupo y fecha responde 403
+		if(await buscarPaseCerrado(req.body.grupoId, req.body.fecha)!=null){
+			await log(req, verifiedToken, "acceso denegado: crear en pase cerrado", "asistencias");
+			res.sendStatus(403);
+			return;
+		}
+		// Un presente en el body también pasa por buscarCandado y negarSinAlta
+		if(req.body.estado=="presente" && await buscarCandado(req.body.alumnoId)!=null){
+			await negarSinAlta(req, res, verifiedToken, req.body.alumnoId);
+			return;
+		}
+		let id=await createData("asistencias", req, res);
+		await log(req, verifiedToken, "crear", "asistencias", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Escaneo QR que marca presente o responde un JSON con motivo
+app.post("/asistencias/qr", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "asistencias", "marcar por QR")){
+			await log(req, verifiedToken, "acceso denegado: marcar por QR", "asistencias");
+			res.sendStatus(403);
+			return;
+		}
+		// typeof exige código y fecha como texto para evitar operadores de Mongo
+		let codigo=req.body.codigo;
+		let fecha=req.body.fecha;
+		let grupo=await db.collection("grupos").findOne({"id":Number(req.body.grupoId), "eliminado":{"$ne":true}});
+		if(typeof codigo!="string" || codigo=="" || typeof fecha!="string" || fecha=="" || grupo==null){
+			res.sendStatus(400);
+			return;
+		}
+		// Escanear de otro grupo da 403 salvo con marcar cualquier grupo
+		let esSuGrupo=verifiedToken.id!=null && grupo.docenteId==verifiedToken.id;
+		if(!esSuGrupo && !tienePermiso(verifiedToken.rol, "asistencias", "marcar cualquier grupo")){
+			await log(req, verifiedToken, "acceso denegado: marcar por QR otro grupo", "asistencias");
+			res.status(403).json({"motivo":"sin permiso"});
+			return;
+		}
+		// Con pase cerrado el escaneo no cuenta y responde 403 pase cerrado
+		if(await buscarPaseCerrado(grupo.id, fecha)!=null){
+			await log(req, verifiedToken, "acceso denegado: marcar por QR en pase cerrado", "asistencias");
+			res.status(403).json({"motivo":"pase cerrado"});
+			return;
+		}
+		// findOne por codigoQR y si no existe 404 con registro en log
+		let alumno=await db.collection("alumnos").findOne({"codigoQR":codigo, "eliminado":{"$ne":true}});
+		if(alumno==null){
+			await log(req, verifiedToken, "QR no encontrado", "alumnos");
+			res.status(404).json({"motivo":"no existe"});
+			return;
+		}
+		let nombre=alumno.nombre+" "+alumno.apellidos;
+		// Si alumno.grupoId es otro responde 409 con el nombre de su grupo
+		if(alumno.grupoId!=grupo.id){
+			let suGrupo=await db.collection("grupos").findOne({"id":alumno.grupoId});
+			res.status(409).json({"motivo":"otro grupo", "alumno":nombre, "grupo":suGrupo?suGrupo.nombre:""});
+			return;
+		}
+		// Sin asistencia ese día da 409 porque no entró al pase
+		let asistencia=await db.collection("asistencias").findOne({"alumnoId":alumno.id, "grupoId":grupo.id, "fecha":fecha, "eliminado":{"$ne":true}});
+		if(asistencia==null){
+			res.status(409).json({"motivo":"no está en el pase", "alumno":nombre});
+			return;
+		}
+		// Doble escaneo de alguien ya presente da 409 sin cambiar nada
+		if(asistencia.estado=="presente"){
+			res.status(409).json({"motivo":"ya presente", "alumno":nombre});
+			return;
+		}
+		// Con candado de requiere alta negarSinAlta rechaza aunque traiga credencial
+		if(await buscarCandado(alumno.id)!=null){
+			await negarSinAlta(req, res, verifiedToken, alumno.id, asistencia.id);
+			return;
+		}
+		// Presente solo desde pendiente o falta injustificada y otra incidencia da 409
+		if(asistencia.estado!="pendiente" && asistencia.estado!="falta_injustificada"){
+			res.status(409).json({"motivo":"tiene incidencia", "alumno":nombre, "incidencia":asistencia.estado});
+			return;
+		}
+		// updateOne con $in en el estado evita que dos escaneos choquen
+		let cambio=await db.collection("asistencias").updateOne({"id":asistencia.id, "estado":{"$in":["pendiente", "falta_injustificada"]}}, {"$set":{"estado":"presente", "usuarioId":verifiedToken.id}});
+		if(cambio.modifiedCount==0){
+			res.status(409).json({"motivo":"ya presente", "alumno":nombre});
+			return;
+		}
+		// Si el pase cerró durante el escaneo recontarPase actualiza los totales
+		let paseCerrado=await buscarPaseCerrado(grupo.id, fecha);
+		if(paseCerrado!=null){
+			await recontarPase(paseCerrado);
+		}
+		await log(req, verifiedToken, "marcar por QR", "alumnos", alumno.id);
+		res.json({"alumno":nombre, "asistenciaId":asistencia.id, "estado":"presente"});
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Lista de seguimientos y consultaDeSeguimientos oculta al docente los campos privados
+app.get("/seguimientos", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "seguimientos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "seguimientos");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "_exportar" in req.query?"exportar":"consultar datos", "seguimientos");
+		let consulta=consultaDeSeguimientos(verifiedToken, req);
+		if("_sort" in req.query){
+			await getList("seguimientos", req, res, consulta.proyeccion, consulta.query);
+		}else if("id" in req.query){
+			await getMany("seguimientos", req, res, consulta.proyeccion);
+		}else{
+			await getManyReference("seguimientos", req, res, consulta.proyeccion, consulta.query);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Un seguimiento por id con getOne y proyección según el rol
+app.get("/seguimientos/:id", async(req, res)=>{
