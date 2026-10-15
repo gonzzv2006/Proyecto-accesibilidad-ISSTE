@@ -188,3 +188,188 @@ const AvisoFaltantes = ({ texto }: { texto: string }) => {
     </Typography>
   );
 };
+
+// Barra de arriba de la lista con el aviso, el escáner y el botón para terminar el pase.
+// La dibujo siempre para que el aviso exista desde el principio.
+const TerminarPase = () => {
+  const { filterValues, data, isPending } = useListContext();
+  const { grupoId, fecha } = filterValues;
+  // Si ya hay pase cerrado, lo uso para mostrar la hora de cierre.
+  const pase = useGetList(
+    "pases",
+    { filter: { grupoId, fecha }, pagination: { page: 1, perPage: 1 } },
+    { enabled: !!grupoId && !!fecha },
+  );
+  // Traigo el grupo solo para poner su nombre en la pregunta de confirmación.
+  const { data: grupo } = useGetOne(
+    "grupos",
+    { id: grupoId },
+    { enabled: !!grupoId },
+  );
+  const [create, { isPending: cerrando }] = useCreate();
+  const [updateMany, { isPending: marcando }] = useUpdateMany();
+  const { identity } = useGetIdentity();
+  const { data: candados } = useGetList("seguimientos", CANDADOS);
+  const [confirmando, setConfirmando] = useState(false);
+  const [escaneando, setEscaneando] = useState(false);
+  // Si cambian el grupo o la fecha (por ejemplo con Atrás), cierro los diálogos abiertos.
+  useEffect(() => {
+    setConfirmando(false);
+    setEscaneando(false);
+  }, [grupoId, fecha]);
+  const notify = useNotify();
+  const refresh = useRefresh();
+
+  // Reviso si el pase ya empezó, si ya está cerrado y cuántos alumnos faltan por marcar.
+  const hayPase =
+    !!grupoId &&
+    !!fecha &&
+    !isPending &&
+    !pase.isPending &&
+    !!data &&
+    data.length > 0;
+  const cerrado = hayPase && !!pase.data && pase.data.length > 0;
+  const abierto = hayPase && !cerrado;
+  const sinMarcar = abierto
+    ? data.filter((asistencia) => asistencia.estado === "pendiente")
+    : [];
+  const faltan = sinMarcar.length;
+  // Para "Marcar a todos presentes" separo a los que tienen candado: a esos no se les puede poner Presente.
+  const conCandado = sinMarcar.filter((asistencia) =>
+    candados?.some(
+      (seguimiento) => seguimiento.alumnoId === asistencia.alumnoId,
+    ),
+  );
+  const aMarcar = sinMarcar.filter(
+    (asistencia) => !conCandado.includes(asistencia),
+  );
+
+  // Armo el texto del aviso en singular o plural; con el pase cerrado se queda vacío.
+  let aviso = "";
+  if (abierto && faltan === 0) aviso = "Todos los alumnos están marcados";
+  if (abierto && faltan === 1) aviso = "Falta 1 alumno por marcar";
+  if (abierto && faltan > 1) aviso = `Faltan ${faltan} alumnos por marcar`;
+
+  // Le pongo mediodía a la fecha porque a medianoche UTC en México salía el día anterior.
+  const fechaCorta = new Date(fecha + "T12:00").toLocaleDateString("es-MX");
+
+  // Cierra el pase después de confirmar. Solo mando grupo y fecha; la hora y los totales
+  // los calcula el backend.
+  const terminar = () => {
+    setConfirmando(false);
+    create(
+      "pases",
+      { data: { grupoId, fecha } },
+      {
+        onSuccess: (nuevo) => {
+          if (nuevo?.id) notify("Pase de lista cerrado", { type: "success" });
+          refresh();
+        },
+        onError: () =>
+          notify("No se pudo cerrar el pase de lista", { type: "error" }),
+      },
+    );
+  };
+
+  // Marca Presente a todos los que siguen sin marcar y no tienen candado. React Admin manda un PUT por
+  // alumno, así cada uno pasa por las mismas revisiones del backend (pase cerrado, candado y log).
+  const marcarTodos = () => {
+    const pendientesConCandado = conCandado.length;
+    updateMany(
+      "asistencias",
+      {
+        ids: aMarcar.map((asistencia) => asistencia.id),
+        data: { estado: "presente", usuarioId: identity?.id },
+      },
+      {
+        onSuccess: (ids) => {
+          let mensaje = `Se marcaron ${ids?.length ?? 0} alumnos como Presente.`;
+          if (pendientesConCandado === 1) {
+            mensaje += " 1 alumno requiere alta y sigue sin marcar.";
+          }
+          if (pendientesConCandado > 1) {
+            mensaje += ` ${pendientesConCandado} alumnos requieren alta y siguen sin marcar.`;
+          }
+          if (ids?.length) notify(mensaje, { type: "success" });
+          refresh();
+        },
+        // Si algún PUT falla, los demás ya se guardaron: recargo para que la lista diga lo que de verdad quedó.
+        onError: () => {
+          notify("No se pudo marcar a todos; revisa la lista", {
+            type: "error",
+          });
+          refresh();
+        },
+      },
+    );
+  };
+
+  // Terminar solo se activa cuando ya no falta nadie, y con aria-describedby el lector
+  // dice el aviso para que se sepa por qué está desactivado.
+  return (
+    <TopToolbar>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={1}
+        sx={{ alignItems: { xs: "flex-end", sm: "center" } }}
+      >
+        <AvisoFaltantes texto={aviso} />
+        {cerrado && pase.data && (
+          <PaseCerrado horaCierre={pase.data[0].horaCierre} />
+        )}
+        {abierto && faltan > 0 && (
+          <Button
+            variant="outlined"
+            startIcon={<TodosIcon />}
+            disabled={aMarcar.length === 0 || marcando}
+            onClick={marcarTodos}
+          >
+            Marcar a todos presentes
+          </Button>
+        )}
+        {abierto && (
+          <Button
+            variant="outlined"
+            startIcon={<EscanearIcon />}
+            onClick={() => setEscaneando(true)}
+          >
+            Escanear credencial
+          </Button>
+        )}
+        {hayPase && <BotonExportar />}
+        {abierto && (
+          <Button
+            variant="contained"
+            startIcon={<TerminarIcon />}
+            disabled={faltan > 0 || cerrando}
+            aria-describedby={faltan > 0 ? "faltan-por-marcar" : undefined}
+            onClick={() => setConfirmando(true)}
+          >
+            Terminar pase de lista
+          </Button>
+        )}
+      </Stack>
+      {abierto && (
+        <ConfirmAccesible
+          isOpen={confirmando}
+          loading={cerrando}
+          title="Terminar pase de lista"
+          content={`¿Terminar el pase de lista de ${grupo?.nombre ?? "este grupo"} del ${fechaCorta}?`}
+          confirm="Terminar"
+          cancel="Cancelar"
+          onConfirm={terminar}
+          onClose={() => setConfirmando(false)}
+        />
+      )}
+      {abierto && escaneando && (
+        <Suspense fallback={<CircularProgress size={24} />}>
+          <EscanerCredencial
+            grupoId={grupoId}
+            fecha={fecha}
+            onClose={() => setEscaneando(false)}
+          />
+        </Suspense>
+      )}
+    </TopToolbar>
+  );
+};
