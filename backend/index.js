@@ -991,3 +991,206 @@ app.get("/seguimientos", async (req,res)=>{
 
 // Un seguimiento por id con getOne y proyección según el rol
 app.get("/seguimientos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "seguimientos", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "seguimientos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "seguimientos", Number(req.params.id));
+		await getOne("seguimientos", Number(req.params.id), req, res, consultaDeSeguimientos(verifiedToken, req).proyeccion);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT de seguimiento para que Enfermería registre llamada causa retorno o alta
+app.put("/seguimientos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "seguimientos", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "seguimientos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		let antes=await db.collection("seguimientos").findOne({"id":Number(req.params.id), "eliminado":{"$ne":true}});
+		if(antes==null){
+			res.sendStatus(404);
+			return;
+		}
+		// delete quita del body los campos que solo pone el servidor
+		for(let campo of ["alumnoId", "grupoId", "fechasFalta", "ultimaIncidencia", "requiereAlta"]){
+			delete req.body[campo];
+		}
+		// Spread une antes y body para validar y calcular requiereAlta
+		let completo={...antes, ...req.body};
+		let causa=completo.causa ?? "SIN_CLASIFICAR";
+		if(!causasValidas.includes(causa) || !estadosSeguimiento.includes(completo.estado)){
+			res.sendStatus(400);
+			return;
+		}
+		req.body["requiereAlta"]=completo.estado=="abierto" && causasConCandado.includes(causa);
+		await updateData("seguimientos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Solo el supervisor borra seguimientos y deleteData marca eliminado con $set
+app.delete("/seguimientos/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "seguimientos", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "seguimientos", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("seguimientos", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// POST de seguimiento manual cuando el tutor avisa antes de la falta
+app.post("/seguimientos", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "seguimientos", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "seguimientos");
+			res.sendStatus(403);
+			return;
+		}
+		// findOne confirma al alumno e includes valida causa y estado con 400
+		let alumno=await db.collection("alumnos").findOne({"id":Number(req.body.alumnoId), "eliminado":{"$ne":true}});
+		let causa=req.body.causa ?? "SIN_CLASIFICAR";
+		let estado=req.body.estado ?? "abierto";
+		if(alumno==null || !causasValidas.includes(causa) || !estadosSeguimiento.includes(estado)){
+			res.sendStatus(400);
+			return;
+		}
+		// Seguimiento abierto repetido da 409 y el índice único también lo impide
+		let abierto=await db.collection("seguimientos").findOne({"alumnoId":alumno.id, "estado":"abierto", "eliminado":{"$ne":true}});
+		if(estado=="abierto" && abierto!=null){
+			res.status(409).json({"message":"Ese alumno ya tiene un seguimiento abierto."});
+			return;
+		}
+		// El servidor llena grupoId fechasFalta requiereAlta y usuarioId como en abrirSeguimientos
+		req.body["alumnoId"]=alumno.id;
+		req.body["grupoId"]=alumno.grupoId;
+		req.body["causa"]=causa;
+		req.body["estado"]=estado;
+		req.body["fechasFalta"]=[];
+		req.body["ultimaIncidencia"]="";
+		req.body["requiereAlta"]=estado=="abierto" && causasConCandado.includes(causa);
+		req.body["usuarioId"]=verifiedToken.id;
+		let id=await createData("seguimientos", req, res);
+		await log(req, verifiedToken, "crear", "seguimientos", id);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Pases con getList y filtrando grupoId y fecha se sabe si cerró
+app.get("/pases", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "pases", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "pases");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "_exportar" in req.query?"exportar":"consultar datos", "pases");
+		if("_sort" in req.query){
+			await getList("pases", req, res);
+		}else if("id" in req.query){
+			await getMany("pases", req, res);
+		}else{
+			await getManyReference("pases", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Un pase por id con getOne para su detalle en el historial
+app.get("/pases/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "pases", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "pases", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "pases", Number(req.params.id));
+		await getOne("pases", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// PUT de pase con updateData que ninguna pantalla llama y solo supervisor
+app.put("/pases/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "pases", "editar")){
+			await log(req, verifiedToken, "acceso denegado: editar", "pases", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await updateData("pases", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Borrar un pase lo reabre porque buscarPaseCerrado ignora los eliminados
+app.delete("/pases/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "pases", "borrar")){
+			await log(req, verifiedToken, "acceso denegado: borrar", "pases", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await deleteData("pases", Number(req.params.id), req, res, verifiedToken);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Terminar pase de lista hace este POST que guarda el pase cerrado
+app.post("/pases", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "pases", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "pases");
+			res.sendStatus(403);
+			return;
+		}
+		// findOne confirma el grupo y typeof exige fecha de texto o 400
+		let grupo=await db.collection("grupos").findOne({"id":Number(req.body.grupoId), "eliminado":{"$ne":true}});
+		let fecha=req.body.fecha;
+		if(grupo==null || typeof fecha!="string" || fecha==""){
+			res.sendStatus(400);
+			return;
+		}
+		// Cerrar el pase de otro grupo da 403 salvo para el supervisor
+		let esSuGrupo=verifiedToken.id!=null && grupo.docenteId==verifiedToken.id;
+		if(!esSuGrupo && !tienePermiso(verifiedToken.rol, "pases", "cerrar cualquier grupo")){
+			await log(req, verifiedToken, "acceso denegado: cerrar pase de otro grupo", "pases");
+			res.sendStatus(403);
+			return;
+		}
+		// contarAsistencias exige cero pendientes y al menos un alumno o da 400
+		let cuenta=await contarAsistencias(grupo.id, fecha);
+		if(cuenta.pendientes>0 || cuenta.presentes+cuenta.ausentes==0){
