@@ -1,5 +1,4 @@
-// Pantalla de pase de lista: aquí la docente marca a sus alumnos, escanea credenciales
-// y termina el pase del día.
+// Pase de lista donde useUpdate guarda incidencias y useCreate cierra el pase
 import { lazy, Suspense, useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import {
@@ -51,8 +50,7 @@ import {
   fechaMX,
 } from "./comunes";
 
-// Si no se pudo descargar el escáner (por ejemplo sin internet), muestro este aviso
-// en vez de dejar la página en blanco.
+// Aviso con role="status" si falla la carga del escáner
 const SinEscaner = ({ onClose }: { onClose: () => void }) => (
   <DialogoAccesible abierto titulo="Escanear credencial" onClose={onClose}>
     <Typography role="status">
@@ -62,14 +60,12 @@ const SinEscaner = ({ onClose }: { onClose: () => void }) => (
   </DialogoAccesible>
 );
 
-// El escáner pesa bastante, así que solo se descarga cuando aprietan "Escanear credencial".
-// Si la descarga falla, uso SinEscaner para que la página no truene.
+// Carga diferida del escáner con lazy y SinEscaner si falla el import
 const EscanerCredencial = lazy(() =>
   import("./escaner").catch(() => ({ default: SinEscaner })),
 );
 
-// Chip "Requiere alta para ingresar" debajo del nombre si el alumno tiene candado de Enfermería.
-// Todos los renglones piden la lista de candados, pero es la misma consulta y React Admin la hace una sola vez.
+// Chip de candado si el alumno tiene seguimiento abierto según useGetList
 export const CandadoDelAlumno = () => {
   const asistencia = useRecordContext();
   const { data: candados } = useGetList("seguimientos", CANDADOS);
@@ -79,14 +75,13 @@ export const CandadoDelAlumno = () => {
   return conCandado ? <ChipCandado /> : null;
 };
 
-// La incidencia de cada renglón. Con el pase abierto es un select nativo: una sola parada de Tab,
-// se lee el texto y guarda al cambiar. Lo exporto porque pases.tsx lo usa para que el supervisor corrija.
+// Select nativo de incidencia guardado con useUpdate y usado también en pases.tsx
 export const IncidenciaDelAlumno = () => {
   const asistencia = useRecordContext();
   const { permissions } = usePermissions();
   const refresh = useRefresh();
   const [update] = useUpdate();
-  // Pregunto si este pase ya se cerró; en pases solo se guardan los cerrados.
+  // useGetList con perPage 1 para saber si el pase ya se cerró
   const pase = useGetList(
     "pases",
     {
@@ -95,7 +90,7 @@ export const IncidenciaDelAlumno = () => {
     },
     { enabled: !!asistencia },
   );
-  // El nombre sale de la misma caché que la columna Alumno, así no hago más peticiones.
+  // Nombre del alumno con useGetManyAggregate reutilizando los datos de la tabla
   const { data: alumnos } = useGetManyAggregate(
     "alumnos",
     { ids: [asistencia?.alumnoId] },
@@ -104,7 +99,7 @@ export const IncidenciaDelAlumno = () => {
   const { data: candados } = useGetList("seguimientos", CANDADOS);
 
   if (!asistencia) return null;
-  // Con el pase cerrado la docente solo ve el chip; el supervisor sigue con el select para corregir.
+  // Solo ChipIncidencia mientras carga o con pase cerrado sin rol supervisor
   const cerrado = (pase.total ?? 0) > 0;
   if (pase.isPending || (cerrado && permissions !== "supervisor")) {
     return <ChipIncidencia estado={asistencia.estado} />;
@@ -114,8 +109,7 @@ export const IncidenciaDelAlumno = () => {
   const conCandado = !!candados?.some(
     (seguimiento) => seguimiento.alumnoId === asistencia.alumnoId,
   );
-  // Mando el registro completo con la incidencia nueva. Si el backend no deja (403 por candado), React Admin
-  // ya enseñó su mensaje y no regresa id, así que recargo para que el select vuelva a como estaba.
+  // PUT con useUpdate y refresh si falta id o hay pase cerrado
   const cambiar = (evento: ChangeEvent<HTMLInputElement>) =>
     update(
       "asistencias",
@@ -131,8 +125,7 @@ export const IncidenciaDelAlumno = () => {
       },
     );
 
-  // No lo deshabilito mientras guarda para que el foco no se pierda. Con candado, Presente queda
-  // deshabilitado y el texto de ayuda dice por qué (MUI lo conecta con aria-describedby).
+  // Sin disabled para no perder el foco y helperText ligado con aria-describedby
   return (
     <TextField
       id={`incidencia-${asistencia.id}`}
@@ -168,11 +161,10 @@ export const IncidenciaDelAlumno = () => {
   );
 };
 
-// Aviso de "Faltan N alumnos". Pongo el texto medio segundo después para que VoiceOver
-// lo tome como cambio y lo lea también al abrir el pase.
+// Aviso de faltantes en role="status" con setTimeout para que VoiceOver lo lea
 const AvisoFaltantes = ({ texto }: { texto: string }) => {
   const [anunciado, setAnunciado] = useState("");
-  // Si el texto cambia antes del medio segundo, cancelo la espera para no poner uno viejo.
+  // clearTimeout en el return del useEffect si el texto cambia antes
   useEffect(() => {
     const espera = setTimeout(() => setAnunciado(texto), 500);
     return () => clearTimeout(espera);
@@ -189,18 +181,17 @@ const AvisoFaltantes = ({ texto }: { texto: string }) => {
   );
 };
 
-// Barra de arriba de la lista con el aviso, el escáner y el botón para terminar el pase.
-// La dibujo siempre para que el aviso exista desde el principio.
+// TopToolbar del pase con aviso y botones siempre montada para role="status"
 const TerminarPase = () => {
   const { filterValues, data, isPending } = useListContext();
   const { grupoId, fecha } = filterValues;
-  // Si ya hay pase cerrado, lo uso para mostrar la hora de cierre.
+  // useGetList trae el pase cerrado para mostrar su horaCierre
   const pase = useGetList(
     "pases",
     { filter: { grupoId, fecha }, pagination: { page: 1, perPage: 1 } },
     { enabled: !!grupoId && !!fecha },
   );
-  // Traigo el grupo solo para poner su nombre en la pregunta de confirmación.
+  // useGetOne trae el nombre del grupo para el diálogo de confirmación
   const { data: grupo } = useGetOne(
     "grupos",
     { id: grupoId },
@@ -212,7 +203,7 @@ const TerminarPase = () => {
   const { data: candados } = useGetList("seguimientos", CANDADOS);
   const [confirmando, setConfirmando] = useState(false);
   const [escaneando, setEscaneando] = useState(false);
-  // Si cambian el grupo o la fecha (por ejemplo con Atrás), cierro los diálogos abiertos.
+  // useEffect cierra los diálogos si cambian grupoId o fecha
   useEffect(() => {
     setConfirmando(false);
     setEscaneando(false);
@@ -220,7 +211,7 @@ const TerminarPase = () => {
   const notify = useNotify();
   const refresh = useRefresh();
 
-  // Reviso si el pase ya empezó, si ya está cerrado y cuántos alumnos faltan por marcar.
+  // Calcula si el pase está abierto o cerrado y cuántos faltan
   const hayPase =
     !!grupoId &&
     !!fecha &&
@@ -234,7 +225,7 @@ const TerminarPase = () => {
     ? data.filter((asistencia) => asistencia.estado === "pendiente")
     : [];
   const faltan = sinMarcar.length;
-  // Para "Marcar a todos presentes" separo a los que tienen candado: a esos no se les puede poner Presente.
+  // Con some se apartan los alumnos con candado de marcar todos presentes
   const conCandado = sinMarcar.filter((asistencia) =>
     candados?.some(
       (seguimiento) => seguimiento.alumnoId === asistencia.alumnoId,
@@ -244,17 +235,16 @@ const TerminarPase = () => {
     (asistencia) => !conCandado.includes(asistencia),
   );
 
-  // Armo el texto del aviso en singular o plural; con el pase cerrado se queda vacío.
+  // Texto de role="status" en singular o plural y vacío sin pase abierto
   let aviso = "";
   if (abierto && faltan === 0) aviso = "Todos los alumnos están marcados";
   if (abierto && faltan === 1) aviso = "Falta 1 alumno por marcar";
   if (abierto && faltan > 1) aviso = `Faltan ${faltan} alumnos por marcar`;
 
-  // Le pongo mediodía a la fecha porque a medianoche UTC en México salía el día anterior.
+  // Fecha a mediodía para que la zona horaria no reste un día
   const fechaCorta = new Date(fecha + "T12:00").toLocaleDateString("es-MX");
 
-  // Cierra el pase después de confirmar. Solo mando grupo y fecha; la hora y los totales
-  // los calcula el backend.
+  // useCreate manda el POST y el backend calcula horaCierre y totales
   const terminar = () => {
     setConfirmando(false);
     create(
@@ -271,8 +261,7 @@ const TerminarPase = () => {
     );
   };
 
-  // Marca Presente a todos los que siguen sin marcar y no tienen candado. React Admin manda un PUT por
-  // alumno, así cada uno pasa por las mismas revisiones del backend (pase cerrado, candado y log).
+  // useUpdateMany marca Presente con un PUT por alumno validado en backend
   const marcarTodos = () => {
     const pendientesConCandado = conCandado.length;
     updateMany(
@@ -293,7 +282,7 @@ const TerminarPase = () => {
           if (ids?.length) notify(mensaje, { type: "success" });
           refresh();
         },
-        // Si algún PUT falla, los demás ya se guardaron: recargo para que la lista diga lo que de verdad quedó.
+        // Si un PUT falla los demás quedan guardados y refresh lo muestra
         onError: () => {
           notify("No se pudo marcar a todos; revisa la lista", {
             type: "error",
@@ -304,8 +293,7 @@ const TerminarPase = () => {
     );
   };
 
-  // Terminar solo se activa cuando ya no falta nadie, y con aria-describedby el lector
-  // dice el aviso para que se sepa por qué está desactivado.
+  // Terminar disabled si faltan alumnos con aria-describedby hacia el aviso
   return (
     <TopToolbar>
       <Stack
@@ -374,12 +362,11 @@ const TerminarPase = () => {
   );
 };
 
-// Si no hay asistencias, este botón crea una "pendiente" por cada alumno activo del grupo.
-// Así el backend sabe cuándo ya no falta nadie y deja cerrar el pase.
+// Sin asistencias useCreate crea una pendiente por alumno para empezar
 const EmpezarPaseDeLista = () => {
   const { filterValues } = useListContext();
   const { identity } = useGetIdentity();
-  // Solo pido los alumnos inscritos; los que están de baja no entran al pase.
+  // useGetList solo pide alumnos con activo true y deja fuera las bajas
   const {
     data: alumnos,
     isPending,
@@ -394,7 +381,7 @@ const EmpezarPaseDeLista = () => {
   );
   const [create, creacion] = useCreate();
 
-  // Mientras no elijan grupo y fecha, solo digo qué hacer.
+  // Sin grupoId o fecha solo aparece ListaVacia con instrucciones
   if (!filterValues.grupoId || !filterValues.fecha) {
     return <ListaVacia mensaje="Elige un grupo y una fecha para empezar." />;
   }
@@ -428,7 +415,7 @@ const EmpezarPaseDeLista = () => {
   );
 };
 
-// El CSV del pase de lista: fecha, grupo, alumno e incidencia, con nombres en vez de ids.
+// Exporter del CSV con fetchRelatedRecords para nombres en vez de ids
 const exportarAsistencias: Exporter = async (
   asistencias,
   fetchRelatedRecords,
@@ -444,9 +431,9 @@ const exportarAsistencias: Exporter = async (
   descargarCSV(filas, `asistencias-${asistencias[0]?.fecha ?? ""}`);
 };
 
-// La tabla del pase. Su nombre lleva el grupo para que el lector de pantalla diga de quién es.
+// aria-label del DataTable con el nombre del grupo traído con useGetOne
 const TablaDelPase = () => {
-  // En pantalla chica la incidencia va debajo del nombre para que la tabla no tenga scroll de lado.
+  // useMediaQuery pone la incidencia bajo el nombre en pantalla chica
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   const { filterValues } = useListContext();
   const { data: grupo } = useGetOne(
@@ -477,10 +464,10 @@ const TablaDelPase = () => {
   );
 };
 
-// La pantalla completa de pase de lista, con los filtros de grupo y fecha y la tabla.
+// List del pase con filtros de grupo y fecha y TerminarPase arriba
 export const AsistenciaList = () => {
   const { identity } = useGetIdentity();
-  // El filtro de grupo solo trae los grupos de la docente; solo puede cerrar los suyos.
+  // ReferenceInput muestra solo los grupos del docenteId de useGetIdentity
   const asistenciaFilters = [
     <ReferenceInput
       key="grupoId"
@@ -495,8 +482,7 @@ export const AsistenciaList = () => {
     <DateInput key="fecha" source="fecha" label="Fecha" alwaysOn />,
   ];
 
-  // perPage 50 para que todo el grupo quepa en una página y el conteo de faltantes cuadre.
-  // storeKey en false para que siempre empiece con la fecha de hoy.
+  // perPage 50 para todo el grupo y storeKey false para iniciar hoy
   return (
     <Stack sx={{ maxWidth: 1280 }}>
       <Encabezado
