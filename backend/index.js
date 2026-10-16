@@ -1194,3 +1194,176 @@ app.post("/pases", async(req, res)=>{
 		// contarAsistencias exige cero pendientes y al menos un alumno o da 400
 		let cuenta=await contarAsistencias(grupo.id, fecha);
 		if(cuenta.pendientes>0 || cuenta.presentes+cuenta.ausentes==0){
+			res.sendStatus(400);
+			return;
+		}
+		// Pase sin createData con totales horaCierre y usuarioId calculados en el servidor
+		let pase={"id":await siguienteId("pases"), "grupoId":grupo.id, "estanciaId":grupo.estanciaId, "fecha":fecha, "usuarioId":verifiedToken.id, "horaCierre":new Date(), "presentes":cuenta.presentes, "ausentes":cuenta.ausentes, "estado":"Cerrado", "eliminado":false};
+		// insertOne primero y un pase duplicado da 409 antes de abrirSeguimientos
+		await db.collection("pases").insertOne(pase);
+		await abrirSeguimientos(req, verifiedToken, grupo.id, fecha);
+		await log(req, verifiedToken, "cerrar pase", "pases", pase.id);
+		let data=await db.collection("pases").findOne({"id":pase.id}, {"projection":ocultos});
+		res.json(data);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Lista de usuarios para elegir docente y ocultos quita el password
+app.get("/usuarios", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "usuarios", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "usuarios");
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "consultar datos", "usuarios");
+		if("_sort" in req.query){
+			await getList("usuarios", req, res);
+		}else if("id" in req.query){
+			await getMany("usuarios", req, res);
+		}else{
+			await getManyReference("usuarios", req, res);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Un usuario por id con getOne y solo el supervisor tiene acceso
+app.get("/usuarios/:id", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "usuarios", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "usuarios", Number(req.params.id));
+			res.sendStatus(403);
+			return;
+		}
+		await log(req, verifiedToken, "ver registro", "usuarios", Number(req.params.id));
+		await getOne("usuarios", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// /registrarse exige token y rol supervisor para crear usuarios
+app.post("/registrarse", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "usuarios", "crear")){
+			await log(req, verifiedToken, "acceso denegado: crear", "usuarios");
+			res.sendStatus(403);
+			return;
+		}
+		let nuevoUsuario=req.body.username;
+		let pass=req.body.password;
+		let nombre=req.body.nombre;
+		let rol=req.body.rol;
+		// Texto no vacío con typeof y rol válido o responde 400
+		let datosCompletos=typeof nuevoUsuario=="string" && nuevoUsuario!="" && typeof pass=="string" && pass!="" && typeof nombre=="string" && nombre!="";
+		let rolValido=rol=="docente" || rol=="enfermeria" || rol=="supervisor";
+		if(!datosCompletos || !rolValido){
+			res.sendStatus(400);
+			return;
+		}
+		// findOne por usuario evita crear un nombre que ya existe
+		let data=await db.collection("usuarios").findOne({"usuario":nuevoUsuario});
+		if (data==null){
+			// Hash de la contraseña con argon2id para no guardarla en texto plano
+			const hash=await argon2.hash(pass, {type: argon2.argon2id, memoryCost: 64*1024, timeCost:3, parallelism:1, saltLength:128});
+			let id=await siguienteId("usuarios");
+			let usuarioAgregar={"id":id, "nombre":nombre, "usuario":nuevoUsuario, "rol":rol, "password":hash, "eliminado":false};
+			await db.collection("usuarios").insertOne(usuarioAgregar);
+			await log(req, verifiedToken, "registrar usuario", "usuarios", id);
+			res.sendStatus(201);
+		}else{
+			// Usuario repetido da 409 porque 403 se reserva para falta de permiso
+			await log(req, verifiedToken, "registrar usuario: ya existe", "usuarios", data.id);
+			res.sendStatus(409);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Duración máxima de una sesión de 8 horas aunque se renueve
+const JORNADA=8*60*60*1000;
+// Seguir conectado llama a /renovar que firma otro token con jwt.sign
+app.post("/renovar", async(req, res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "sesion", "renovar")){
+			await log(req, verifiedToken, "acceso denegado: renovar sesión", "usuarios");
+			res.sendStatus(403);
+			return;
+		}
+		// Usuario inexistente o sesión de más de 8 horas responde 401
+		let data=await db.collection("usuarios").findOne({"usuario":verifiedToken.usuario, "eliminado":{"$ne":true}});
+		if(data==null || !verifiedToken.inicio || Date.now()-verifiedToken.inicio>JORNADA){
+			await log(req, verifiedToken, "renovar sesión rechazado", "usuarios", verifiedToken.id);
+			res.sendStatus(401);
+			return;
+		}
+		// jwt.sign conserva el inicio del token viejo para que la sesión venza
+		let nuevoToken=jwt.sign({"usuario":data.usuario, "rol":data.rol, "id":data.id, "inicio":verifiedToken.inicio}, await process.env.LLAVESECRETA, {expiresIn:900});
+		await log(req, verifiedToken, "renovar sesión", "usuarios", data.id);
+		res.json({"token":nuevoToken});
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// /login sin token verifica con argon2.verify y firma rol id e inicio
+app.post("/login", async (req, res)=>{
+	try{
+		let user=req.body.username;
+		let pass=req.body.password;
+		// Usuario y contraseña deben ser texto según typeof o responde 400
+		if(typeof user!="string" || typeof pass!="string"){
+			res.sendStatus(400);
+			return;
+		}
+		// Usuario inexistente o contraseña incorrecta dan el mismo 401 sin revelar cuentas
+		let data=await db.collection("usuarios").findOne({"usuario":user, "eliminado":{"$ne":true}});
+		// Sin token todavía el log recibe el usuario con rol null
+		let quien={"usuario":user, "rol":null};
+		if(data==null){
+			await log(req, quien, "login fallido", "usuarios");
+			res.sendStatus(401);
+		}else if(await argon2.verify(data.password, pass)){
+			// jwt.sign de 15 minutos con id para grupos e inicio para /renovar
+			let token=jwt.sign({"usuario":data.usuario, "rol":data.rol, "id":data.id, "inicio":Date.now()}, await process.env.LLAVESECRETA, {expiresIn:900});
+			await log(req, {"usuario":data.usuario, "rol":data.rol}, "login exitoso", "usuarios", data.id);
+			res.json({"token": token, "id":data.id, "nombre":data.nombre, "rol":data.rol});
+		}else{
+			await log(req, quien, "login fallido", "usuarios", data.id);
+			res.sendStatus(401);
+		}
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// Middleware de errores que responde con sendStatus sin detalles del servidor
+app.use((error, req, res, next)=>{
+	res.sendStatus(error.status || 500);
+});
+
+// fs.readFileSync lee la llave y el certificado autofirmado para HTTPS
+const options={
+	key: fs.readFileSync("backend.key"),
+	cert: fs.readFileSync("backend.crt")
+};
+
+// https.createServer en el 3000 y al escuchar carga env y conecta Mongo
+https.createServer(options,app).listen(PORT, async ()=>{
+	await process.loadEnvFile(".env");
+	await connectToDB();
+	console.log("Backend corriendo en puerto 3000");
+});
