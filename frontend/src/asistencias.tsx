@@ -373,3 +373,148 @@ const TerminarPase = () => {
     </TopToolbar>
   );
 };
+
+// Si no hay asistencias, este botón crea una "pendiente" por cada alumno activo del grupo.
+// Así el backend sabe cuándo ya no falta nadie y deja cerrar el pase.
+const EmpezarPaseDeLista = () => {
+  const { filterValues } = useListContext();
+  const { identity } = useGetIdentity();
+  // Solo pido los alumnos inscritos; los que están de baja no entran al pase.
+  const {
+    data: alumnos,
+    isPending,
+    error,
+  } = useGetList(
+    "alumnos",
+    {
+      filter: { grupoId: filterValues.grupoId, activo: true },
+      pagination: { page: 1, perPage: 100 },
+    },
+    { enabled: !!filterValues.grupoId },
+  );
+  const [create, creacion] = useCreate();
+
+  // Mientras no elijan grupo y fecha, solo digo qué hacer.
+  if (!filterValues.grupoId || !filterValues.fecha) {
+    return <ListaVacia mensaje="Elige un grupo y una fecha para empezar." />;
+  }
+  if (isPending) return <ListaVacia mensaje="Cargando…" />;
+  if (error) return <ListaVacia mensaje="Alumnos no disponibles" />;
+
+  return (
+    <ListaVacia mensaje="Este grupo todavía no tiene pase de lista en esta fecha.">
+      <Button
+        variant="contained"
+        sx={{ mt: 2 }}
+        disabled={creacion.isPending || alumnos.length === 0}
+        onClick={() =>
+          alumnos.forEach((alumno) =>
+            create("asistencias", {
+              data: {
+                alumnoId: alumno.id,
+                grupoId: alumno.grupoId,
+                estanciaId: alumno.estanciaId,
+                fecha: filterValues.fecha,
+                estado: "pendiente",
+                usuarioId: identity?.id,
+              },
+            }),
+          )
+        }
+      >
+        Empezar pase de lista
+      </Button>
+    </ListaVacia>
+  );
+};
+
+// El CSV del pase de lista: fecha, grupo, alumno e incidencia, con nombres en vez de ids.
+const exportarAsistencias: Exporter = async (
+  asistencias,
+  fetchRelatedRecords,
+) => {
+  const alumnos = await fetchRelatedRecords(asistencias, "alumnoId", "alumnos");
+  const grupos = await fetchRelatedRecords(asistencias, "grupoId", "grupos");
+  const filas = asistencias.map((asistencia) => ({
+    Fecha: fechaMX(asistencia.fecha),
+    Grupo: grupos[asistencia.grupoId]?.nombre ?? "",
+    Alumno: `${alumnos[asistencia.alumnoId]?.nombre ?? ""} ${alumnos[asistencia.alumnoId]?.apellidos ?? ""}`,
+    Incidencia: INCIDENCIAS[asistencia.estado]?.nombre ?? asistencia.estado,
+  }));
+  descargarCSV(filas, `asistencias-${asistencias[0]?.fecha ?? ""}`);
+};
+
+// La tabla del pase. Su nombre lleva el grupo para que el lector de pantalla diga de quién es.
+const TablaDelPase = () => {
+  // En pantalla chica la incidencia va debajo del nombre para que la tabla no tenga scroll de lado.
+  const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+  const { filterValues } = useListContext();
+  const { data: grupo } = useGetOne(
+    "grupos",
+    { id: filterValues.grupoId },
+    { enabled: !!filterValues.grupoId },
+  );
+  return (
+    <DataTable
+      aria-label={grupo ? `Alumnos de ${grupo.nombre}` : "Alumnos"}
+      bulkActionButtons={false}
+      rowClick={false}
+      empty={<EmpezarPaseDeLista />}
+    >
+      <DataTable.Col source="alumnoId" label="Alumno">
+        <Stack spacing={0.5} sx={{ alignItems: "flex-start" }}>
+          <ReferenceField source="alumnoId" reference="alumnos" link={false} />
+          <CandadoDelAlumno />
+          {isSmall && <IncidenciaDelAlumno />}
+        </Stack>
+      </DataTable.Col>
+      {!isSmall && (
+        <DataTable.Col source="estado" label="Incidencia">
+          <IncidenciaDelAlumno />
+        </DataTable.Col>
+      )}
+    </DataTable>
+  );
+};
+
+// La pantalla completa de pase de lista, con los filtros de grupo y fecha y la tabla.
+export const AsistenciaList = () => {
+  const { identity } = useGetIdentity();
+  // El filtro de grupo solo trae los grupos de la docente; solo puede cerrar los suyos.
+  const asistenciaFilters = [
+    <ReferenceInput
+      key="grupoId"
+      source="grupoId"
+      reference="grupos"
+      filter={{ docenteId: identity?.id }}
+      queryOptions={{ enabled: !!identity }}
+      alwaysOn
+    >
+      <SelectNativo label="Grupo" emptyText="Elige un grupo" />
+    </ReferenceInput>,
+    <DateInput key="fecha" source="fecha" label="Fecha" alwaysOn />,
+  ];
+
+  // perPage 50 para que todo el grupo quepa en una página y el conteo de faltantes cuadre.
+  // storeKey en false para que siempre empiece con la fecha de hoy.
+  return (
+    <Stack sx={{ maxWidth: 1280 }}>
+      <Encabezado
+        titulo="Pase de lista"
+        ayuda="Elige el grupo y la fecha; elige la incidencia de cada alumno y al final termina el pase."
+      />
+      <List
+        title="Pase de lista"
+        filters={asistenciaFilters}
+        filterDefaultValues={{ fecha: new Date().toLocaleDateString("en-CA") }}
+        sort={{ field: "alumnoId", order: "ASC" }}
+        perPage={50}
+        storeKey={false}
+        exporter={exportarAsistencias}
+        actions={<TerminarPase />}
+      >
+        <TablaDelPase />
+      </List>
+    </Stack>
+  );
+};
