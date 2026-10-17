@@ -1,0 +1,7985 @@
+{
+  "estancias": [
+    {
+      "id": 1,
+      "nombre": "Coyoacán",
+      "direccion": "Calle Ejemplo 101, Coyoacán, Ciudad de México",
+      "telefono": "55 0000 0001"
+    },
+    {
+      "id": 2,
+      "nombre": "Iztapalapa",
+      "direccion": "Calle Ejemplo 202, Iztapalapa, Ciudad de México",
+      "telefono": "55 0000 0002"
+    },
+    {
+      "id": 3,
+      "nombre": "Tláhuac",
+      "direccion": "Calle Ejemplo 303, Tláhuac, Ciudad de México",
+      "telefono": "55 0000 0003"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Ana López",
+      "usuario": "docente",
+      "rol": "docente",
+      "estanciaId": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Carlos Méndez",
+      "usuario": "supervisor",
+      "rol": "supervisor",
+      "estanciaId": null
+    },
+    {
+      "id": 3,
+      "nombre": "Rosa Hernández",
+      "usuario": "rhernandez",
+      "rol": "docente",
+      "estanciaId": 1
+    },
+    {
+      "id": 4,
+      "nombre": "Jorge Ramírez",
+      "usuario": "jramirez",
+      "rol": "docente",
+      "estanciaId": 2
+    },
+    {
+      "id": 5,
+      "nombre": "Laura Sánchez",
+      "usuario": "lsanchez",
+      "rol": "docente",
+      "estanciaId": 3
+    },
+    {
+      "id": 6,
+      "nombre": "Marta Ruiz",
+      "usuario": "enfermeria",
+      "rol": "enfermeria",
+      "estanciaId": null
+    }
+  ],
+  "grupos": [
+    {
+      "id": 1,
+      "nombre": "Lactantes A",
+      "nivel": "lactantes",
+      "estanciaId": 1,
+      "docenteId": 3
+    },
+    {
+      "id": 2,
+      "nombre": "Maternal A",
+      "nivel": "maternal",
+      "estanciaId": 1,
+      "docenteId": 1
+    },
+    {
+      "id": 3,
+      "nombre": "Maternal B",
+      "nivel": "maternal",
+      "estanciaId": 1,
+      "docenteId": 1
+    },
+    {
+      "id": 4,
+      "nombre": "Preescolar A",
+      "nivel": "preescolar",
+      "estanciaId": 1,
+      "docenteId": 3
+    },
+    {
+      "id": 5,
+      "nombre": "Lactantes B",
+      "nivel": "lactantes",
+      "estanciaId": 2,
+      "docenteId": 4
+    },
+    {
+      "id": 6,
+      "nombre": "Maternal C",
+      "nivel": "maternal",
+      "estanciaId": 2,
+      "docenteId": 4
+    },
+    {
+      "id": 7,
+      "nombre": "Preescolar B",
+      "nivel": "preescolar",
+      "estanciaId": 2,
+      "docenteId": 4
+    },
+    {
+      "id": 8,
+      "nombre": "Maternal D",
+      "nivel": "maternal",
+      "estanciaId": 3,
+      "docenteId": 5
+    },
+    {
+      "id": 9,
+      "nombre": "Preescolar C",
+      "nivel": "preescolar",
+      "estanciaId": 3,
+      "docenteId": 5
+    }
+  ],
+  "tutores": [
+    {
+      "id": 1,
+      "nombre": "María",
+      "apellidos": "Peralta",
+      "parentesco": "madre",
+      "telefono": "55 0000 1001",
+      "correo": "maria.peralta1@example.com"
+    },
+    {
+      "id": 2,
+      "nombre": "Ricardo",
+      "apellidos": "Zamarrón",
+      "parentesco": "padre",
+      "telefono": "55 0000 1002",
+      "correo": "ricardo.zamarron2@example.com"
+    },
+    {
+      "id": 3,
+      "nombre": "Claudia",
+      "apellidos": "Flores",
+      "parentesco": "madre",
+      "telefono": "55 0000 1003",
+      "correo": "claudia.flores3@example.com"
+    },
+    {
+      "id": 4,
+      "nombre": "Guadalupe",
+      "apellidos": "Carreras",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1004",
+      "correo": "guadalupe.carreras4@example.com"
+    },
+    {
+      "id": 5,
+      "nombre": "Óscar",
+      "apellidos": "Rodríguez García",
+      "parentesco": "padre",
+      "telefono": "55 0000 1005",
+      "correo": "oscar.rodriguez5@example.com"
+    },
+    {
+      "id": 6,
+      "nombre": "Ricardo",
+      "apellidos": "Álvarez Álvarez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1006",
+      "correo": "ricardo.alvarez6@example.com"
+    },
+    {
+      "id": 7,
+      "nombre": "Gabriela",
+      "apellidos": "Juárez Torres",
+      "parentesco": "madre",
+      "telefono": "55 0000 1007",
+      "correo": "gabriela.juarez7@example.com"
+    },
+    {
+      "id": 8,
+      "nombre": "Ricardo",
+      "apellidos": "Martínez Ruiz",
+      "parentesco": "padre",
+      "telefono": "55 0000 1008",
+      "correo": "ricardo.martinez8@example.com"
+    },
+    {
+      "id": 9,
+      "nombre": "Verónica",
+      "apellidos": "Ruiz Ramírez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1009",
+      "correo": "veronica.ruiz9@example.com"
+    },
+    {
+      "id": 10,
+      "nombre": "Óscar",
+      "apellidos": "Sánchez Gómez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1010",
+      "correo": "oscar.sanchez10@example.com"
+    },
+    {
+      "id": 11,
+      "nombre": "Eduardo",
+      "apellidos": "Romero Juárez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1011",
+      "correo": "eduardo.romero11@example.com"
+    },
+    {
+      "id": 12,
+      "nombre": "Francisco",
+      "apellidos": "Gutiérrez Ortiz",
+      "parentesco": "padre",
+      "telefono": "55 0000 1012",
+      "correo": "francisco.gutierrez12@example.com"
+    },
+    {
+      "id": 13,
+      "nombre": "Karla",
+      "apellidos": "Vázquez Castillo",
+      "parentesco": "madre",
+      "telefono": "55 0000 1013",
+      "correo": "karla.vazquez13@example.com"
+    },
+    {
+      "id": 14,
+      "nombre": "Mónica",
+      "apellidos": "Mendoza Ruiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1014",
+      "correo": "monica.mendoza14@example.com"
+    },
+    {
+      "id": 15,
+      "nombre": "Ricardo",
+      "apellidos": "Rodríguez González",
+      "parentesco": "padre",
+      "telefono": "55 0000 1015",
+      "correo": "ricardo.rodriguez15@example.com"
+    },
+    {
+      "id": 16,
+      "nombre": "Verónica",
+      "apellidos": "Mendoza García",
+      "parentesco": "madre",
+      "telefono": "55 0000 1016",
+      "correo": "veronica.mendoza16@example.com"
+    },
+    {
+      "id": 17,
+      "nombre": "Patricia",
+      "apellidos": "Gutiérrez García",
+      "parentesco": "madre",
+      "telefono": "55 0000 1017",
+      "correo": "patricia.gutierrez17@example.com"
+    },
+    {
+      "id": 18,
+      "nombre": "Patricia",
+      "apellidos": "Juárez Álvarez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1018",
+      "correo": "patricia.juarez18@example.com"
+    },
+    {
+      "id": 19,
+      "nombre": "Karla",
+      "apellidos": "Gómez Flores",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1019",
+      "correo": "karla.gomez19@example.com"
+    },
+    {
+      "id": 20,
+      "nombre": "Karla",
+      "apellidos": "Aguilar Martínez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1020",
+      "correo": "karla.aguilar20@example.com"
+    },
+    {
+      "id": 21,
+      "nombre": "Gabriela",
+      "apellidos": "Rodríguez Sánchez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1021",
+      "correo": "gabriela.rodriguez21@example.com"
+    },
+    {
+      "id": 22,
+      "nombre": "Ricardo",
+      "apellidos": "Romero Hernández",
+      "parentesco": "padre",
+      "telefono": "55 0000 1022",
+      "correo": "ricardo.romero22@example.com"
+    },
+    {
+      "id": 23,
+      "nombre": "Leticia",
+      "apellidos": "Ramos Martínez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1023",
+      "correo": "leticia.ramos23@example.com"
+    },
+    {
+      "id": 24,
+      "nombre": "Guadalupe",
+      "apellidos": "Ruiz Castillo",
+      "parentesco": "madre",
+      "telefono": "55 0000 1024",
+      "correo": "guadalupe.ruiz24@example.com"
+    },
+    {
+      "id": 25,
+      "nombre": "Leticia",
+      "apellidos": "Hernández Morales",
+      "parentesco": "otro",
+      "telefono": "55 0000 1025",
+      "correo": "leticia.hernandez25@example.com"
+    },
+    {
+      "id": 26,
+      "nombre": "Gabriela",
+      "apellidos": "Romero Flores",
+      "parentesco": "madre",
+      "telefono": "55 0000 1026",
+      "correo": "gabriela.romero26@example.com"
+    },
+    {
+      "id": 27,
+      "nombre": "Adriana",
+      "apellidos": "Gutiérrez Torres",
+      "parentesco": "madre",
+      "telefono": "55 0000 1027",
+      "correo": "adriana.gutierrez27@example.com"
+    },
+    {
+      "id": 28,
+      "nombre": "Carlos",
+      "apellidos": "Juárez Gutiérrez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1028",
+      "correo": "carlos.juarez28@example.com"
+    },
+    {
+      "id": 29,
+      "nombre": "José",
+      "apellidos": "Pérez González",
+      "parentesco": "padre",
+      "telefono": "55 0000 1029",
+      "correo": "jose.perez29@example.com"
+    },
+    {
+      "id": 30,
+      "nombre": "Fernando",
+      "apellidos": "Juárez Mendoza",
+      "parentesco": "padre",
+      "telefono": "55 0000 1030",
+      "correo": "fernando.juarez30@example.com"
+    },
+    {
+      "id": 31,
+      "nombre": "Verónica",
+      "apellidos": "Reyes Juárez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1031",
+      "correo": "veronica.reyes31@example.com"
+    },
+    {
+      "id": 32,
+      "nombre": "Adriana",
+      "apellidos": "Castillo Gutiérrez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1032",
+      "correo": "adriana.castillo32@example.com"
+    },
+    {
+      "id": 33,
+      "nombre": "Leticia",
+      "apellidos": "Ramírez Vázquez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1033",
+      "correo": "leticia.ramirez33@example.com"
+    },
+    {
+      "id": 34,
+      "nombre": "Adriana",
+      "apellidos": "Ruiz Gómez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1034",
+      "correo": "adriana.ruiz34@example.com"
+    },
+    {
+      "id": 35,
+      "nombre": "Verónica",
+      "apellidos": "Aguilar Gutiérrez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1035",
+      "correo": "veronica.aguilar35@example.com"
+    },
+    {
+      "id": 36,
+      "nombre": "Guadalupe",
+      "apellidos": "Mendoza Morales",
+      "parentesco": "madre",
+      "telefono": "55 0000 1036",
+      "correo": "guadalupe.mendoza36@example.com"
+    },
+    {
+      "id": 37,
+      "nombre": "Raúl",
+      "apellidos": "Díaz Ruiz",
+      "parentesco": "padre",
+      "telefono": "55 0000 1037",
+      "correo": "raul.diaz37@example.com"
+    },
+    {
+      "id": 38,
+      "nombre": "Verónica",
+      "apellidos": "Castillo López",
+      "parentesco": "madre",
+      "telefono": "55 0000 1038",
+      "correo": "veronica.castillo38@example.com"
+    },
+    {
+      "id": 39,
+      "nombre": "Fernando",
+      "apellidos": "Ruiz Mendoza",
+      "parentesco": "padre",
+      "telefono": "55 0000 1039",
+      "correo": "fernando.ruiz39@example.com"
+    },
+    {
+      "id": 40,
+      "nombre": "Ricardo",
+      "apellidos": "Reyes Sánchez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1040",
+      "correo": "ricardo.reyes40@example.com"
+    },
+    {
+      "id": 41,
+      "nombre": "Leticia",
+      "apellidos": "Flores Gutiérrez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1041",
+      "correo": "leticia.flores41@example.com"
+    },
+    {
+      "id": 42,
+      "nombre": "Mónica",
+      "apellidos": "Pérez Castillo",
+      "parentesco": "madre",
+      "telefono": "55 0000 1042",
+      "correo": "monica.perez42@example.com"
+    },
+    {
+      "id": 43,
+      "nombre": "Alejandra",
+      "apellidos": "Ramos Reyes",
+      "parentesco": "madre",
+      "telefono": "55 0000 1043",
+      "correo": "alejandra.ramos43@example.com"
+    },
+    {
+      "id": 44,
+      "nombre": "Liliana",
+      "apellidos": "Ramírez García",
+      "parentesco": "madre",
+      "telefono": "55 0000 1044",
+      "correo": "liliana.ramirez44@example.com"
+    },
+    {
+      "id": 45,
+      "nombre": "Verónica",
+      "apellidos": "Rivera Sánchez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1045",
+      "correo": "veronica.rivera45@example.com"
+    },
+    {
+      "id": 46,
+      "nombre": "Leticia",
+      "apellidos": "Ortiz Aguilar",
+      "parentesco": "madre",
+      "telefono": "55 0000 1046",
+      "correo": "leticia.ortiz46@example.com"
+    },
+    {
+      "id": 47,
+      "nombre": "Guadalupe",
+      "apellidos": "Cruz Ortiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1047",
+      "correo": "guadalupe.cruz47@example.com"
+    },
+    {
+      "id": 48,
+      "nombre": "Adriana",
+      "apellidos": "Díaz Torres",
+      "parentesco": "madre",
+      "telefono": "55 0000 1048",
+      "correo": "adriana.diaz48@example.com"
+    },
+    {
+      "id": 49,
+      "nombre": "Liliana",
+      "apellidos": "Gómez Sánchez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1049",
+      "correo": "liliana.gomez49@example.com"
+    },
+    {
+      "id": 50,
+      "nombre": "Gabriela",
+      "apellidos": "Martínez Romero",
+      "parentesco": "madre",
+      "telefono": "55 0000 1050",
+      "correo": "gabriela.martinez50@example.com"
+    },
+    {
+      "id": 51,
+      "nombre": "Leticia",
+      "apellidos": "Ruiz Ramos",
+      "parentesco": "madre",
+      "telefono": "55 0000 1051",
+      "correo": "leticia.ruiz51@example.com"
+    },
+    {
+      "id": 52,
+      "nombre": "Alejandra",
+      "apellidos": "Chávez Gómez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1052",
+      "correo": "alejandra.chavez52@example.com"
+    },
+    {
+      "id": 53,
+      "nombre": "Patricia",
+      "apellidos": "Gómez Ramos",
+      "parentesco": "madre",
+      "telefono": "55 0000 1053",
+      "correo": "patricia.gomez53@example.com"
+    },
+    {
+      "id": 54,
+      "nombre": "Francisco",
+      "apellidos": "Ortiz Ruiz",
+      "parentesco": "padre",
+      "telefono": "55 0000 1054",
+      "correo": "francisco.ortiz54@example.com"
+    },
+    {
+      "id": 55,
+      "nombre": "Alejandra",
+      "apellidos": "Flores Castillo",
+      "parentesco": "madre",
+      "telefono": "55 0000 1055",
+      "correo": "alejandra.flores55@example.com"
+    },
+    {
+      "id": 56,
+      "nombre": "Guadalupe",
+      "apellidos": "Álvarez Ortiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1056",
+      "correo": "guadalupe.alvarez56@example.com"
+    },
+    {
+      "id": 57,
+      "nombre": "Liliana",
+      "apellidos": "Mendoza Vázquez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1057",
+      "correo": "liliana.mendoza57@example.com"
+    },
+    {
+      "id": 58,
+      "nombre": "Alejandra",
+      "apellidos": "Mendoza Castillo",
+      "parentesco": "madre",
+      "telefono": "55 0000 1058",
+      "correo": "alejandra.mendoza58@example.com"
+    },
+    {
+      "id": 59,
+      "nombre": "Fernando",
+      "apellidos": "Pérez García",
+      "parentesco": "padre",
+      "telefono": "55 0000 1059",
+      "correo": "fernando.perez59@example.com"
+    },
+    {
+      "id": 60,
+      "nombre": "Adriana",
+      "apellidos": "Jiménez Juárez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1060",
+      "correo": "adriana.jimenez60@example.com"
+    },
+    {
+      "id": 61,
+      "nombre": "Verónica",
+      "apellidos": "Ruiz Aguilar",
+      "parentesco": "madre",
+      "telefono": "55 0000 1061",
+      "correo": "veronica.ruiz61@example.com"
+    },
+    {
+      "id": 62,
+      "nombre": "Mónica",
+      "apellidos": "Ramos Jiménez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1062",
+      "correo": "monica.ramos62@example.com"
+    },
+    {
+      "id": 63,
+      "nombre": "Mónica",
+      "apellidos": "Juárez Cruz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1063",
+      "correo": "monica.juarez63@example.com"
+    },
+    {
+      "id": 64,
+      "nombre": "Claudia",
+      "apellidos": "Vázquez Rodríguez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1064",
+      "correo": "claudia.vazquez64@example.com"
+    },
+    {
+      "id": 65,
+      "nombre": "Óscar",
+      "apellidos": "Sánchez Rivera",
+      "parentesco": "padre",
+      "telefono": "55 0000 1065",
+      "correo": "oscar.sanchez65@example.com"
+    },
+    {
+      "id": 66,
+      "nombre": "Ricardo",
+      "apellidos": "Martínez Aguilar",
+      "parentesco": "padre",
+      "telefono": "55 0000 1066",
+      "correo": "ricardo.martinez66@example.com"
+    },
+    {
+      "id": 67,
+      "nombre": "Karla",
+      "apellidos": "García Castillo",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1067",
+      "correo": "karla.garcia67@example.com"
+    },
+    {
+      "id": 68,
+      "nombre": "Claudia",
+      "apellidos": "Ruiz Ortiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1068",
+      "correo": "claudia.ruiz68@example.com"
+    },
+    {
+      "id": 69,
+      "nombre": "Juan",
+      "apellidos": "Ortiz Juárez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1069",
+      "correo": "juan.ortiz69@example.com"
+    },
+    {
+      "id": 70,
+      "nombre": "José",
+      "apellidos": "Juárez Álvarez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1070",
+      "correo": "jose.juarez70@example.com"
+    },
+    {
+      "id": 71,
+      "nombre": "Claudia",
+      "apellidos": "Rivera Rivera",
+      "parentesco": "madre",
+      "telefono": "55 0000 1071",
+      "correo": "claudia.rivera71@example.com"
+    },
+    {
+      "id": 72,
+      "nombre": "Verónica",
+      "apellidos": "López Ruiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1072",
+      "correo": "veronica.lopez72@example.com"
+    },
+    {
+      "id": 73,
+      "nombre": "María",
+      "apellidos": "Álvarez García",
+      "parentesco": "madre",
+      "telefono": "55 0000 1073",
+      "correo": "maria.alvarez73@example.com"
+    },
+    {
+      "id": 74,
+      "nombre": "Patricia",
+      "apellidos": "Álvarez Sánchez",
+      "parentesco": "otro",
+      "telefono": "55 0000 1074",
+      "correo": "patricia.alvarez74@example.com"
+    },
+    {
+      "id": 75,
+      "nombre": "Javier",
+      "apellidos": "Rodríguez Gómez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1075",
+      "correo": "javier.rodriguez75@example.com"
+    },
+    {
+      "id": 76,
+      "nombre": "Gabriela",
+      "apellidos": "Díaz Torres",
+      "parentesco": "madre",
+      "telefono": "55 0000 1076",
+      "correo": "gabriela.diaz76@example.com"
+    },
+    {
+      "id": 77,
+      "nombre": "Francisco",
+      "apellidos": "Chávez Juárez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1077",
+      "correo": "francisco.chavez77@example.com"
+    },
+    {
+      "id": 78,
+      "nombre": "Adriana",
+      "apellidos": "Martínez López",
+      "parentesco": "madre",
+      "telefono": "55 0000 1078",
+      "correo": "adriana.martinez78@example.com"
+    },
+    {
+      "id": 79,
+      "nombre": "Mónica",
+      "apellidos": "Rivera Ruiz",
+      "parentesco": "madre",
+      "telefono": "55 0000 1079",
+      "correo": "monica.rivera79@example.com"
+    },
+    {
+      "id": 80,
+      "nombre": "Karla",
+      "apellidos": "Aguilar Chávez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1080",
+      "correo": "karla.aguilar80@example.com"
+    },
+    {
+      "id": 81,
+      "nombre": "Adriana",
+      "apellidos": "González Álvarez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1081",
+      "correo": "adriana.gonzalez81@example.com"
+    },
+    {
+      "id": 82,
+      "nombre": "Karla",
+      "apellidos": "Pérez Jiménez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1082",
+      "correo": "karla.perez82@example.com"
+    },
+    {
+      "id": 83,
+      "nombre": "Claudia",
+      "apellidos": "Gómez González",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1083",
+      "correo": "claudia.gomez83@example.com"
+    },
+    {
+      "id": 84,
+      "nombre": "Juan",
+      "apellidos": "Gutiérrez Sánchez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1084",
+      "correo": "juan.gutierrez84@example.com"
+    },
+    {
+      "id": 85,
+      "nombre": "Juan",
+      "apellidos": "Flores Díaz",
+      "parentesco": "padre",
+      "telefono": "55 0000 1085",
+      "correo": "juan.flores85@example.com"
+    },
+    {
+      "id": 86,
+      "nombre": "Verónica",
+      "apellidos": "Torres Romero",
+      "parentesco": "madre",
+      "telefono": "55 0000 1086",
+      "correo": "veronica.torres86@example.com"
+    },
+    {
+      "id": 87,
+      "nombre": "Patricia",
+      "apellidos": "López Gómez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1087",
+      "correo": "patricia.lopez87@example.com"
+    },
+    {
+      "id": 88,
+      "nombre": "Patricia",
+      "apellidos": "Gutiérrez Pérez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1088",
+      "correo": "patricia.gutierrez88@example.com"
+    },
+    {
+      "id": 89,
+      "nombre": "Verónica",
+      "apellidos": "Flores Hernández",
+      "parentesco": "madre",
+      "telefono": "55 0000 1089",
+      "correo": "veronica.flores89@example.com"
+    },
+    {
+      "id": 90,
+      "nombre": "Verónica",
+      "apellidos": "Mendoza Sánchez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1090",
+      "correo": "veronica.mendoza90@example.com"
+    },
+    {
+      "id": 91,
+      "nombre": "Leticia",
+      "apellidos": "Pérez Ruiz",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1091",
+      "correo": "leticia.perez91@example.com"
+    },
+    {
+      "id": 92,
+      "nombre": "Javier",
+      "apellidos": "Chávez Álvarez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1092",
+      "correo": "javier.chavez92@example.com"
+    },
+    {
+      "id": 93,
+      "nombre": "María",
+      "apellidos": "Vázquez Gutiérrez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1093",
+      "correo": "maria.vazquez93@example.com"
+    },
+    {
+      "id": 94,
+      "nombre": "Guadalupe",
+      "apellidos": "Juárez González",
+      "parentesco": "madre",
+      "telefono": "55 0000 1094",
+      "correo": "guadalupe.juarez94@example.com"
+    },
+    {
+      "id": 95,
+      "nombre": "Liliana",
+      "apellidos": "Gutiérrez Chávez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1095",
+      "correo": "liliana.gutierrez95@example.com"
+    },
+    {
+      "id": 96,
+      "nombre": "María",
+      "apellidos": "Ramos Flores",
+      "parentesco": "madre",
+      "telefono": "55 0000 1096",
+      "correo": "maria.ramos96@example.com"
+    },
+    {
+      "id": 97,
+      "nombre": "Francisco",
+      "apellidos": "Jiménez Chávez",
+      "parentesco": "padre",
+      "telefono": "55 0000 1097",
+      "correo": "francisco.jimenez97@example.com"
+    },
+    {
+      "id": 98,
+      "nombre": "Leticia",
+      "apellidos": "Flores Rivera",
+      "parentesco": "madre",
+      "telefono": "55 0000 1098",
+      "correo": "leticia.flores98@example.com"
+    },
+    {
+      "id": 99,
+      "nombre": "Guadalupe",
+      "apellidos": "Cruz Juárez",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1099",
+      "correo": "guadalupe.cruz99@example.com"
+    },
+    {
+      "id": 100,
+      "nombre": "Claudia",
+      "apellidos": "Pérez Hernández",
+      "parentesco": "madre",
+      "telefono": "55 0000 1100",
+      "correo": "claudia.perez100@example.com"
+    },
+    {
+      "id": 101,
+      "nombre": "Adriana",
+      "apellidos": "Rivera Ramos",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1101",
+      "correo": "adriana.rivera101@example.com"
+    },
+    {
+      "id": 102,
+      "nombre": "María",
+      "apellidos": "Reyes Mendoza",
+      "parentesco": "madre",
+      "telefono": "55 0000 1102",
+      "correo": "maria.reyes102@example.com"
+    },
+    {
+      "id": 103,
+      "nombre": "Javier",
+      "apellidos": "Cruz Reyes",
+      "parentesco": "padre",
+      "telefono": "55 0000 1103",
+      "correo": "javier.cruz103@example.com"
+    },
+    {
+      "id": 104,
+      "nombre": "Leticia",
+      "apellidos": "Ramírez Mendoza",
+      "parentesco": "abuelo",
+      "telefono": "55 0000 1104",
+      "correo": "leticia.ramirez104@example.com"
+    },
+    {
+      "id": 105,
+      "nombre": "Alejandra",
+      "apellidos": "Romero Álvarez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1105",
+      "correo": "alejandra.romero105@example.com"
+    },
+    {
+      "id": 106,
+      "nombre": "Liliana",
+      "apellidos": "Juárez Álvarez",
+      "parentesco": "madre",
+      "telefono": "55 0000 1106",
+      "correo": "liliana.juarez106@example.com"
+    }
+  ],
+  "alumnos": [
+    {
+      "id": 1,
+      "nombre": "Lizbeth",
+      "apellidos": "Peralta",
+      "fechaNacimiento": "2024-06-16",
+      "estanciaId": 1,
+      "grupoId": 3,
+      "tutorId": 1,
+      "activo": true,
+      "codigoQR": "3117073d-3c8d-4819-ba32-8ba083cca88a"
+    },
+    {
+      "id": 2,
+      "nombre": "Gonzalo",
+      "apellidos": "Zamarrón",
+      "fechaNacimiento": "2022-12-01",
+      "estanciaId": 1,
+      "grupoId": 3,
+      "tutorId": 2,
+      "activo": true,
+      "codigoQR": "6d7318d5-11b4-445b-a112-350521d370ea"
+    },
+    {
+      "id": 3,
+      "nombre": "Leonardo",
+      "apellidos": "Flores",
+      "fechaNacimiento": "2024-09-03",
+      "estanciaId": 1,
+      "grupoId": 3,
+      "tutorId": 3,
+      "activo": true,
+      "codigoQR": "c5c1c930-d053-4b24-8aa7-5bc31f4e785d"
+    },
+    {
+      "id": 4,
+      "nombre": "Patricio",
+      "apellidos": "Carreras",
+      "fechaNacimiento": "2024-10-06",
+      "estanciaId": 1,
+      "grupoId": 3,
+      "tutorId": 4,
+      "activo": true,
+      "codigoQR": "822fc1a4-4699-4677-bcf5-d0b83646ce38"
+    },
+    {
+      "id": 5,
+      "nombre": "Ximena",
+      "apellidos": "Rodríguez Juárez",
+      "fechaNacimiento": "2025-05-16",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 5,
+      "activo": true,
+      "codigoQR": "8c9cebb6-b4d2-4069-9006-9dc9c89e0793"
+    },
+    {
+      "id": 6,
+      "nombre": "Renata",
+      "apellidos": "Álvarez Morales",
+      "fechaNacimiento": "2025-12-29",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 6,
+      "activo": true,
+      "codigoQR": "1fa4e75d-cc71-480e-81f0-b2fe70a55460"
+    },
+    {
+      "id": 7,
+      "nombre": "Ángel",
+      "apellidos": "Juárez Juárez",
+      "fechaNacimiento": "2025-09-09",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 7,
+      "activo": true,
+      "codigoQR": "51bebd4e-248d-46e4-bc01-51308d39e710"
+    },
+    {
+      "id": 8,
+      "nombre": "Sofía",
+      "apellidos": "Martínez Aguilar",
+      "fechaNacimiento": "2025-04-12",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 8,
+      "activo": true,
+      "codigoQR": "e32e7913-e4cd-4226-8891-ce5995bed253"
+    },
+    {
+      "id": 9,
+      "nombre": "Leonardo",
+      "apellidos": "Jiménez Ruiz",
+      "fechaNacimiento": "2025-04-06",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 9,
+      "activo": true,
+      "codigoQR": "148d3b5a-962e-40ef-97d5-d30764c88b73"
+    },
+    {
+      "id": 10,
+      "nombre": "Victoria",
+      "apellidos": "Sánchez López",
+      "fechaNacimiento": "2025-11-21",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 10,
+      "activo": true,
+      "codigoQR": "e631f829-82ac-4036-8e6b-bbd301d88661"
+    },
+    {
+      "id": 11,
+      "nombre": "Jimena",
+      "apellidos": "Romero Gutiérrez",
+      "fechaNacimiento": "2026-01-03",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 11,
+      "activo": true,
+      "codigoQR": "4b39295f-b7f4-4525-a760-2946684554ec"
+    },
+    {
+      "id": 12,
+      "nombre": "Renata",
+      "apellidos": "Gutiérrez Gómez",
+      "fechaNacimiento": "2025-04-09",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 12,
+      "activo": true,
+      "codigoQR": "2d76604a-764c-4340-a360-769b83a49a61"
+    },
+    {
+      "id": 13,
+      "nombre": "Camila",
+      "apellidos": "Martínez Vázquez",
+      "fechaNacimiento": "2025-05-24",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 13,
+      "activo": true,
+      "codigoQR": "e5d86906-7a44-4db8-8741-4173e338a656"
+    },
+    {
+      "id": 14,
+      "nombre": "Valentina",
+      "apellidos": "Castillo Mendoza",
+      "fechaNacimiento": "2026-01-15",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 14,
+      "activo": true,
+      "codigoQR": "b042a33d-af78-4ed4-a024-84d0a6aa2b46"
+    },
+    {
+      "id": 15,
+      "nombre": "Isabella",
+      "apellidos": "Rodríguez González",
+      "fechaNacimiento": "2025-08-28",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 15,
+      "activo": true,
+      "codigoQR": "33104874-7aa9-4344-a8b8-ce5cc0af5fca"
+    },
+    {
+      "id": 16,
+      "nombre": "Paula",
+      "apellidos": "Ramos Mendoza",
+      "fechaNacimiento": "2025-07-28",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 16,
+      "activo": true,
+      "codigoQR": "16710142-75e0-4d87-a74f-a152a17d467f"
+    },
+    {
+      "id": 17,
+      "nombre": "Andrea",
+      "apellidos": "González Gutiérrez",
+      "fechaNacimiento": "2025-09-26",
+      "estanciaId": 1,
+      "grupoId": 1,
+      "tutorId": 17,
+      "activo": true,
+      "codigoQR": "d9d06acd-7f5c-4927-a434-75abf00a81f5"
+    },
+    {
+      "id": 18,
+      "nombre": "Joaquín",
+      "apellidos": "Ramírez Juárez",
+      "fechaNacimiento": "2023-03-28",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 18,
+      "activo": true,
+      "codigoQR": "b9518f79-d68e-4d24-ba66-a285716c7d8f"
+    },
+    {
+      "id": 19,
+      "nombre": "Andrés",
+      "apellidos": "Morales Gómez",
+      "fechaNacimiento": "2024-08-04",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 19,
+      "activo": true,
+      "codigoQR": "1d3f0c7c-4919-4d5d-aa8a-62e313d1ee71"
+    },
+    {
+      "id": 20,
+      "nombre": "Ximena",
+      "apellidos": "Rodríguez Aguilar",
+      "fechaNacimiento": "2023-12-19",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 20,
+      "activo": true,
+      "codigoQR": "88d28670-bb33-431d-a0ad-67f2e32230e2"
+    },
+    {
+      "id": 21,
+      "nombre": "Natalia",
+      "apellidos": "López Rodríguez",
+      "fechaNacimiento": "2023-02-02",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 21,
+      "activo": true,
+      "codigoQR": "963a8c11-d2dd-4a73-978a-7d20a7596d56"
+    },
+    {
+      "id": 22,
+      "nombre": "Valeria",
+      "apellidos": "Romero Juárez",
+      "fechaNacimiento": "2024-01-07",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 22,
+      "activo": true,
+      "codigoQR": "0f8ce4fd-a867-4631-91a6-ca63bb60ae10"
+    },
+    {
+      "id": 23,
+      "nombre": "Sebastián",
+      "apellidos": "Pérez Ramos",
+      "fechaNacimiento": "2023-08-14",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 23,
+      "activo": true,
+      "codigoQR": "f4e9300f-6ee7-451a-874b-59c1016d5eec"
+    },
+    {
+      "id": 24,
+      "nombre": "Santiago",
+      "apellidos": "Díaz Ruiz",
+      "fechaNacimiento": "2023-07-22",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 24,
+      "activo": true,
+      "codigoQR": "16fd67ed-47a3-464d-a1e5-70799968d058"
+    },
+    {
+      "id": 25,
+      "nombre": "Rodrigo",
+      "apellidos": "Reyes Hernández",
+      "fechaNacimiento": "2024-05-19",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 25,
+      "activo": true,
+      "codigoQR": "330215a8-63e4-408a-8ea4-ce9080182b9b"
+    },
+    {
+      "id": 26,
+      "nombre": "Romina",
+      "apellidos": "Ruiz Romero",
+      "fechaNacimiento": "2023-12-23",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 26,
+      "activo": true,
+      "codigoQR": "0b700c85-3890-45ae-b489-69e488711648"
+    },
+    {
+      "id": 27,
+      "nombre": "Gael",
+      "apellidos": "Hernández Gutiérrez",
+      "fechaNacimiento": "2025-01-23",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 27,
+      "activo": true,
+      "codigoQR": "6718717f-20a6-425d-a0f1-f5f0903376c7"
+    },
+    {
+      "id": 28,
+      "nombre": "Mateo",
+      "apellidos": "Juárez Chávez",
+      "fechaNacimiento": "2024-04-16",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 28,
+      "activo": true,
+      "codigoQR": "16ae1b50-f421-43ce-b3e5-a567aa925755"
+    },
+    {
+      "id": 29,
+      "nombre": "Miguel Ángel",
+      "apellidos": "Pérez Díaz",
+      "fechaNacimiento": "2023-07-03",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 29,
+      "activo": true,
+      "codigoQR": "b29dedab-c80e-4648-b9ef-8e2091bb5456"
+    },
+    {
+      "id": 30,
+      "nombre": "Julián",
+      "apellidos": "Juárez Álvarez",
+      "fechaNacimiento": "2023-02-14",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 30,
+      "activo": true,
+      "codigoQR": "fad3200a-07b1-4078-b276-01fc383625ac"
+    },
+    {
+      "id": 31,
+      "nombre": "Santiago",
+      "apellidos": "Juárez Reyes",
+      "fechaNacimiento": "2024-09-13",
+      "estanciaId": 1,
+      "grupoId": 2,
+      "tutorId": 31,
+      "activo": true,
+      "codigoQR": "177424e9-8c9a-43d5-9fda-1ad4b37d4fc8"
+    },
+    {
+      "id": 32,
+      "nombre": "Daniela",
+      "apellidos": "Hernández Castillo",
+      "fechaNacimiento": "2021-06-22",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 32,
+      "activo": true,
+      "codigoQR": "fbc6e363-d1a8-4dc4-9edb-5ade07376af2"
+    },
+    {
+      "id": 33,
+      "nombre": "Diego",
+      "apellidos": "Díaz Ramírez",
+      "fechaNacimiento": "2021-09-06",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 33,
+      "activo": true,
+      "codigoQR": "dc031e67-b532-4cdd-a4e9-dd98dab91229"
+    },
+    {
+      "id": 34,
+      "nombre": "Daniel",
+      "apellidos": "Rodríguez Ruiz",
+      "fechaNacimiento": "2021-02-28",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 34,
+      "activo": true,
+      "codigoQR": "1e48d83a-23fe-4547-abca-b91df1355c13"
+    },
+    {
+      "id": 35,
+      "nombre": "Maximiliano",
+      "apellidos": "Álvarez Aguilar",
+      "fechaNacimiento": "2021-10-29",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 35,
+      "activo": true,
+      "codigoQR": "f3979cd9-0e8b-425a-8a1f-59d437a02b7a"
+    },
+    {
+      "id": 36,
+      "nombre": "Sebastián",
+      "apellidos": "López Mendoza",
+      "fechaNacimiento": "2021-03-31",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 36,
+      "activo": true,
+      "codigoQR": "58c063cb-c140-4377-8377-856dc09137b2"
+    },
+    {
+      "id": 37,
+      "nombre": "Natalia",
+      "apellidos": "Díaz García",
+      "fechaNacimiento": "2022-05-17",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 37,
+      "activo": true,
+      "codigoQR": "be9e891c-745f-42be-bc96-13c891086d90"
+    },
+    {
+      "id": 38,
+      "nombre": "Gael",
+      "apellidos": "Hernández Castillo",
+      "fechaNacimiento": "2022-02-04",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 38,
+      "activo": true,
+      "codigoQR": "ecb1818d-f0f1-450e-b194-7c5aea75898f"
+    },
+    {
+      "id": 39,
+      "nombre": "Rodrigo",
+      "apellidos": "Ruiz Rodríguez",
+      "fechaNacimiento": "2022-02-12",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 39,
+      "activo": true,
+      "codigoQR": "412ce63b-4b24-46ed-b1b9-e359c353c26d"
+    },
+    {
+      "id": 40,
+      "nombre": "Rodrigo",
+      "apellidos": "Reyes Gutiérrez",
+      "fechaNacimiento": "2021-01-16",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 40,
+      "activo": true,
+      "codigoQR": "dfd68a8f-bf80-4dcf-9e69-a519ad45027b"
+    },
+    {
+      "id": 41,
+      "nombre": "Alejandro",
+      "apellidos": "Chávez Flores",
+      "fechaNacimiento": "2021-07-28",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 41,
+      "activo": true,
+      "codigoQR": "27094415-8622-482e-b30f-bf1e79005490"
+    },
+    {
+      "id": 42,
+      "nombre": "Camila",
+      "apellidos": "Vázquez Pérez",
+      "fechaNacimiento": "2021-12-12",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 42,
+      "activo": true,
+      "codigoQR": "822b2d5d-f4c6-441d-8772-ebee2bf0c137"
+    },
+    {
+      "id": 43,
+      "nombre": "Santiago",
+      "apellidos": "Martínez Ramos",
+      "fechaNacimiento": "2021-04-23",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 43,
+      "activo": true,
+      "codigoQR": "5e688fd2-0496-4398-821d-dd047a9b6c51"
+    },
+    {
+      "id": 44,
+      "nombre": "Sofía",
+      "apellidos": "Morales Ramírez",
+      "fechaNacimiento": "2021-12-03",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 44,
+      "activo": true,
+      "codigoQR": "1fea1c16-c177-4717-ba8e-837f56418e6e"
+    },
+    {
+      "id": 45,
+      "nombre": "Mariana",
+      "apellidos": "Ramírez Rivera",
+      "fechaNacimiento": "2021-08-20",
+      "estanciaId": 1,
+      "grupoId": 4,
+      "tutorId": 45,
+      "activo": true,
+      "codigoQR": "cf7e6ac6-38b0-4d44-83e1-a77cf88fc2da"
+    },
+    {
+      "id": 46,
+      "nombre": "Mateo",
+      "apellidos": "Hernández Ortiz",
+      "fechaNacimiento": "2025-08-11",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 46,
+      "activo": true,
+      "codigoQR": "4bb35996-a7a3-4331-ae44-b3dd3382d12e"
+    },
+    {
+      "id": 47,
+      "nombre": "Leonardo",
+      "apellidos": "Jiménez Cruz",
+      "fechaNacimiento": "2025-04-23",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 47,
+      "activo": true,
+      "codigoQR": "f1e7f560-63d7-4a63-a9b6-703796298d0f"
+    },
+    {
+      "id": 48,
+      "nombre": "Diego",
+      "apellidos": "Morales Díaz",
+      "fechaNacimiento": "2025-09-08",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 48,
+      "activo": true,
+      "codigoQR": "cf19c8a8-dc7c-4d39-aa34-05135927182f"
+    },
+    {
+      "id": 49,
+      "nombre": "Santiago",
+      "apellidos": "Jiménez Gómez",
+      "fechaNacimiento": "2025-10-10",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 49,
+      "activo": true,
+      "codigoQR": "bdd49457-8dcc-4b63-ab1f-f52ee77f86dd"
+    },
+    {
+      "id": 50,
+      "nombre": "Leonardo",
+      "apellidos": "Gómez Martínez",
+      "fechaNacimiento": "2025-05-03",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 50,
+      "activo": true,
+      "codigoQR": "729626d3-384c-429d-bd73-3e30c2bd7e41"
+    },
+    {
+      "id": 51,
+      "nombre": "Andrés",
+      "apellidos": "Chávez Ruiz",
+      "fechaNacimiento": "2025-06-22",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 51,
+      "activo": true,
+      "codigoQR": "960ba0d6-7802-452d-b615-eb91ea7ac3eb"
+    },
+    {
+      "id": 52,
+      "nombre": "Mariana",
+      "apellidos": "Aguilar Chávez",
+      "fechaNacimiento": "2025-09-16",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 52,
+      "activo": true,
+      "codigoQR": "d7bda140-8ca8-40df-9e61-e7adaab4d5af"
+    },
+    {
+      "id": 53,
+      "nombre": "María José",
+      "apellidos": "Álvarez Gómez",
+      "fechaNacimiento": "2025-09-21",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 53,
+      "activo": true,
+      "codigoQR": "ba8337e7-be04-49bd-be3c-027e56fe08ca"
+    },
+    {
+      "id": 54,
+      "nombre": "Emilio",
+      "apellidos": "Ortiz Martínez",
+      "fechaNacimiento": "2025-11-13",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 54,
+      "activo": true,
+      "codigoQR": "847eb561-bcde-4fe5-a2e9-0e46f3e66dc4"
+    },
+    {
+      "id": 55,
+      "nombre": "Maximiliano",
+      "apellidos": "Gutiérrez Flores",
+      "fechaNacimiento": "2025-10-12",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 55,
+      "activo": true,
+      "codigoQR": "d6987802-09cb-4fb8-8683-5c78dacad2ea"
+    },
+    {
+      "id": 56,
+      "nombre": "Camila",
+      "apellidos": "Chávez Álvarez",
+      "fechaNacimiento": "2025-09-21",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 56,
+      "activo": true,
+      "codigoQR": "4bf2b82b-ac24-4439-8390-eca3bc6affdb"
+    },
+    {
+      "id": 57,
+      "nombre": "Ximena",
+      "apellidos": "González Mendoza",
+      "fechaNacimiento": "2026-02-05",
+      "estanciaId": 2,
+      "grupoId": 5,
+      "tutorId": 57,
+      "activo": true,
+      "codigoQR": "1f5c9c4b-40c7-4794-9bd0-ce4982f8aa57"
+    },
+    {
+      "id": 58,
+      "nombre": "Camila",
+      "apellidos": "López Mendoza",
+      "fechaNacimiento": "2024-01-20",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 58,
+      "activo": true,
+      "codigoQR": "0b73f8a5-11b7-4a89-8eb2-9de6a4a10a09"
+    },
+    {
+      "id": 59,
+      "nombre": "Miguel Ángel",
+      "apellidos": "Pérez Flores",
+      "fechaNacimiento": "2024-09-27",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 59,
+      "activo": true,
+      "codigoQR": "56ac6257-3097-402b-8307-dd7f784e28f4"
+    },
+    {
+      "id": 60,
+      "nombre": "María José",
+      "apellidos": "Castillo Jiménez",
+      "fechaNacimiento": "2024-02-08",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 60,
+      "activo": true,
+      "codigoQR": "9dfcbecb-fb2b-4f10-9436-7c975c46606a"
+    },
+    {
+      "id": 61,
+      "nombre": "Victoria",
+      "apellidos": "Morales Ruiz",
+      "fechaNacimiento": "2024-03-21",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 61,
+      "activo": true,
+      "codigoQR": "6a96d62c-9b42-4f51-9a1e-b9d06c4003d6"
+    },
+    {
+      "id": 62,
+      "nombre": "Julián",
+      "apellidos": "Morales Ramos",
+      "fechaNacimiento": "2023-11-14",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 62,
+      "activo": true,
+      "codigoQR": "25fb09f5-c48f-4f9f-b545-1e5873b883cf"
+    },
+    {
+      "id": 63,
+      "nombre": "Miguel Ángel",
+      "apellidos": "Ortiz Juárez",
+      "fechaNacimiento": "2024-08-01",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 63,
+      "activo": true,
+      "codigoQR": "f7eaeb54-04b6-459a-a4c4-7fd949628855"
+    },
+    {
+      "id": 64,
+      "nombre": "Emilio",
+      "apellidos": "García Vázquez",
+      "fechaNacimiento": "2023-05-01",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 64,
+      "activo": true,
+      "codigoQR": "49f07230-e9a2-4e3b-b70e-495db7890c60"
+    },
+    {
+      "id": 65,
+      "nombre": "Victoria",
+      "apellidos": "Sánchez Ramírez",
+      "fechaNacimiento": "2024-04-15",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 65,
+      "activo": true,
+      "codigoQR": "d7bfb736-4288-4788-990f-5305158836a1"
+    },
+    {
+      "id": 66,
+      "nombre": "Iker",
+      "apellidos": "Martínez López",
+      "fechaNacimiento": "2023-10-06",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 66,
+      "activo": true,
+      "codigoQR": "fea3d067-4084-449d-b0aa-e258dabff5b4"
+    },
+    {
+      "id": 67,
+      "nombre": "Tadeo",
+      "apellidos": "López García",
+      "fechaNacimiento": "2023-05-23",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 67,
+      "activo": true,
+      "codigoQR": "03b428f7-0f26-4956-aa01-abc0e8d56000"
+    },
+    {
+      "id": 68,
+      "nombre": "Mariana",
+      "apellidos": "Álvarez Ruiz",
+      "fechaNacimiento": "2024-12-26",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 68,
+      "activo": true,
+      "codigoQR": "723f5864-5f08-4fef-a5fe-4eadcc0f645d"
+    },
+    {
+      "id": 69,
+      "nombre": "Ximena",
+      "apellidos": "Ortiz Hernández",
+      "fechaNacimiento": "2022-12-14",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 69,
+      "activo": true,
+      "codigoQR": "11527722-4f2d-48a1-bf3b-fd8011b47a25"
+    },
+    {
+      "id": 70,
+      "nombre": "Alejandro",
+      "apellidos": "Juárez García",
+      "fechaNacimiento": "2022-12-12",
+      "estanciaId": 2,
+      "grupoId": 6,
+      "tutorId": 70,
+      "activo": true,
+      "codigoQR": "e4a715d2-64c6-423f-ae71-45cda3e3dad3"
+    },
+    {
+      "id": 71,
+      "nombre": "Natalia",
+      "apellidos": "Gómez Rivera",
+      "fechaNacimiento": "2020-11-01",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 71,
+      "activo": true,
+      "codigoQR": "a7f7addb-bbcd-451d-a1de-e2f1c0bbb70d"
+    },
+    {
+      "id": 72,
+      "nombre": "Camila",
+      "apellidos": "Chávez López",
+      "fechaNacimiento": "2021-02-02",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 72,
+      "activo": true,
+      "codigoQR": "9ab1f7a6-e0bd-4b9c-842c-db2c255f31bb"
+    },
+    {
+      "id": 73,
+      "nombre": "Mariana",
+      "apellidos": "Hernández Álvarez",
+      "fechaNacimiento": "2022-04-20",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 73,
+      "activo": true,
+      "codigoQR": "a3b45ac5-a806-464e-ae89-32a627bafac6"
+    },
+    {
+      "id": 74,
+      "nombre": "Regina",
+      "apellidos": "González Álvarez",
+      "fechaNacimiento": "2022-03-20",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 74,
+      "activo": true,
+      "codigoQR": "9aa23df8-f012-478e-bcdb-6dfb35a6ea9f"
+    },
+    {
+      "id": 75,
+      "nombre": "Daniela",
+      "apellidos": "Rodríguez Sánchez",
+      "fechaNacimiento": "2021-01-30",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 75,
+      "activo": true,
+      "codigoQR": "98639c1b-d2ad-401e-b0ef-b383cd3b05c7"
+    },
+    {
+      "id": 76,
+      "nombre": "María José",
+      "apellidos": "Ramos Díaz",
+      "fechaNacimiento": "2022-09-14",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 76,
+      "activo": true,
+      "codigoQR": "78d783f1-aa49-48c8-b79b-a52f315ab78d"
+    },
+    {
+      "id": 77,
+      "nombre": "Natalia",
+      "apellidos": "Chávez Gutiérrez",
+      "fechaNacimiento": "2022-04-29",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 77,
+      "activo": true,
+      "codigoQR": "f8f2fcab-e861-45fb-8d80-bcc3d60ce046"
+    },
+    {
+      "id": 78,
+      "nombre": "Mateo",
+      "apellidos": "Flores Martínez",
+      "fechaNacimiento": "2021-05-05",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 78,
+      "activo": true,
+      "codigoQR": "776594cf-2497-497b-99a7-039b20d903dc"
+    },
+    {
+      "id": 79,
+      "nombre": "Natalia",
+      "apellidos": "Romero Rivera",
+      "fechaNacimiento": "2022-07-24",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 79,
+      "activo": true,
+      "codigoQR": "ad02f29b-e573-4128-b66c-1130bca73063"
+    },
+    {
+      "id": 80,
+      "nombre": "Diego",
+      "apellidos": "Aguilar Aguilar",
+      "fechaNacimiento": "2021-04-28",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 80,
+      "activo": true,
+      "codigoQR": "fe0f5468-0e10-49b2-9f79-0ac7d7106eda"
+    },
+    {
+      "id": 81,
+      "nombre": "Emilio",
+      "apellidos": "Hernández González",
+      "fechaNacimiento": "2022-09-09",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 81,
+      "activo": true,
+      "codigoQR": "0017bbe7-75a9-4ff2-81fb-4ae08468a256"
+    },
+    {
+      "id": 82,
+      "nombre": "Regina",
+      "apellidos": "Chávez Pérez",
+      "fechaNacimiento": "2021-02-15",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 82,
+      "activo": true,
+      "codigoQR": "57fc310a-01b1-45ea-8e53-42cc1e6416a2"
+    },
+    {
+      "id": 83,
+      "nombre": "Leonardo",
+      "apellidos": "Juárez Gómez",
+      "fechaNacimiento": "2022-03-10",
+      "estanciaId": 2,
+      "grupoId": 7,
+      "tutorId": 83,
+      "activo": true,
+      "codigoQR": "e831e855-aad2-416e-8356-645d2b185c1a"
+    },
+    {
+      "id": 84,
+      "nombre": "Valentina",
+      "apellidos": "Gutiérrez Díaz",
+      "fechaNacimiento": "2023-06-20",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 84,
+      "activo": true,
+      "codigoQR": "4ec363c8-5d17-4ae7-9fa1-fd05c52ccc6d"
+    },
+    {
+      "id": 85,
+      "nombre": "Andrés",
+      "apellidos": "Flores Sánchez",
+      "fechaNacimiento": "2023-02-14",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 85,
+      "activo": true,
+      "codigoQR": "9b63b02b-2657-46c4-a4da-76cbbd374af7"
+    },
+    {
+      "id": 86,
+      "nombre": "Iker",
+      "apellidos": "Gómez Torres",
+      "fechaNacimiento": "2023-03-31",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 86,
+      "activo": true,
+      "codigoQR": "5f24716c-303f-4ca3-8927-230ea92caba7"
+    },
+    {
+      "id": 87,
+      "nombre": "Mariana",
+      "apellidos": "Torres López",
+      "fechaNacimiento": "2023-03-08",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 87,
+      "activo": true,
+      "codigoQR": "bb96a59c-6b15-46d5-94f0-108c5b7d495b"
+    },
+    {
+      "id": 88,
+      "nombre": "Valentina",
+      "apellidos": "Juárez Gutiérrez",
+      "fechaNacimiento": "2023-07-23",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 88,
+      "activo": true,
+      "codigoQR": "e499bceb-3d0a-4981-a29e-02bf6321c58c"
+    },
+    {
+      "id": 89,
+      "nombre": "Romina",
+      "apellidos": "Chávez Flores",
+      "fechaNacimiento": "2023-08-12",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 89,
+      "activo": true,
+      "codigoQR": "fe6256c0-5637-42f3-9eb5-e6287a96be5d"
+    },
+    {
+      "id": 90,
+      "nombre": "Daniel",
+      "apellidos": "Hernández Mendoza",
+      "fechaNacimiento": "2023-03-22",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 90,
+      "activo": true,
+      "codigoQR": "bb846c77-c89d-4f4e-8138-434a73de0eac"
+    },
+    {
+      "id": 91,
+      "nombre": "Natalia",
+      "apellidos": "Aguilar Pérez",
+      "fechaNacimiento": "2023-10-03",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 91,
+      "activo": true,
+      "codigoQR": "f787f29e-4389-414e-8dc2-f0e0d4e94f05"
+    },
+    {
+      "id": 92,
+      "nombre": "Daniel",
+      "apellidos": "Chávez Aguilar",
+      "fechaNacimiento": "2024-05-14",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 92,
+      "activo": true,
+      "codigoQR": "4e2a0983-c61f-4fb6-8933-bfe798eb76be"
+    },
+    {
+      "id": 93,
+      "nombre": "Daniela",
+      "apellidos": "Vázquez Vázquez",
+      "fechaNacimiento": "2023-08-03",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 93,
+      "activo": true,
+      "codigoQR": "6c17a63d-49f3-42a0-9920-b14f5dfec294"
+    },
+    {
+      "id": 94,
+      "nombre": "Andrea",
+      "apellidos": "Romero Juárez",
+      "fechaNacimiento": "2023-09-06",
+      "estanciaId": 3,
+      "grupoId": 8,
+      "tutorId": 94,
+      "activo": true,
+      "codigoQR": "7ac4cd3e-010b-4f8a-ad63-8fcdece4ffe7"
+    },
+    {
+      "id": 95,
+      "nombre": "Gael",
+      "apellidos": "Díaz Gutiérrez",
+      "fechaNacimiento": "2022-02-21",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 95,
+      "activo": true,
+      "codigoQR": "edae9737-85a6-4eb9-884c-8f03bba51863"
+    },
+    {
+      "id": 96,
+      "nombre": "Valentina",
+      "apellidos": "Chávez Ramos",
+      "fechaNacimiento": "2021-12-20",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 96,
+      "activo": true,
+      "codigoQR": "9d919cf9-6cc4-423b-9b87-3434d14d8d1d"
+    },
+    {
+      "id": 97,
+      "nombre": "María José",
+      "apellidos": "Jiménez Morales",
+      "fechaNacimiento": "2022-06-26",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 97,
+      "activo": true,
+      "codigoQR": "ff421439-2e7c-4c24-9ec8-4a767063645c"
+    },
+    {
+      "id": 98,
+      "nombre": "Julián",
+      "apellidos": "Martínez Flores",
+      "fechaNacimiento": "2021-02-23",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 98,
+      "activo": true,
+      "codigoQR": "8b6220b6-589f-4301-85d8-1342a6e58674"
+    },
+    {
+      "id": 99,
+      "nombre": "Emilia",
+      "apellidos": "Vázquez Cruz",
+      "fechaNacimiento": "2021-10-10",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 99,
+      "activo": true,
+      "codigoQR": "2477c68a-3242-44e2-b56d-843f880d62bd"
+    },
+    {
+      "id": 100,
+      "nombre": "Renata",
+      "apellidos": "Álvarez Pérez",
+      "fechaNacimiento": "2021-08-08",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 100,
+      "activo": true,
+      "codigoQR": "d054d3e3-761c-44e6-b290-584bb3249b07"
+    },
+    {
+      "id": 101,
+      "nombre": "Valentina",
+      "apellidos": "Díaz Rivera",
+      "fechaNacimiento": "2022-02-10",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 101,
+      "activo": true,
+      "codigoQR": "91ed896f-08c6-4512-ab3a-85ffab832d4e"
+    },
+    {
+      "id": 102,
+      "nombre": "Abril",
+      "apellidos": "Romero Reyes",
+      "fechaNacimiento": "2022-02-06",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 102,
+      "activo": true,
+      "codigoQR": "497694d9-4c0c-4abf-b93d-c9b8622d1e64"
+    },
+    {
+      "id": 103,
+      "nombre": "Mateo",
+      "apellidos": "Cruz Jiménez",
+      "fechaNacimiento": "2021-11-12",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 103,
+      "activo": true,
+      "codigoQR": "3576de85-3299-4428-9374-7ef99ce43eda"
+    },
+    {
+      "id": 104,
+      "nombre": "Leonardo",
+      "apellidos": "López Ramírez",
+      "fechaNacimiento": "2020-11-29",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 104,
+      "activo": true,
+      "codigoQR": "f420dbff-b6c6-4e0b-b2fe-dfe7ea58060a"
+    },
+    {
+      "id": 105,
+      "nombre": "Miguel Ángel",
+      "apellidos": "Martínez Romero",
+      "fechaNacimiento": "2021-06-05",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 105,
+      "activo": true,
+      "codigoQR": "9cf3d4d0-3207-46cc-9288-6161b0bcab8a"
+    },
+    {
+      "id": 106,
+      "nombre": "Julián",
+      "apellidos": "Gutiérrez Juárez",
+      "fechaNacimiento": "2021-04-10",
+      "estanciaId": 3,
+      "grupoId": 9,
+      "tutorId": 106,
+      "activo": true,
+      "codigoQR": "d84d2849-617b-4fea-ba38-ca4cb9bc70db"
+    }
+  ],
+  "asistencias": [
+    {
+      "id": 1,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 2,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 3,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 4,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 5,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 6,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 7,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 8,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 9,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 10,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 11,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 12,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 13,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 14,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 15,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 16,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 17,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 18,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 19,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 20,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 21,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 22,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 23,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 24,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 25,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 26,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 27,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 28,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 29,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "filtro_sanitario",
+      "usuarioId": 1
+    },
+    {
+      "id": 30,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 31,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 32,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 33,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 34,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 35,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 36,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 37,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 38,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 39,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "filtro_sanitario",
+      "usuarioId": 3
+    },
+    {
+      "id": 40,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 41,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 42,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 43,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 44,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 45,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 46,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 47,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 48,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 49,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 50,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 51,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 52,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 53,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 54,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 55,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 56,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 57,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 58,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 59,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 60,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 61,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 62,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 63,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 64,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 65,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 66,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 67,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 68,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 69,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 70,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 71,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 72,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 73,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 74,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 75,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 76,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 77,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 78,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 79,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 80,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 81,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 82,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 83,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 84,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 85,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 86,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 87,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 88,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 89,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 90,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 91,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 92,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 93,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 94,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 95,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 96,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 97,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 98,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 99,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 100,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 101,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 102,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 103,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 104,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 105,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 106,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-22",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 107,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 1
+    },
+    {
+      "id": 108,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 109,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 110,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 111,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 112,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 113,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 114,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 115,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 116,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 117,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 118,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 119,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 120,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 121,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 122,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 3
+    },
+    {
+      "id": 123,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 124,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 125,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 126,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 127,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 128,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 129,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 130,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 131,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 132,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 133,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 134,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 135,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 136,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 137,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 138,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 139,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 140,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 141,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 142,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 143,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 144,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 145,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 146,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 147,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 148,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 149,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 150,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 151,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 152,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 153,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 154,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 155,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 156,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 157,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 158,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 159,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 160,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 161,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 162,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 163,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 164,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 165,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 166,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 167,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 168,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 169,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 170,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 171,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 172,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 173,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 174,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 175,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 176,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 177,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 178,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 179,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 180,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 181,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 182,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 183,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 184,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 185,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 186,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 187,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 188,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 189,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-23",
+      "estado": "filtro_sanitario",
+      "usuarioId": 4
+    },
+    {
+      "id": 190,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 191,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 192,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 193,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 194,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 195,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 196,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 197,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 198,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 199,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 200,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 201,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 202,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 203,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 204,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 205,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 206,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 207,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 208,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 209,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 210,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 211,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 212,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-23",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 213,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 214,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 215,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 216,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 217,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 218,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 219,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 220,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 221,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 222,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 223,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 224,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 225,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 226,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 227,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 228,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 229,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 230,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 231,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 232,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 233,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 234,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 235,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 236,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 237,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 238,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 239,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 240,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 241,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 242,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 243,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 244,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 245,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 3
+    },
+    {
+      "id": 246,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 247,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 248,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 249,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 250,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 251,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 252,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 253,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 254,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 255,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 256,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 257,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 258,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 259,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 260,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 261,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 262,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 263,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 264,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 265,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 266,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 267,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 268,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 269,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 270,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 271,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 272,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 273,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 274,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 275,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 276,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 277,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 278,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 279,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 280,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 281,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 282,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 283,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 284,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 285,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 286,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 287,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 288,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 289,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 290,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 291,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 292,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 293,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 294,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 295,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 296,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 297,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 298,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "comision_medica",
+      "usuarioId": 5
+    },
+    {
+      "id": 299,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 300,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 301,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 302,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 303,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 304,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 305,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 306,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 307,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 308,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 309,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 310,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 311,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 312,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 313,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 314,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 315,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 316,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 317,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 318,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-24",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 319,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "filtro_sanitario",
+      "usuarioId": 1
+    },
+    {
+      "id": 320,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 321,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 322,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 323,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 324,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 325,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 326,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 327,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 328,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 329,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 330,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 331,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 3
+    },
+    {
+      "id": 332,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 333,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 334,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 335,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 336,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 337,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 338,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 339,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "filtro_sanitario",
+      "usuarioId": 1
+    },
+    {
+      "id": 340,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 341,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 342,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 343,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 344,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 345,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 346,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 347,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 348,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 349,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 350,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 351,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 352,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 353,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 354,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 355,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 356,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 357,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 358,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 359,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 360,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 361,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 362,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 363,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 364,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 365,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 366,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 367,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 368,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 369,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 370,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 371,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 372,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 373,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 374,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 375,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 376,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 377,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 378,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 379,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 380,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 381,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 382,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 383,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 384,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 385,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 386,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 387,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 388,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 389,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "filtro_sanitario",
+      "usuarioId": 4
+    },
+    {
+      "id": 390,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 391,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 392,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 393,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 394,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 395,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 396,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 397,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 398,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 399,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 400,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 401,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 402,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 403,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 404,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 405,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 406,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 407,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 408,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "comision_medica",
+      "usuarioId": 5
+    },
+    {
+      "id": 409,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 410,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 411,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 412,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 413,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 414,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 415,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 416,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 417,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 418,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 419,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 420,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 421,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 422,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 423,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 424,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-25",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 425,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 426,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "ausente_justificado",
+      "usuarioId": 1
+    },
+    {
+      "id": 427,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "ausente_justificado",
+      "usuarioId": 1
+    },
+    {
+      "id": 428,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "comision_medica",
+      "usuarioId": 1
+    },
+    {
+      "id": 429,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 430,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 431,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 432,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 433,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 434,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 435,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 436,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 437,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 438,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 439,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 440,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 441,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 442,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 443,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 444,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 445,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 446,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 447,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 448,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 449,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 450,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 451,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 452,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 453,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 454,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 455,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 456,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 457,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 458,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 459,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 460,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 461,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 462,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 463,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 464,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 465,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 466,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 467,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 468,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 469,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 470,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 471,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 472,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 473,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 474,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 475,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 476,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 477,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 478,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 479,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 480,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 481,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 482,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 483,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 484,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 485,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 486,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 487,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 488,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 489,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 490,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 491,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 492,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 493,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 494,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 495,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 496,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 497,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 498,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 499,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 500,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 501,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 502,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 503,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 504,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 505,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 506,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 507,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 508,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 509,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 510,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 511,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 512,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 513,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 514,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 515,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 516,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 517,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 518,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 519,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 520,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 521,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 522,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 523,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 524,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 525,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 526,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 527,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 528,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 529,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 530,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-28",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 531,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 532,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 533,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 534,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 1
+    },
+    {
+      "id": 535,
+      "alumnoId": 5,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 536,
+      "alumnoId": 6,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 537,
+      "alumnoId": 7,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 538,
+      "alumnoId": 8,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 539,
+      "alumnoId": 9,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 540,
+      "alumnoId": 10,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 541,
+      "alumnoId": 11,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 542,
+      "alumnoId": 12,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 543,
+      "alumnoId": 13,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 544,
+      "alumnoId": 14,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 545,
+      "alumnoId": 15,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 546,
+      "alumnoId": 16,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 547,
+      "alumnoId": 17,
+      "grupoId": 1,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 548,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 549,
+      "alumnoId": 19,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 550,
+      "alumnoId": 20,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 551,
+      "alumnoId": 21,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 552,
+      "alumnoId": 22,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 553,
+      "alumnoId": 23,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 554,
+      "alumnoId": 24,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 555,
+      "alumnoId": 25,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 556,
+      "alumnoId": 26,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 557,
+      "alumnoId": 27,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 558,
+      "alumnoId": 28,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 559,
+      "alumnoId": 29,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 560,
+      "alumnoId": 30,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 561,
+      "alumnoId": 31,
+      "grupoId": 2,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 1
+    },
+    {
+      "id": 562,
+      "alumnoId": 32,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 563,
+      "alumnoId": 33,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 564,
+      "alumnoId": 34,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 565,
+      "alumnoId": 35,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 566,
+      "alumnoId": 36,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 567,
+      "alumnoId": 37,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 568,
+      "alumnoId": 38,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 569,
+      "alumnoId": 39,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 570,
+      "alumnoId": 40,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 571,
+      "alumnoId": 41,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 572,
+      "alumnoId": 42,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 573,
+      "alumnoId": 43,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 574,
+      "alumnoId": 44,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 575,
+      "alumnoId": 45,
+      "grupoId": 4,
+      "estanciaId": 1,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 3
+    },
+    {
+      "id": 576,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 577,
+      "alumnoId": 47,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 578,
+      "alumnoId": 48,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 579,
+      "alumnoId": 49,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 580,
+      "alumnoId": 50,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 581,
+      "alumnoId": 51,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 582,
+      "alumnoId": 52,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 583,
+      "alumnoId": 53,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 584,
+      "alumnoId": 54,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 585,
+      "alumnoId": 55,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 586,
+      "alumnoId": 56,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 587,
+      "alumnoId": 57,
+      "grupoId": 5,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 588,
+      "alumnoId": 58,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 589,
+      "alumnoId": 59,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 590,
+      "alumnoId": 60,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 591,
+      "alumnoId": 61,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 592,
+      "alumnoId": 62,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 593,
+      "alumnoId": 63,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 594,
+      "alumnoId": 64,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 595,
+      "alumnoId": 65,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 596,
+      "alumnoId": 66,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 597,
+      "alumnoId": 67,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 598,
+      "alumnoId": 68,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "comision_medica",
+      "usuarioId": 4
+    },
+    {
+      "id": 599,
+      "alumnoId": 69,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 600,
+      "alumnoId": 70,
+      "grupoId": 6,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 601,
+      "alumnoId": 71,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 602,
+      "alumnoId": 72,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 603,
+      "alumnoId": 73,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 604,
+      "alumnoId": 74,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 605,
+      "alumnoId": 75,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 606,
+      "alumnoId": 76,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "ausente_justificado",
+      "usuarioId": 4
+    },
+    {
+      "id": 607,
+      "alumnoId": 77,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 608,
+      "alumnoId": 78,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 609,
+      "alumnoId": 79,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 610,
+      "alumnoId": 80,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 4
+    },
+    {
+      "id": 611,
+      "alumnoId": 81,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 612,
+      "alumnoId": 82,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 613,
+      "alumnoId": 83,
+      "grupoId": 7,
+      "estanciaId": 2,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 4
+    },
+    {
+      "id": 614,
+      "alumnoId": 84,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 615,
+      "alumnoId": 85,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 616,
+      "alumnoId": 86,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 617,
+      "alumnoId": 87,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 618,
+      "alumnoId": 88,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "comision_medica",
+      "usuarioId": 5
+    },
+    {
+      "id": 619,
+      "alumnoId": 89,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 620,
+      "alumnoId": 90,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 621,
+      "alumnoId": 91,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 622,
+      "alumnoId": 92,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 623,
+      "alumnoId": 93,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 624,
+      "alumnoId": 94,
+      "grupoId": 8,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 625,
+      "alumnoId": 95,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 626,
+      "alumnoId": 96,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 627,
+      "alumnoId": 97,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "ausente_justificado",
+      "usuarioId": 5
+    },
+    {
+      "id": 628,
+      "alumnoId": 98,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "comision_medica",
+      "usuarioId": 5
+    },
+    {
+      "id": 629,
+      "alumnoId": 99,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "filtro_sanitario",
+      "usuarioId": 5
+    },
+    {
+      "id": 630,
+      "alumnoId": 100,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 631,
+      "alumnoId": 101,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 632,
+      "alumnoId": 102,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 633,
+      "alumnoId": 103,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 634,
+      "alumnoId": 104,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "falta_injustificada",
+      "usuarioId": 5
+    },
+    {
+      "id": 635,
+      "alumnoId": 105,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    },
+    {
+      "id": 636,
+      "alumnoId": 106,
+      "grupoId": 9,
+      "estanciaId": 3,
+      "fecha": "2026-09-29",
+      "estado": "presente",
+      "usuarioId": 5
+    }
+  ],
+  "seguimientos": [
+    {
+      "id": 1,
+      "alumnoId": 1,
+      "grupoId": 3,
+      "estado": "abierto",
+      "fechaApertura": "2026-09-29",
+      "fechasFalta": [
+        "2026-09-23",
+        "2026-09-24",
+        "2026-09-25"
+      ],
+      "ultimaIncidencia": "filtro_sanitario",
+      "causa": "SIN_CLASIFICAR",
+      "fechaRetorno": "",
+      "fechaLlamada": null,
+      "notas": "",
+      "requiereAlta": false,
+      "usuarioId": 1
+    },
+    {
+      "id": 2,
+      "alumnoId": 2,
+      "grupoId": 3,
+      "estado": "abierto",
+      "fechaApertura": "2026-09-29",
+      "fechasFalta": [
+        "2026-09-25",
+        "2026-09-28"
+      ],
+      "ultimaIncidencia": "ausente_justificado",
+      "causa": "NO_LOC",
+      "fechaRetorno": "",
+      "fechaLlamada": null,
+      "notas": "",
+      "requiereAlta": false,
+      "usuarioId": 1
+    },
+    {
+      "id": 3,
+      "alumnoId": 3,
+      "grupoId": 3,
+      "estado": "abierto",
+      "fechaApertura": "2026-09-29",
+      "fechasFalta": [
+        "2026-09-24",
+        "2026-09-25",
+        "2026-09-28",
+        "2026-09-29"
+      ],
+      "ultimaIncidencia": "falta_injustificada",
+      "causa": "PER_TUT",
+      "fechaRetorno": "2026-10-05",
+      "fechaLlamada": "2026-09-30",
+      "notas": "La mamá avisó que estuvo enfermo. Regresa el lunes.",
+      "requiereAlta": false,
+      "usuarioId": 1
+    },
+    {
+      "id": 4,
+      "alumnoId": 4,
+      "grupoId": 3,
+      "estado": "abierto",
+      "fechaApertura": "2026-09-29",
+      "fechasFalta": [
+        "2026-09-22",
+        "2026-09-28",
+        "2026-09-29"
+      ],
+      "ultimaIncidencia": "falta_injustificada",
+      "causa": "SIN_CLASIFICAR",
+      "fechaRetorno": "",
+      "fechaLlamada": null,
+      "notas": "",
+      "requiereAlta": false,
+      "usuarioId": 1
+    },
+    {
+      "id": 5,
+      "alumnoId": 46,
+      "grupoId": 5,
+      "estado": "alta",
+      "fechaApertura": "2026-09-22",
+      "fechasFalta": [
+        "2026-09-24"
+      ],
+      "ultimaIncidencia": "comision_medica",
+      "causa": "ACC_EXT",
+      "fechaRetorno": "2026-09-25",
+      "fechaLlamada": "2026-09-23",
+      "notas": "Se habló con el tutor; ya asiste normal.",
+      "requiereAlta": false,
+      "usuarioId": 4
+    },
+    {
+      "id": 6,
+      "alumnoId": 18,
+      "grupoId": 2,
+      "estado": "abierto",
+      "fechaApertura": "2026-10-20",
+      "fechasFalta": [],
+      "ultimaIncidencia": "",
+      "causa": "ENF_CASA",
+      "fechaRetorno": "2026-10-27",
+      "fechaLlamada": "2026-10-20",
+      "notas": "La mamá avisó que tiene varicela; regresa con constancia médica.",
+      "requiereAlta": true,
+      "usuarioId": 6
+    }
+  ]
+}
