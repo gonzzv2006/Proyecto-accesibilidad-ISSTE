@@ -1,5 +1,4 @@
-// Historial de pases: los pases de lista ya cerrados y el detalle de cada uno. Aquí no se
-// crean pases; se guardan solos cuando la docente termina su pase de lista.
+// Historial de pases cerrados con List y Show sin pantalla Create
 import {
   List,
   DataTable,
@@ -30,7 +29,7 @@ import {
 } from "./comunes";
 import { IncidenciaDelAlumno } from "./asistencias";
 
-// Filtros por fecha y por grupo, siempre visibles.
+// Filtros de fecha y grupo con alwaysOn y select nativo
 const paseFilters = [
   <DateInput key="fecha" source="fecha" label="Fecha" alwaysOn />,
   <ReferenceInput key="grupoId" source="grupoId" reference="grupos" alwaysOn>
@@ -38,17 +37,17 @@ const paseFilters = [
   </ReferenceInput>,
 ];
 
-// Porcentaje del pase con los presentes y ausentes que contó el servidor al cerrarlo.
+// Porcentaje del pase con presentes y ausentes de useRecordContext
 const PorcentajePase = () => {
   const pase = useRecordContext();
   if (!pase) return null;
   const marcados = pase.presentes + pase.ausentes;
-  // Si no hay nadie marcado no divido entre cero y pongo un guion.
+  // Guion si no hay marcados para no dividir entre cero
   if (marcados === 0) return <span>—</span>;
   return <span>{Math.round((pase.presentes / marcados) * 100)} %</span>;
 };
 
-// El CSV del historial con nombres en vez de ids. Faltas son las 4 incidencias que no son Presente.
+// Exporter con fetchRelatedRecords para nombres de grupo y estancia en el CSV
 const exportarPases: Exporter = async (pases, fetchRelatedRecords) => {
   const grupos = await fetchRelatedRecords(pases, "grupoId", "grupos");
   const estancias = await fetchRelatedRecords(pases, "estanciaId", "estancias");
@@ -74,7 +73,7 @@ const exportarPases: Exporter = async (pases, fetchRelatedRecords) => {
   descargarCSV(filas, "historial-de-pases");
 };
 
-// Hora en que se cerró el pase, solo la hora y en formato de 24 horas.
+// DateField muestra solo la hora de cierre en 24 horas
 const HoraDeCierre = () => (
   <DateField
     source="horaCierre"
@@ -85,14 +84,12 @@ const HoraDeCierre = () => (
   />
 );
 
-// Lista del historial, con los más recientes primero. La columna Cerró solo la ve el
-// supervisor porque la docente no tiene permiso de leer usuarios.
+// Fecha descendente y usePermissions muestra Cerró solo al supervisor
 export const PaseList = () => {
   const { permissions } = usePermissions();
-  // Debajo de 900 px cambio la tabla por una lista simple para que no haya scroll de lado.
+  // useMediaQuery cambia la tabla por SimpleList en pantallas menores a md
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
-  // Al dar clic en un pase se abre su detalle. En pantalla chica le pongo las 12:00 a la fecha para
-  // que la zona horaria no la cambie de día.
+  // rowClick show abre el detalle del pase al tocar el renglón
   return (
     <Stack sx={{ maxWidth: 1280 }}>
       <Encabezado
@@ -174,22 +171,21 @@ export const PaseList = () => {
   );
 };
 
-// Estado en el detalle: la etiqueta de pase cerrado con su hora.
+// Chip PaseCerrado del detalle con la horaCierre del registro
 const EstadoDelPase = () => {
   const pase = useRecordContext();
   if (!pase) return null;
   return <PaseCerrado horaCierre={pase.horaCierre} />;
 };
 
-// Alumnos del pase (asistencias de ese grupo y fecha) con su incidencia. La docente ve el chip y el
-// supervisor un select para corregir; el backend lo guarda en los logs y vuelve a contar el pase.
+// Alumnos del pase y el supervisor puede corregir su incidencia
 const AlumnosDelPase = () => {
   const pase = useRecordContext();
-  // En pantalla chica paso la incidencia debajo del nombre para que la tabla quepa.
+  // useMediaQuery pone la incidencia debajo del nombre en pantalla chica
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   if (!pase) return null;
 
-  // Traigo las asistencias que tienen el mismo grupo del pase y me quedo con las de su fecha.
+  // ReferenceManyField trae las asistencias del grupo filtradas por la fecha del pase
   return (
     <ReferenceManyField
       reference="asistencias"
@@ -224,7 +220,7 @@ const AlumnosDelPase = () => {
   );
 };
 
-// Detalle de un pase cerrado: fecha, grupo, estado, totales y la lista de alumnos.
+// Detalle del pase con Show y SimpleShowLayout con totales y alumnos
 export const PaseShow = () => (
   <Show title="Pase de lista cerrado" sx={{ maxWidth: 960 }}>
     <SimpleShowLayout>
