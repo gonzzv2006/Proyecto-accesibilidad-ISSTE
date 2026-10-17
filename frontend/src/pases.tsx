@@ -84,7 +84,7 @@ const HoraDeCierre = () => (
   />
 );
 
-// Fecha descendente y usePermissions muestra Cerró solo al supervisor
+// Fecha descendente y usePermissions muestra Cerró solo al administrador
 export const PaseList = () => {
   const { permissions } = usePermissions();
   // useMediaQuery cambia la tabla por SimpleList en pantallas menores a md
@@ -155,7 +155,7 @@ export const PaseList = () => {
             <DataTable.Col source="horaCierre" label="Hora de cierre">
               <HoraDeCierre />
             </DataTable.Col>
-            {permissions === "supervisor" && (
+            {permissions === "administrador" && (
               <DataTable.Col source="usuarioId" label="Cerró">
                 <ReferenceField
                   source="usuarioId"
@@ -178,7 +178,7 @@ const EstadoDelPase = () => {
   return <PaseCerrado horaCierre={pase.horaCierre} />;
 };
 
-// Alumnos del pase y el supervisor puede corregir su incidencia
+// Alumnos del pase y el administrador puede corregir su incidencia
 const AlumnosDelPase = () => {
   const pase = useRecordContext();
   // useMediaQuery pone la incidencia debajo del nombre en pantalla chica
