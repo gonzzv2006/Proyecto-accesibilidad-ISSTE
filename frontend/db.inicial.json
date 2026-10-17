@@ -61,6 +61,13 @@
       "usuario": "enfermeria",
       "rol": "enfermeria",
       "estanciaId": null
+    },
+    {
+      "id": 7,
+      "nombre": "Sofía Torres",
+      "usuario": "admin",
+      "rol": "administrador",
+      "estanciaId": null
     }
   ],
   "grupos": [
