@@ -1,5 +1,4 @@
-// Seguimiento de faltas: al cerrar el pase, cada falta abre un seguimiento. Enfermería llama al tutor,
-// lo clasifica con su causa y lo da de alta; la docente solo ve qué alumnos tienen seguimiento.
+// Seguimientos de faltas con List Edit y Create que atiende Enfermería
 import { useState } from "react";
 import {
   List,
@@ -52,19 +51,19 @@ import {
   nombreDeCausa,
 } from "./comunes";
 
-// Los dos estados de un seguimiento, para el filtro y el campo Estado de los formularios.
+// Opciones abierto y alta para el filtro y el campo Estado
 const estadosSeguimiento = [
   { id: "abierto", name: "Abierto" },
   { id: "alta", name: "Dado de alta" },
 ];
 
-// Para el filtro de "Requiere alta"; el backend convierte "true" y "false" en booleano.
+// Valores true y false como texto que el backend convierte a booleano
 const opcionesCandado = [
   { id: "true", name: "Sí" },
   { id: "false", name: "No" },
 ];
 
-// Las faltas salen de las fechas que guarda el backend al cerrar cada pase; abajo va la última incidencia.
+// Total de fechasFalta y debajo la última incidencia del alumno
 const FaltasAlumno = () => {
   const seguimiento = useRecordContext();
   if (!seguimiento) return null;
@@ -82,7 +81,7 @@ const FaltasAlumno = () => {
   );
 };
 
-// Etiqueta del estado con ícono y texto además del color. Si tiene candado lo digo con el chip de "requiere alta".
+// Chip de estado con ícono y texto y ChipCandado si requiereAlta
 const EstadoSeguimiento = () => {
   const seguimiento = useRecordContext();
   if (!seguimiento) return null;
@@ -102,14 +101,13 @@ const EstadoSeguimiento = () => {
   );
 };
 
-// La causa en texto, por ejemplo "Enfermedad en casa".
+// nombreDeCausa convierte la clave de la causa en texto legible
 const CausaSeguimiento = () => {
   const seguimiento = useRecordContext();
   return <span>{nombreDeCausa(seguimiento?.causa)}</span>;
 };
 
-// El seguimiento no trae el teléfono, así que salto del alumno a su tutor con dos
-// ReferenceField. Así Enfermería tiene el número a la mano para llamar.
+// Dos ReferenceField anidados van del alumno al teléfono de su tutor
 const TelefonoTutor = () => (
   <ReferenceField source="alumnoId" reference="alumnos" link={false}>
     <ReferenceField source="tutorId" reference="tutores" link={false}>
@@ -118,15 +116,15 @@ const TelefonoTutor = () => (
   </ReferenceField>
 );
 
-// Botones de cada renglón para Enfermería y el supervisor: Llamar tutor, Clasificar y Dar alta.
+// Botones Llamar tutor Clasificar y Dar alta para cada renglón
 const BotonesSeguimiento = () => {
   const seguimiento = useRecordContext();
-  // update manda el cambio al backend; isPending lo uso para bloquear los botones mientras guarda.
+  // useUpdate manda el PUT e isPending desactiva los botones mientras guarda
   const [update, { isPending, error }] = useUpdate();
   const [confirmando, setConfirmando] = useState(false);
   const notify = useNotify();
   const refresh = useRefresh();
-  // El nombre del alumno para la pregunta de confirmación, de la misma caché que la columna Alumno.
+  // useGetManyAggregate reusa el nombre del alumno ya cargado para confirmar
   const { data: alumnos } = useGetManyAggregate(
     "alumnos",
     { ids: [seguimiento?.alumnoId] },
@@ -134,13 +132,13 @@ const BotonesSeguimiento = () => {
   );
 
   if (!seguimiento) return null;
-  // Si no se pudo guardar lo digo con texto en lugar de los botones.
+  // Si useUpdate falla aparece No se pudo guardar sin botones
   if (error) return <span>No se pudo guardar</span>;
   const nombre = alumnos?.[0]
     ? `${alumnos[0].nombre} ${alumnos[0].apellidos}`
     : "este alumno";
 
-  // Dar alta cierra el seguimiento y quita el candado; recargo para que ya no salga entre los abiertos.
+  // useUpdate pone estado alta y refresh recarga la lista
   const darAlta = () => {
     setConfirmando(false);
     update(
@@ -161,8 +159,7 @@ const BotonesSeguimiento = () => {
     );
   };
 
-  // Llamar tutor guarda la fecha de hoy en fechaLlamada (no hace la llamada). Clasificar abre el formulario
-  // para la causa y la fecha de retorno. Dar alta pide confirmación porque deja entrar otra vez al alumno.
+  // Llamar tutor guarda fechaLlamada y Dar alta pide confirmación con ConfirmAccesible
   return (
     <>
       <Button
@@ -221,17 +218,15 @@ const BotonesSeguimiento = () => {
   );
 };
 
-// Lista de seguimientos. Al entrar solo salen los abiertos, que son los que hay que atender.
-// Enfermería y el supervisor ven todo; la docente solo el alumno y su estado.
+// filterDefaultValues muestra los abiertos y la docente ve menos columnas
 export const SeguimientoList = () => {
-  // Debajo de 900 px escondo columnas para que no haya scroll de lado; uso md porque la tabla es ancha.
-  // En celular (menos de 600 px) también paso el estado y los botones abajo del nombre, en una sola columna.
+  // useMediaQuery oculta columnas y en pantalla chica todo va en Alumno
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
   const isXs = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   const { permissions } = usePermissions();
   const detalle = permissions === "enfermeria" || permissions === "supervisor";
 
-  // Filtros siempre visibles. La causa solo la ve quien tiene el detalle.
+  // Filtros con SelectNativo y alwaysOn y el de causa solo si detalle
   const filtros = [
     <SelectNativo
       key="estado"
@@ -263,7 +258,7 @@ export const SeguimientoList = () => {
     );
   }
 
-  // El CSV con nombres en vez de ids. Las notas, la causa y la llamada solo van si el rol puede verlas.
+  // Exporter con fetchRelatedRecords para nombres y columnas extra solo si detalle
   const exportar: Exporter = async (seguimientos, fetchRelatedRecords) => {
     const alumnos = await fetchRelatedRecords(
       seguimientos,
@@ -294,7 +289,7 @@ export const SeguimientoList = () => {
     descargarCSV(filas, "seguimientos");
   };
 
-  // Los renglones no abren nada al dar clic: Enfermería tiene sus botones y la docente solo consulta.
+  // rowClick en false porque las acciones van en los botones
   return (
     <Stack sx={{ maxWidth: 1280 }}>
       <Encabezado
@@ -393,8 +388,7 @@ export const SeguimientoList = () => {
   );
 };
 
-// Clasificar un seguimiento (el editar de Enfermería y el supervisor). El alumno, las faltas y el teléfono
-// solo se leen; Borrar solo lo tiene el supervisor, así que a Enfermería le dejo nada más Guardar.
+// Edit para clasificar y sin botón Borrar si no es supervisor
 export const SeguimientoEdit = () => {
   const { permissions } = usePermissions();
   return (
@@ -439,8 +433,7 @@ export const SeguimientoEdit = () => {
   );
 };
 
-// Nuevo seguimiento a mano, por ejemplo cuando el tutor avisa antes de que haya falta. Empieza abierto
-// con la fecha de hoy; el backend pone el grupo y quién lo abrió.
+// Create con estado abierto y fecha de hoy por defecto
 export const SeguimientoCreate = () => (
   <Create title="Nuevo seguimiento" redirect="list" sx={{ maxWidth: 720 }}>
     <SimpleForm
