@@ -139,7 +139,7 @@ const AlumnosDelGrupo = ({ grupo }: { grupo: RaRecord }) => {
 // Aviso cuando la docente no tiene grupos asignados
 const SinGrupos = () => (
   <Typography>
-    Aún no tienes grupos asignados. Pídele a tu supervisor que te asigne uno.
+    Aún no tienes grupos asignados. Pídele al administrador que te asigne uno.
   </Typography>
 );
 
