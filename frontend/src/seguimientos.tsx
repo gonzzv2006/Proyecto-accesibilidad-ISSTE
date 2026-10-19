@@ -220,3 +220,245 @@ const BotonesSeguimiento = () => {
     </>
   );
 };
+
+// Lista de seguimientos. Al entrar solo salen los abiertos, que son los que hay que atender.
+// Enfermería y el supervisor ven todo; la docente solo el alumno y su estado.
+export const SeguimientoList = () => {
+  // Debajo de 900 px escondo columnas para que no haya scroll de lado; uso md porque la tabla es ancha.
+  // En celular (menos de 600 px) también paso el estado y los botones abajo del nombre, en una sola columna.
+  const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
+  const isXs = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+  const { permissions } = usePermissions();
+  const detalle = permissions === "enfermeria" || permissions === "supervisor";
+
+  // Filtros siempre visibles. La causa solo la ve quien tiene el detalle.
+  const filtros = [
+    <SelectNativo
+      key="estado"
+      source="estado"
+      label="Estado"
+      choices={estadosSeguimiento}
+      emptyText="Todos"
+      alwaysOn
+    />,
+    <SelectNativo
+      key="requiereAlta"
+      source="requiereAlta"
+      label="Requiere alta"
+      choices={opcionesCandado}
+      emptyText="Todos"
+      alwaysOn
+    />,
+  ];
+  if (detalle) {
+    filtros.push(
+      <SelectNativo
+        key="causa"
+        source="causa"
+        label="Causa"
+        choices={CAUSAS}
+        emptyText="Todas"
+        alwaysOn
+      />,
+    );
+  }
+
+  // El CSV con nombres en vez de ids. Las notas, la causa y la llamada solo van si el rol puede verlas.
+  const exportar: Exporter = async (seguimientos, fetchRelatedRecords) => {
+    const alumnos = await fetchRelatedRecords(
+      seguimientos,
+      "alumnoId",
+      "alumnos",
+    );
+    const grupos = await fetchRelatedRecords(seguimientos, "grupoId", "grupos");
+    const filas = seguimientos.map((seguimiento) => {
+      const alumno = alumnos[seguimiento.alumnoId];
+      const fila = {
+        Alumno: alumno ? `${alumno.nombre} ${alumno.apellidos}` : "",
+        Grupo: grupos[seguimiento.grupoId]?.nombre ?? "",
+        Estado: seguimiento.estado === "alta" ? "Dado de alta" : "Abierto",
+        "Requiere alta": seguimiento.requiereAlta ? "Sí" : "No",
+      };
+      if (!detalle) return fila;
+      return {
+        ...fila,
+        Faltas: seguimiento.fechasFalta?.length ?? 0,
+        "Última incidencia":
+          INCIDENCIAS[seguimiento.ultimaIncidencia]?.nombre ?? "",
+        Causa: nombreDeCausa(seguimiento.causa),
+        "Fecha probable de retorno": fechaMX(seguimiento.fechaRetorno),
+        "Fecha de la llamada": fechaMX(seguimiento.fechaLlamada ?? ""),
+        Notas: seguimiento.notas ?? "",
+      };
+    });
+    descargarCSV(filas, "seguimientos");
+  };
+
+  // Los renglones no abren nada al dar clic: Enfermería tiene sus botones y la docente solo consulta.
+  return (
+    <Stack sx={{ maxWidth: 1280 }}>
+      <Encabezado
+        titulo="Seguimiento de faltas"
+        ayuda={
+          detalle
+            ? "Cada falta del pase de lista abre un seguimiento. Llama al tutor, clasifica la causa y da de alta cuando regrese."
+            : "Enfermería da seguimiento a las faltas. Aquí ves qué alumnos tienen seguimiento."
+        }
+      />
+      <List
+        title="Seguimiento de faltas"
+        filters={filtros}
+        filterDefaultValues={{ estado: "abierto" }}
+        exporter={exportar}
+        actions={
+          <AccionesLista
+            singular="seguimiento"
+            plural="seguimientos"
+            nuevo={detalle ? "Nuevo seguimiento" : undefined}
+            exportar
+          />
+        }
+        empty={
+          <Card>
+            <ListaVacia mensaje="Todavía no hay seguimientos. Se abren solos al cerrar un pase de lista con faltas." />
+          </Card>
+        }
+      >
+        <DataTable
+          aria-label="Seguimiento de faltas"
+          bulkActionButtons={false}
+          rowClick={false}
+          empty={
+            <ListaVacia mensaje="No hay seguimientos con estos filtros. Cambia el filtro «Estado» para ver los demás." />
+          }
+        >
+          <DataTable.Col source="alumnoId" label="Alumno">
+            <Stack spacing={0.5} sx={{ alignItems: "flex-start" }}>
+              <ReferenceField
+                source="alumnoId"
+                reference="alumnos"
+                link={false}
+              />
+              <ReferenceField source="grupoId" reference="grupos" link={false}>
+                <TextField
+                  source="nombre"
+                  variant="body2"
+                  color="textSecondary"
+                />
+              </ReferenceField>
+              {isXs && <EstadoSeguimiento />}
+              {isXs && detalle && <BotonesSeguimiento />}
+            </Stack>
+          </DataTable.Col>
+          {detalle && !isSmall && (
+            <DataTable.Col label="Faltas">
+              <FaltasAlumno />
+            </DataTable.Col>
+          )}
+          {detalle && !isSmall && (
+            <DataTable.Col label="Teléfono del tutor">
+              <TelefonoTutor />
+            </DataTable.Col>
+          )}
+          {detalle && !isSmall && (
+            <DataTable.Col source="causa" label="Causa">
+              <CausaSeguimiento />
+            </DataTable.Col>
+          )}
+          {detalle && !isSmall && (
+            <DataTable.Col
+              source="fechaRetorno"
+              label="Fecha probable de retorno"
+            >
+              <DateField
+                source="fechaRetorno"
+                locales="es-MX"
+                emptyText="Sin fecha"
+              />
+            </DataTable.Col>
+          )}
+          {!isXs && (
+            <DataTable.Col source="estado" label="Estado">
+              <EstadoSeguimiento />
+            </DataTable.Col>
+          )}
+          {detalle && !isXs && (
+            <DataTable.Col label="Acciones">
+              <BotonesSeguimiento />
+            </DataTable.Col>
+          )}
+        </DataTable>
+      </List>
+    </Stack>
+  );
+};
+
+// Clasificar un seguimiento (el editar de Enfermería y el supervisor). El alumno, las faltas y el teléfono
+// solo se leen; Borrar solo lo tiene el supervisor, así que a Enfermería le dejo nada más Guardar.
+export const SeguimientoEdit = () => {
+  const { permissions } = usePermissions();
+  return (
+    <Edit title="Clasificar seguimiento" sx={{ maxWidth: 720 }}>
+      <SimpleForm
+        toolbar={
+          permissions === "supervisor" ? undefined : (
+            <Toolbar>
+              <SaveButton />
+            </Toolbar>
+          )
+        }
+      >
+        <TituloFormulario texto="Clasificar seguimiento" />
+        <Labeled label="Alumno">
+          <ReferenceField source="alumnoId" reference="alumnos" link={false} />
+        </Labeled>
+        <Labeled label="Faltas">
+          <FaltasAlumno />
+        </Labeled>
+        <Labeled label="Teléfono del tutor">
+          <TelefonoTutor />
+        </Labeled>
+        <SelectNativo
+          source="causa"
+          label="Causa"
+          choices={CAUSAS}
+          helperText="Enfermedad en casa y Accidente fuera de la estancia ponen el candado de «Requiere alta para ingresar»."
+          sinVacio
+        />
+        <DateInput source="fechaRetorno" label="Fecha probable de retorno" />
+        <DateInput source="fechaLlamada" label="Fecha de la llamada" />
+        <SelectNativo
+          source="estado"
+          label="Estado"
+          choices={estadosSeguimiento}
+          sinVacio
+        />
+        <TextInput source="notas" label="Notas" multiline rows={4} />
+      </SimpleForm>
+    </Edit>
+  );
+};
+
+// Nuevo seguimiento a mano, por ejemplo cuando el tutor avisa antes de que haya falta. Empieza abierto
+// con la fecha de hoy; el backend pone el grupo y quién lo abrió.
+export const SeguimientoCreate = () => (
+  <Create title="Nuevo seguimiento" redirect="list" sx={{ maxWidth: 720 }}>
+    <SimpleForm
+      defaultValues={{
+        estado: "abierto",
+        causa: "SIN_CLASIFICAR",
+        fechaApertura: new Date().toLocaleDateString("en-CA"),
+        fechaLlamada: null,
+      }}
+    >
+      <TituloFormulario texto="Nuevo seguimiento" />
+      <ReferenceInput source="alumnoId" reference="alumnos">
+        <AutocompleteInput label="Alumno" validate={required()} />
+      </ReferenceInput>
+      <SelectNativo source="causa" label="Causa" choices={CAUSAS} sinVacio />
+      <DateInput source="fechaRetorno" label="Fecha probable de retorno" />
+      <DateInput source="fechaApertura" label="Fecha de apertura" />
+      <TextInput source="notas" label="Notas" multiline rows={4} />
+    </SimpleForm>
+  </Create>
+);
