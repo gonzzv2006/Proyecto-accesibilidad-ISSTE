@@ -376,3 +376,183 @@ export const ListaVacia = ({
       <InfoIcon color="primary" />
       <Typography>{mensaje}</Typography>
     </Stack>
+    {children}
+  </CardContent>
+);
+
+// Tarjeta del tablero con título h2 y número grande como párrafo
+export const TarjetaResumen = ({
+  titulo,
+  icono,
+  valor,
+  detalle,
+  children,
+}: {
+  titulo: string;
+  icono: ReactNode;
+  valor: string;
+  detalle: string;
+  children?: ReactNode;
+}) => (
+  <Card sx={{ height: "100%" }}>
+    <CardHeader
+      avatar={icono}
+      title={titulo}
+      slotProps={{ title: { component: "h2", variant: "subtitle1" } }}
+    />
+    <CardContent sx={{ pt: 0 }}>
+      <Typography variant="h3" component="p">
+        {valor}
+      </Typography>
+      <Typography variant="body2" color="textSecondary">
+        {detalle}
+      </Typography>
+      {children}
+    </CardContent>
+  </Card>
+);
+
+// Tarjeta con el total de seguimientos abiertos para el inicio docente
+export const SeguimientosAbiertos = ({ titulo }: { titulo: string }) => {
+  // useGetList con perPage 1 porque solo importa el total de X-Total-Count
+  const { total, isPending, error } = useGetList("seguimientos", {
+    filter: { estado: "abierto" },
+    pagination: { page: 1, perPage: 1 },
+  });
+  const icono = <SeguimientoIcon color="primary" />;
+
+  // Muestra Cargando o Datos no disponibles según isPending y error
+  if (isPending) {
+    return (
+      <TarjetaResumen
+        titulo={titulo}
+        icono={icono}
+        valor="…"
+        detalle="Cargando…"
+      />
+    );
+  }
+  if (error) {
+    return (
+      <TarjetaResumen
+        titulo={titulo}
+        icono={icono}
+        valor="—"
+        detalle="Datos no disponibles"
+      />
+    );
+  }
+
+  return (
+    <TarjetaResumen
+      titulo={titulo}
+      icono={icono}
+      valor={String(total)}
+      detalle={total === 1 ? "seguimiento abierto" : "seguimientos abiertos"}
+    >
+      <Button variant="outlined" href="#/seguimientos" sx={{ mt: 2 }}>
+        Ir a seguimiento
+      </Button>
+    </TarjetaResumen>
+  );
+};
+
+// Mismas props que SelectInput para cambiarlo sin tocar otras pantallas
+type SelectNativoProps = {
+  source?: string;
+  label: string;
+  choices?: { id: string | number; name: string }[];
+  emptyText?: string;
+  alwaysOn?: boolean;
+  helperText?: string | false;
+  size?: "small" | "medium";
+  margin?: "none" | "dense" | "normal";
+  variant?: "filled" | "outlined" | "standard";
+  sinVacio?: boolean;
+};
+
+// Select nativo con option porque SelectInput usa MenuItem y fallaba la etiqueta
+export const SelectNativo = ({
+  source: fuente,
+  label,
+  choices,
+  emptyText = "Sin elegir",
+  helperText,
+  size,
+  margin,
+  variant,
+  sinVacio,
+}: SelectNativoProps) => {
+  // useChoicesContext toma opciones del ReferenceInput o de las choices fijas
+  const {
+    allChoices,
+    isPending,
+    error: errorAlCargar,
+    source,
+    resource,
+    isFromReference,
+  } = useChoicesContext({ choices, source: fuente });
+  // useGetRecordRepresentation muestra el nombre del registro en vez de su id
+  const representacion = useGetRecordRepresentation(resource);
+  const { getChoiceText, getChoiceValue } = useChoices({
+    optionText: isFromReference ? representacion : undefined,
+    translateChoice: false,
+  });
+  // useInput conecta el campo al formulario y su id une la etiqueta
+  const { field, fieldState, id, isRequired } = useInput({ source, resource });
+  const opciones = errorAlCargar ? [] : (allChoices ?? []);
+
+  // Busca la opción con getChoiceValue para guardar el valor con su tipo
+  const alCambiar = (evento: ChangeEvent<HTMLInputElement>) => {
+    const elegida = opciones.find(
+      (opcion) => String(getChoiceValue(opcion)) === evento.target.value,
+    );
+    field.onChange(elegida ? getChoiceValue(elegida) : "");
+  };
+
+  // Etiqueta con shrink porque el select nativo siempre muestra una opción
+  return (
+    <TextField
+      id={id}
+      name={field.name}
+      inputRef={field.ref}
+      value={field.value ?? ""}
+      onChange={alCambiar}
+      onBlur={field.onBlur}
+      select
+      label={
+        <FieldTitle
+          label={label}
+          source={source}
+          resource={resource}
+          isRequired={isRequired}
+        />
+      }
+      error={!!errorAlCargar || fieldState.invalid}
+      helperText={
+        helperText === false ? undefined : (
+          <InputHelperText
+            error={fieldState.error?.message}
+            helperText={helperText}
+          />
+        )
+      }
+      disabled={isPending}
+      size={size}
+      margin={margin}
+      variant={variant}
+      sx={{ minWidth: 160 }}
+      slotProps={{ select: { native: true }, inputLabel: { shrink: true } }}
+    >
+      {!sinVacio && <option value="">{emptyText}</option>}
+      {opciones.map((opcion) => (
+        <option
+          key={String(getChoiceValue(opcion))}
+          value={getChoiceValue(opcion)}
+        >
+          {getChoiceText(opcion)}
+        </option>
+      ))}
+    </TextField>
+  );
+};
