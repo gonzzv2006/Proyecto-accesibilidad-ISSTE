@@ -1,5 +1,4 @@
-// Inicio de la docente: la saluda y le muestra el pase de lista de hoy de sus grupos, sus
-// alumnos con seguimiento y cuántos alumnos tiene. Lo abre tablero.tsx cuando es docente.
+// Inicio de la docente con el pase de hoy y sus alumnos
 import { Title, useGetIdentity, useGetList, RaRecord } from "react-admin";
 import {
   Button,
@@ -20,7 +19,7 @@ import EnCursoIcon from "@mui/icons-material/Pending";
 import SinEmpezarIcon from "@mui/icons-material/HelpOutline";
 import { SeguimientosAbiertos } from "./comunes";
 
-// Etiqueta de cómo va el pase de hoy de un grupo, siempre con ícono y texto además del color.
+// Chip del estado del pase con ícono y texto además del color
 const EstadoDelPase = ({
   total,
   marcados,
@@ -30,15 +29,15 @@ const EstadoDelPase = ({
   marcados: number;
   cerrado: boolean;
 }) => {
-  // Si ya está cerrado no importa lo demás, por eso lo reviso primero.
+  // Si el pase ya se cerró regresa el Chip success con candado
   if (cerrado) {
     return <Chip icon={<CerradoIcon />} label="Cerrado" color="success" />;
   }
-  // Sin asistencias hoy quiere decir que la docente todavía no empieza el pase.
+  // Sin asistencias de hoy el pase aparece como Sin empezar
   if (total === 0) {
     return <Chip icon={<SinEmpezarIcon />} label="Sin empezar" />;
   }
-  // Ya marcó a todos pero le falta darle a terminar, así que se lo recuerdo.
+  // Todos marcados pero el pase sigue abierto y falta terminarlo
   if (marcados === total) {
     return (
       <Chip
@@ -48,7 +47,7 @@ const EstadoDelPase = ({
       />
     );
   }
-  // Si no, va a la mitad y digo cuántos lleva marcados.
+  // Pase a medias y el Chip muestra cuántos van marcados del total
   return (
     <Chip
       icon={<EnCursoIcon />}
@@ -58,9 +57,9 @@ const EstadoDelPase = ({
   );
 };
 
-// Un renglón por grupo con cómo va su pase de hoy y un botón para ir a tomarlo.
+// Renglón por grupo con el estado del pase y botón para tomarlo
 const PaseDeHoy = ({ grupo, fecha }: { grupo: RaRecord; fecha: string }) => {
-  // Tres conteos pidiendo solo 1 registro: las de hoy, las pendientes y el pase cerrado.
+  // Tres useGetList con perPage 1 para leer solo los totales
   const todas = useGetList("asistencias", {
     filter: { grupoId: grupo.id, fecha },
     pagination: { page: 1, perPage: 1 },
@@ -73,12 +72,12 @@ const PaseDeHoy = ({ grupo, fecha }: { grupo: RaRecord; fecha: string }) => {
     filter: { grupoId: grupo.id, fecha },
     pagination: { page: 1, perPage: 1 },
   });
-  // El botón abre el pase de lista ya filtrado por este grupo y la fecha de hoy.
+  // Enlace a asistencias con grupoId y fecha como filtro en JSON
   const enlace =
     "#/asistencias?filter=" +
     encodeURIComponent(JSON.stringify({ grupoId: grupo.id, fecha }));
 
-  // Mientras carga o si algo falla lo digo con texto.
+  // Avisa con texto si alguna consulta sigue cargando o falló
   if (todas.isPending || pendientes.isPending || pase.isPending) {
     return <span>Cargando…</span>;
   }
@@ -86,13 +85,12 @@ const PaseDeHoy = ({ grupo, fecha }: { grupo: RaRecord; fecha: string }) => {
     return <span>Datos no disponibles</span>;
   }
 
-  // Marcados son todos menos los pendientes; si ya hay un pase guardado es que se cerró.
+  // Marcados es total menos pendientes y si hay pase ya está cerrado
   const total = todas.total ?? 0;
   const marcados = total - (pendientes.total ?? 0);
   const cerrado = (pase.total ?? 0) > 0;
 
-  // En pantalla chica va todo en columna. El aria-label dice el grupo para que el lector de pantalla
-  // no lea puros botones iguales.
+  // Stack en columna en móvil y aria-label con el nombre del grupo
   return (
     <Stack
       direction={{ xs: "column", sm: "row" }}
@@ -115,7 +113,7 @@ const PaseDeHoy = ({ grupo, fecha }: { grupo: RaRecord; fecha: string }) => {
   );
 };
 
-// Renglón de Mis alumnos: el grupo y cuántos alumnos activos tiene, con el mismo truco.
+// Total de alumnos activos del grupo con useGetList y perPage 1
 const AlumnosDelGrupo = ({ grupo }: { grupo: RaRecord }) => {
   const { total, isPending, error } = useGetList("alumnos", {
     filter: { grupoId: grupo.id, activo: true },
@@ -138,27 +136,27 @@ const AlumnosDelGrupo = ({ grupo }: { grupo: RaRecord }) => {
   );
 };
 
-// Mensaje para cuando la docente no tiene grupos, así la tarjeta no se ve vacía.
+// Aviso cuando la docente no tiene grupos asignados
 const SinGrupos = () => (
   <Typography>
     Aún no tienes grupos asignados. Pídele a tu supervisor que te asigne uno.
   </Typography>
 );
 
-// La pantalla completa. Pido los grupos de la docente que inició sesión y armo las tarjetas.
+// Pantalla de inicio que pide los grupos de la docente con useGetList
 export const InicioDocente = () => {
-  // Quién inició sesión; de aquí saco su id y su nombre para el saludo.
+  // useGetIdentity da el id y el nombre de quien inició sesión
   const { identity, isPending: cargandoIdentidad } = useGetIdentity();
-  // Hoy en formato AAAA-MM-DD con la fecha local, igual que se guardan las asistencias.
+  // Fecha local AAAA-MM-DD con formato de Canadá como se guardan asistencias
   const fecha = new Date().toLocaleDateString("en-CA");
-  // Hoy en palabras para el subtítulo.
+  // Fecha de hoy en palabras con formato de México para el subtítulo
   const fechaLarga = new Date().toLocaleDateString("es-MX", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-  // Solo traigo sus grupos y espero a tener su id para no filtrar con undefined.
+  // Grupos filtrados por docenteId y enabled espera a que exista identity
   const {
     data: grupos,
     isPending,
@@ -173,14 +171,14 @@ export const InicioDocente = () => {
     { enabled: !!identity },
   );
 
-  // Si no se pudo leer quién es, aviso en vez de quedarme cargando para siempre.
+  // Si no llega identity avisa en lugar de quedarse cargando
   if (!cargandoIdentidad && !identity) {
     return <span>No se pudo cargar tu usuario. Vuelve a iniciar sesión.</span>;
   }
   if (isPending) return <span>Cargando…</span>;
   if (error) return <span>Datos no disponibles</span>;
 
-  // Saludo y tres tarjetas. En pantalla chica van una debajo de otra y en compu el pase ocupa la mitad.
+  // Saludo con h1 y Grid de tres tarjetas y pase más ancho
   return (
     <Stack spacing={2} sx={{ mt: 2, maxWidth: 1280 }}>
       <Title title="Inicio" />
