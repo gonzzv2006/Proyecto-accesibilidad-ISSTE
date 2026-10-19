@@ -114,3 +114,131 @@ const PaseDeHoy = ({ grupo, fecha }: { grupo: RaRecord; fecha: string }) => {
     </Stack>
   );
 };
+
+// Renglón de Mis alumnos: el grupo y cuántos alumnos activos tiene, con el mismo truco.
+const AlumnosDelGrupo = ({ grupo }: { grupo: RaRecord }) => {
+  const { total, isPending, error } = useGetList("alumnos", {
+    filter: { grupoId: grupo.id, activo: true },
+    pagination: { page: 1, perPage: 1 },
+  });
+
+  if (isPending) return <span>Cargando…</span>;
+  if (error) return <span>Datos no disponibles</span>;
+
+  return (
+    <Stack
+      direction="row"
+      sx={{ justifyContent: "space-between", alignItems: "center", py: 1 }}
+    >
+      <Typography>{grupo.nombre}</Typography>
+      <Typography variant="h5" component="p">
+        {total}
+      </Typography>
+    </Stack>
+  );
+};
+
+// Mensaje para cuando la docente no tiene grupos, así la tarjeta no se ve vacía.
+const SinGrupos = () => (
+  <Typography>
+    Aún no tienes grupos asignados. Pídele a tu supervisor que te asigne uno.
+  </Typography>
+);
+
+// La pantalla completa. Pido los grupos de la docente que inició sesión y armo las tarjetas.
+export const InicioDocente = () => {
+  // Quién inició sesión; de aquí saco su id y su nombre para el saludo.
+  const { identity, isPending: cargandoIdentidad } = useGetIdentity();
+  // Hoy en formato AAAA-MM-DD con la fecha local, igual que se guardan las asistencias.
+  const fecha = new Date().toLocaleDateString("en-CA");
+  // Hoy en palabras para el subtítulo.
+  const fechaLarga = new Date().toLocaleDateString("es-MX", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  // Solo traigo sus grupos y espero a tener su id para no filtrar con undefined.
+  const {
+    data: grupos,
+    isPending,
+    error,
+  } = useGetList(
+    "grupos",
+    {
+      filter: { docenteId: identity?.id },
+      sort: { field: "nombre", order: "ASC" },
+      pagination: { page: 1, perPage: 50 },
+    },
+    { enabled: !!identity },
+  );
+
+  // Si no se pudo leer quién es, aviso en vez de quedarme cargando para siempre.
+  if (!cargandoIdentidad && !identity) {
+    return <span>No se pudo cargar tu usuario. Vuelve a iniciar sesión.</span>;
+  }
+  if (isPending) return <span>Cargando…</span>;
+  if (error) return <span>Datos no disponibles</span>;
+
+  // Saludo y tres tarjetas. En pantalla chica van una debajo de otra y en compu el pase ocupa la mitad.
+  return (
+    <Stack spacing={2} sx={{ mt: 2, maxWidth: 1280 }}>
+      <Title title="Inicio" />
+      <title>Inicio · SIRAI</title>
+      <Stack spacing={0.5}>
+        <Typography variant="h4" component="h1">
+          Hola, {identity?.fullName}
+        </Typography>
+        <Typography color="textSecondary">{fechaLarga}</Typography>
+      </Stack>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Card sx={{ height: "100%" }}>
+            <CardHeader
+              avatar={<PaseDeListaIcon color="primary" />}
+              title="Pase de lista de hoy"
+              slotProps={{ title: { component: "h2", variant: "subtitle1" } }}
+            />
+            <CardContent sx={{ pt: 0 }}>
+              {grupos.length === 0 ? (
+                <SinGrupos />
+              ) : (
+                <Stack divider={<Divider />}>
+                  {grupos.map((grupo) => (
+                    <PaseDeHoy key={grupo.id} grupo={grupo} fecha={fecha} />
+                  ))}
+                </Stack>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <SeguimientosAbiertos titulo="Alumnos con seguimiento" />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card sx={{ height: "100%" }}>
+            <CardHeader
+              avatar={<AlumnoIcon color="primary" />}
+              title="Mis alumnos"
+              slotProps={{ title: { component: "h2", variant: "subtitle1" } }}
+            />
+            <CardContent sx={{ pt: 0 }}>
+              {grupos.length === 0 ? (
+                <SinGrupos />
+              ) : (
+                <Stack divider={<Divider />}>
+                  {grupos.map((grupo) => (
+                    <AlumnosDelGrupo key={grupo.id} grupo={grupo} />
+                  ))}
+                </Stack>
+              )}
+              <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                Alumnos inscritos por grupo
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Stack>
+  );
+};
