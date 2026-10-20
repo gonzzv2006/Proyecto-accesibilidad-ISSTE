@@ -1,5 +1,4 @@
-// Inicio de Enfermería (Trabajo Social): la saluda y le dice cuántos seguimientos tiene por atender.
-// Lo abre tablero.tsx cuando el rol es enfermeria.
+// Inicio de Enfermería con saludo y tres conteos de seguimientos
 import type { ReactNode } from "react";
 import { Title, useGetIdentity, useGetList } from "react-admin";
 import { Button, Grid, Stack, Typography } from "@mui/material";
@@ -8,8 +7,7 @@ import CandadoIcon from "@mui/icons-material/Lock";
 import SeguimientoIcon from "@mui/icons-material/PhoneInTalk";
 import { TarjetaResumen } from "./comunes";
 
-// Tarjeta con cuántos seguimientos cumplen un filtro y un botón que abre la lista ya filtrada.
-// Pido un solo registro porque nada más me interesa el total.
+// Cuenta seguimientos con perPage 1 y el botón abre la lista filtrada
 const TarjetaDeSeguimientos = ({
   titulo,
   icono,
@@ -29,7 +27,7 @@ const TarjetaDeSeguimientos = ({
     filter: filtro,
     pagination: { page: 1, perPage: 1 },
   });
-  // Mientras carga o si falla, la tarjeta lo dice en vez de quedarse vacía.
+  // Con isPending o error cambian valor y detalle de la tarjeta
   let valor = String(total ?? 0);
   let detalle = total === 1 ? singular : plural;
   if (isPending) {
@@ -58,7 +56,7 @@ const TarjetaDeSeguimientos = ({
   );
 };
 
-// Saludo y tres tarjetas: los que falta clasificar, los que tienen candado y todos los abiertos.
+// Saludo y Grid con tres tarjetas de seguimientos según su filtro
 export const InicioEnfermeria = () => {
   const { identity } = useGetIdentity();
   const fechaLarga = new Date().toLocaleDateString("es-MX", {
