@@ -1,4 +1,4 @@
-// Tablero del supervisor por estancia y otros roles van a su inicio
+// Tablero por estancia de GET /estadisticas y otros roles a su inicio
 import { useState } from "react";
 import {
   List,
@@ -26,111 +26,29 @@ import GeneralIcon from "@mui/icons-material/Groups";
 import CerradoIcon from "@mui/icons-material/Lock";
 import EnCursoIcon from "@mui/icons-material/Pending";
 import SinCerrarIcon from "@mui/icons-material/LockOpen";
+import SeguimientoIcon from "@mui/icons-material/PhoneInTalk";
 import { InicioDocente } from "./inicioDocente";
 import { InicioEnfermeria } from "./inicioEnfermeria";
-import { SeguimientosAbiertos, TarjetaResumen } from "./comunes";
+import { TarjetaResumen } from "./comunes";
 
-// Columna Inscritos cuenta los alumnos activos de la estancia
-const Inscritos = () => {
+// Math.round de presentes entre marcados o null si no hay marcados
+const porcentajeDe = (presentes: number, marcados: number) =>
+  marcados === 0 ? null : Math.round((presentes / marcados) * 100);
+
+// Columna % Asistencia con presentes y marcados de useRecordContext
+const PorcentajeAsistencia = () => {
   const estancia = useRecordContext();
-  // perPage 1 para leer el total de X-Total-Count sin traer la lista
-  const { total, isPending, error } = useGetList(
-    "alumnos",
-    {
-      filter: { estanciaId: estancia?.id, activo: true },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-
-  // Texto de carga o error para que la celda no quede vacía
-  if (isPending) return <span>Cargando…</span>;
-  if (error) return <span>Datos no disponibles</span>;
-
-  return <span>{total}</span>;
+  if (!estancia) return null;
+  const porcentaje = porcentajeDe(estancia.presentes, estancia.marcados);
+  return <span>{porcentaje === null ? "—" : `${porcentaje} %`}</span>;
 };
 
-// Porcentaje de presentes entre marcados sin contar los pendientes
-const PorcentajeAsistencia = ({ fecha }: { fecha: string }) => {
+// Estado con ícono y texto según porcentajeDe sin depender del color
+const EstadoAsistencia = () => {
   const estancia = useRecordContext();
-  // Tres useGetList con perPage 1 para presentes todos y pendientes
-  const presentes = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha, estado: "presente" },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-  const todos = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-  const pendientes = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha, estado: "pendiente" },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-
-  if (presentes.isPending || todos.isPending || pendientes.isPending) {
-    return <span>Cargando…</span>;
-  }
-  if (presentes.error || todos.error || pendientes.error) {
-    return <span>Datos no disponibles</span>;
-  }
-
-  const marcados = (todos.total ?? 0) - (pendientes.total ?? 0);
-  // Sin marcados se muestra un guion para no dividir entre cero
-  if (marcados === 0) return <span>—</span>;
-
-  return <span>{Math.round(((presentes.total ?? 0) / marcados) * 100)} %</span>;
-};
-
-// Estado según el porcentaje con los mismos useGetList ya cargados
-const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
-  const estancia = useRecordContext();
-  const presentes = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha, estado: "presente" },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-  const todos = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-  const pendientes = useGetList(
-    "asistencias",
-    {
-      filter: { estanciaId: estancia?.id, fecha, estado: "pendiente" },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-
-  if (presentes.isPending || todos.isPending || pendientes.isPending) {
-    return <span>Cargando…</span>;
-  }
-  if (presentes.error || todos.error || pendientes.error) {
-    return <span>Datos no disponibles</span>;
-  }
-
-  const marcados = (todos.total ?? 0) - (pendientes.total ?? 0);
-  // Sin marcados se muestra Sin pase de lista y no Crítico
-  if (marcados === 0) {
+  if (!estancia) return null;
+  const porcentaje = porcentajeDe(estancia.presentes, estancia.marcados);
+  if (porcentaje === null) {
     return (
       <Typography component="span" variant="body2" color="textSecondary">
         <SinDatosIcon fontSize="small" sx={{ verticalAlign: "middle" }} /> Sin
@@ -138,10 +56,6 @@ const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
       </Typography>
     );
   }
-
-  // Math.round igual que la columna para que estado y porcentaje coincidan
-  const porcentaje = Math.round(((presentes.total ?? 0) / marcados) * 100);
-  // Cada estado lleva ícono y texto para no depender solo del color
   if (porcentaje >= 90) {
     return (
       <Typography component="span" variant="body2" color="success">
@@ -164,33 +78,11 @@ const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
   );
 };
 
-// Compara los grupos de la estancia con los pases cerrados del día
-const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
+// Compara grupos con pasesCerrados y sin grupos no cuenta como Completo
+const PaseDeLaEstancia = () => {
   const estancia = useRecordContext();
-  const grupos = useGetList(
-    "grupos",
-    {
-      filter: { estanciaId: estancia?.id },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-  const pases = useGetList(
-    "pases",
-    {
-      filter: { estanciaId: estancia?.id, fecha },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: !!estancia },
-  );
-
-  if (grupos.isPending || pases.isPending) return <span>Cargando…</span>;
-  if (grupos.error || pases.error) return <span>Datos no disponibles</span>;
-
-  const totalGrupos = grupos.total ?? 0;
-  const cerrados = pases.total ?? 0;
-  // Una estancia sin grupos no cuenta como Completo
-  if (totalGrupos > 0 && cerrados === totalGrupos) {
+  if (!estancia) return null;
+  if (estancia.grupos > 0 && estancia.pasesCerrados === estancia.grupos) {
     return (
       <Typography component="span" variant="body2" color="success">
         <CerradoIcon fontSize="small" sx={{ verticalAlign: "middle" }} />{" "}
@@ -198,12 +90,11 @@ const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
       </Typography>
     );
   }
-  // Con algunos pases cerrados se muestra cuántos grupos van
-  if (cerrados > 0) {
+  if (estancia.pasesCerrados > 0) {
     return (
       <Typography component="span" variant="body2" color="warning">
         <EnCursoIcon fontSize="small" sx={{ verticalAlign: "middle" }} />{" "}
-        {cerrados} de {totalGrupos} grupos
+        {estancia.pasesCerrados} de {estancia.grupos} grupos
       </Typography>
     );
   }
@@ -215,60 +106,42 @@ const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
   );
 };
 
-// Tarjetas del día con un solo useGetList de asistencias
+// Tarjetas del día que suman con reduce las filas de useGetList estadisticas
 const ResumenDelDia = ({ fecha }: { fecha: string }) => {
-  // perPage alto para traer todas las asistencias del día en una página
-  const asistencias = useGetList("asistencias", {
+  const { data, isPending, error } = useGetList("estadisticas", {
     filter: { fecha },
-    pagination: { page: 1, perPage: 1000 },
-  });
-  const estancias = useGetList("estancias", {
     pagination: { page: 1, perPage: 100 },
   });
 
-  if (asistencias.isPending || estancias.isPending) {
-    return <span>Cargando…</span>;
-  }
-  if (asistencias.error || estancias.error) {
-    return <span>Datos no disponibles</span>;
-  }
+  if (isPending) return <span>Cargando…</span>;
+  if (error) return <span>Datos no disponibles</span>;
 
-  // Separa presentes y marcados con filter igual que la tabla
-  const presentes = asistencias.data.filter((a) => a.estado === "presente");
-  const conMarca = asistencias.data.filter((a) => a.estado !== "pendiente");
-  const marcados = conMarca.length;
-  // Porcentaje por estancia con map o null si no hay marcados
-  const porcentajes = estancias.data.map((estancia) => {
-    const p = presentes.filter(
-      (asistencia) => asistencia.estanciaId === estancia.id,
-    ).length;
-    const m = conMarca.filter(
-      (asistencia) => asistencia.estanciaId === estancia.id,
-    ).length;
-    return m === 0 ? null : Math.round((p / m) * 100);
-  });
-  // Cuenta estancias en Crítico y en Atención según el porcentaje
+  const presentes = data.reduce((suma, fila) => suma + fila.presentes, 0);
+  const marcados = data.reduce((suma, fila) => suma + fila.marcados, 0);
+  const abiertos = data.reduce(
+    (suma, fila) => suma + fila.seguimientosAbiertos,
+    0,
+  );
+  const porcentajes = data.map((fila) =>
+    porcentajeDe(fila.presentes, fila.marcados),
+  );
   const criticas = porcentajes.filter((p) => p !== null && p < 60).length;
   const enAtencion = porcentajes.filter(
     (p) => p !== null && p >= 60 && p < 90,
   ).length;
+  const general = porcentajeDe(presentes, marcados);
 
-  // Grid con size responsivo para acomodar las tarjetas según la pantalla
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <TarjetaResumen
           titulo="Asistencia general"
           icono={<GeneralIcon color="primary" />}
-          valor={
-            marcados === 0
-              ? "—"
-              : `${Math.round((presentes.length / marcados) * 100)} %`
-          }
+          valor={general === null ? "—" : `${general} %`}
           detalle={
-            marcados === 0
+            general === null
               ? "Sin pase de lista"
-              : `${presentes.length} presentes de ${marcados} marcados`
+              : `${presentes} presentes de ${marcados} marcados`
           }
         />
       </Grid>
@@ -289,15 +162,21 @@ const ResumenDelDia = ({ fecha }: { fecha: string }) => {
         />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <SeguimientosAbiertos titulo="Seguimientos abiertos" />
+        <TarjetaResumen
+          titulo="Seguimientos abiertos"
+          icono={<SeguimientoIcon color="primary" />}
+          valor={String(abiertos)}
+          detalle={
+            abiertos === 1 ? "seguimiento abierto" : "seguimientos abiertos"
+          }
+        />
       </Grid>
     </Grid>
   );
 };
 
-// Pantalla del tablero que App.tsx usa como dashboard de React Admin
+// Dashboard de App.tsx y usePermissions elige el inicio de cada rol
 export const Tablero = () => {
-  // usePermissions da el rol guardado en sessionStorage
   const { permissions, isPending } = usePermissions();
   // useState con la fecha elegida que empieza en hoy
   const [fecha, setFecha] = useState(new Date().toLocaleDateString("en-CA"));
@@ -307,9 +186,9 @@ export const Tablero = () => {
   // Espera isPending para no mostrar el tablero al rol equivocado
   if (isPending) return <span>Cargando…</span>;
 
-  // Enfermería y docente van a su inicio y el supervisor sigue aquí
+  // Enfermería y docente a su inicio y supervisor y administrador siguen aquí
   if (permissions === "enfermeria") return <InicioEnfermeria />;
-  if (permissions !== "supervisor") {
+  if (permissions !== "supervisor" && permissions !== "administrador") {
     return <InicioDocente />;
   }
 
@@ -323,10 +202,10 @@ export const Tablero = () => {
       })
     : "Elige una fecha";
 
-  // pagination en false y perPage 100 porque son pocas estancias
+  // List de estadisticas con filter fecha y disableSort en columnas calculadas
   return (
     <Stack spacing={2} sx={{ mt: 2, maxWidth: 1280 }}>
-      <title>Tablero del supervisor · SIRAI</title>
+      <title>Tablero de asistencia · SIRAI</title>
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={2}
@@ -334,7 +213,7 @@ export const Tablero = () => {
       >
         <Stack spacing={0.5}>
           <Typography variant="h4" component="h1">
-            Tablero del supervisor
+            Tablero de asistencia
           </Typography>
           <Typography color="textSecondary">{fechaLarga}</Typography>
         </Stack>
@@ -347,7 +226,7 @@ export const Tablero = () => {
           slotProps={{ inputLabel: { shrink: true } }}
         />
       </Stack>
-      <ResumenDelDia fecha={fecha} />
+      {fecha && <ResumenDelDia fecha={fecha} />}
       <Card>
         <CardHeader
           title="Asistencia por estancia"
@@ -356,52 +235,55 @@ export const Tablero = () => {
           }}
           sx={{ pb: 0 }}
         />
-        <List
-          resource="estancias"
-          title="Tablero del supervisor"
-          component="div"
-          disableSyncWithLocation
-          storeKey={false}
-          actions={false}
-          exporter={false}
-          pagination={false}
-          perPage={100}
-        >
-          {isSmall ? (
-            <SimpleList
-              primaryText={(record) => record.nombre}
-              secondaryText={
-                <span>
-                  <EstadoAsistencia fecha={fecha} /> ·{" "}
-                  <PorcentajeAsistencia fecha={fecha} /> · <Inscritos />{" "}
-                  inscritos · Pase: <PaseDeLaEstancia fecha={fecha} />
-                </span>
-              }
-              rowClick={false}
-            />
-          ) : (
-            // aria-labelledby usa el título de la tarjeta como nombre de la tabla
-            <DataTable
-              aria-labelledby="titulo-estancias"
-              bulkActionButtons={false}
-              rowClick={false}
-            >
-              <DataTable.Col source="nombre" label="Estancia" />
-              <DataTable.Col label="Inscritos">
-                <Inscritos />
-              </DataTable.Col>
-              <DataTable.Col label="% Asistencia">
-                <PorcentajeAsistencia fecha={fecha} />
-              </DataTable.Col>
-              <DataTable.Col label="Estado">
-                <EstadoAsistencia fecha={fecha} />
-              </DataTable.Col>
-              <DataTable.Col label="Pase de lista">
-                <PaseDeLaEstancia fecha={fecha} />
-              </DataTable.Col>
-            </DataTable>
-          )}
-        </List>
+        {fecha && (
+          <List
+            resource="estadisticas"
+            title="Tablero de asistencia"
+            component="div"
+            filter={{ fecha }}
+            disableSyncWithLocation
+            storeKey={false}
+            actions={false}
+            exporter={false}
+            pagination={false}
+            perPage={100}
+          >
+            {isSmall ? (
+              <SimpleList
+                primaryText={(record) => record.nombre}
+                secondaryText={(record) => (
+                  <span>
+                    <EstadoAsistencia /> · <PorcentajeAsistencia /> ·{" "}
+                    {record.inscritos} inscritos · Pase: <PaseDeLaEstancia />
+                  </span>
+                )}
+                rowClick={false}
+              />
+            ) : (
+              <DataTable
+                aria-labelledby="titulo-estancias"
+                bulkActionButtons={false}
+                rowClick={false}
+              >
+                <DataTable.Col source="nombre" label="Estancia" />
+                <DataTable.Col
+                  source="inscritos"
+                  label="Inscritos"
+                  disableSort
+                />
+                <DataTable.Col label="% Asistencia">
+                  <PorcentajeAsistencia />
+                </DataTable.Col>
+                <DataTable.Col label="Estado">
+                  <EstadoAsistencia />
+                </DataTable.Col>
+                <DataTable.Col label="Pase de lista">
+                  <PaseDeLaEstancia />
+                </DataTable.Col>
+              </DataTable>
+            )}
+          </List>
+        )}
       </Card>
     </Stack>
   );
