@@ -1,5 +1,4 @@
-// Tablero del supervisor, la pantalla de inicio con la asistencia de cada estancia por día.
-// Si entra una docente o Enfermería, desde aquí le mando su propio inicio.
+// Tablero del supervisor por estancia y otros roles van a su inicio
 import { useState } from "react";
 import {
   List,
@@ -31,11 +30,10 @@ import { InicioDocente } from "./inicioDocente";
 import { InicioEnfermeria } from "./inicioEnfermeria";
 import { SeguimientosAbiertos, TarjetaResumen } from "./comunes";
 
-// Columna de inscritos: cuántos alumnos activos tiene la estancia de ese renglón.
+// Columna Inscritos cuenta los alumnos activos de la estancia
 const Inscritos = () => {
   const estancia = useRecordContext();
-  // Truco para contar: pido solo 1 registro y leo el total que el backend manda en el header.
-  // Así sé cuántos hay sin descargar la lista completa.
+  // perPage 1 para leer el total de X-Total-Count sin traer la lista
   const { total, isPending, error } = useGetList(
     "alumnos",
     {
@@ -45,18 +43,17 @@ const Inscritos = () => {
     { enabled: !!estancia },
   );
 
-  // Mientras carga o si falla lo digo con texto, para que la celda no se quede vacía.
+  // Texto de carga o error para que la celda no quede vacía
   if (isPending) return <span>Cargando…</span>;
   if (error) return <span>Datos no disponibles</span>;
 
   return <span>{total}</span>;
 };
 
-// Columna de porcentaje: presentes entre los ya marcados. Solo Presente cuenta como asistencia; las 4 faltas
-// no, y los sin marcar no cuentan para que un pase que va a la mitad no haga ver peor a la estancia.
+// Porcentaje de presentes entre marcados sin contar los pendientes
 const PorcentajeAsistencia = ({ fecha }: { fecha: string }) => {
   const estancia = useRecordContext();
-  // Tres conteos con el truco de 1 registro: presentes, todos y sin marcar. Marcados = todos menos sin marcar.
+  // Tres useGetList con perPage 1 para presentes todos y pendientes
   const presentes = useGetList(
     "asistencias",
     {
@@ -90,14 +87,13 @@ const PorcentajeAsistencia = ({ fecha }: { fecha: string }) => {
   }
 
   const marcados = (todos.total ?? 0) - (pendientes.total ?? 0);
-  // Si nadie está marcado todavía pongo un guion en lugar de 0 %.
+  // Sin marcados se muestra un guion para no dividir entre cero
   if (marcados === 0) return <span>—</span>;
 
   return <span>{Math.round(((presentes.total ?? 0) / marcados) * 100)} %</span>;
 };
 
-// Estado de la estancia: Normal desde 90 %, Atención de 60 a 89 % y Crítico abajo de 60 %.
-// Pide lo mismo que el porcentaje y React Admin reusa esa respuesta en vez de pedirla otra vez.
+// Estado según el porcentaje con los mismos useGetList ya cargados
 const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
   const estancia = useRecordContext();
   const presentes = useGetList(
@@ -133,7 +129,7 @@ const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
   }
 
   const marcados = (todos.total ?? 0) - (pendientes.total ?? 0);
-  // Si no han pasado lista no la pongo en Crítico, solo aviso que no hay pase.
+  // Sin marcados se muestra Sin pase de lista y no Crítico
   if (marcados === 0) {
     return (
       <Typography component="span" variant="body2" color="textSecondary">
@@ -143,9 +139,9 @@ const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
     );
   }
 
-  // Uso el porcentaje redondeado para que siempre coincida con el que se ve en la tabla.
+  // Math.round igual que la columna para que estado y porcentaje coincidan
   const porcentaje = Math.round(((presentes.total ?? 0) / marcados) * 100);
-  // Cada estado lleva ícono y texto además del color, para que no dependa solo del color.
+  // Cada estado lleva ícono y texto para no depender solo del color
   if (porcentaje >= 90) {
     return (
       <Typography component="span" variant="body2" color="success">
@@ -168,8 +164,7 @@ const EstadoAsistencia = ({ fecha }: { fecha: string }) => {
   );
 };
 
-// Columna del pase de lista: cuento los grupos de la estancia y los pases cerrados ese día.
-// En pases solo se guardan los cerrados, así que cada pase es un grupo que ya terminó.
+// Compara los grupos de la estancia con los pases cerrados del día
 const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
   const estancia = useRecordContext();
   const grupos = useGetList(
@@ -194,8 +189,7 @@ const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
 
   const totalGrupos = grupos.total ?? 0;
   const cerrados = pases.total ?? 0;
-  // Completo solo cuando todos los grupos ya cerraron. Reviso que haya grupos para que una
-  // estancia sin grupos no salga como Completo.
+  // Una estancia sin grupos no cuenta como Completo
   if (totalGrupos > 0 && cerrados === totalGrupos) {
     return (
       <Typography component="span" variant="body2" color="success">
@@ -204,7 +198,7 @@ const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
       </Typography>
     );
   }
-  // Si ya cerraron algunos pero no todos, digo cuántos van, por ejemplo 2 de 4 grupos.
+  // Con algunos pases cerrados se muestra cuántos grupos van
   if (cerrados > 0) {
     return (
       <Typography component="span" variant="body2" color="warning">
@@ -221,10 +215,9 @@ const PaseDeLaEstancia = ({ fecha }: { fecha: string }) => {
   );
 };
 
-// Las cuatro tarjetas de arriba. Pido todas las asistencias del día de una vez y hago
-// las cuentas aquí, para no hacer una petición por cada estancia.
+// Tarjetas del día con un solo useGetList de asistencias
 const ResumenDelDia = ({ fecha }: { fecha: string }) => {
-  // 1000 es un tope alto para que lleguen todas las asistencias del día en una página.
+  // perPage alto para traer todas las asistencias del día en una página
   const asistencias = useGetList("asistencias", {
     filter: { fecha },
     pagination: { page: 1, perPage: 1000 },
@@ -240,11 +233,11 @@ const ResumenDelDia = ({ fecha }: { fecha: string }) => {
     return <span>Datos no disponibles</span>;
   }
 
-  // Separo presentes y marcados (todo lo que no está sin marcar), igual que en la tabla.
+  // Separa presentes y marcados con filter igual que la tabla
   const presentes = asistencias.data.filter((a) => a.estado === "presente");
   const conMarca = asistencias.data.filter((a) => a.estado !== "pendiente");
   const marcados = conMarca.length;
-  // Porcentaje de cada estancia con la misma fórmula de la tabla, o null si nadie está marcado.
+  // Porcentaje por estancia con map o null si no hay marcados
   const porcentajes = estancias.data.map((estancia) => {
     const p = presentes.filter(
       (asistencia) => asistencia.estanciaId === estancia.id,
@@ -254,13 +247,13 @@ const ResumenDelDia = ({ fecha }: { fecha: string }) => {
     ).length;
     return m === 0 ? null : Math.round((p / m) * 100);
   });
-  // Cuento las estancias en Crítico y en Atención con los mismos límites del estado.
+  // Cuenta estancias en Crítico y en Atención según el porcentaje
   const criticas = porcentajes.filter((p) => p !== null && p < 60).length;
   const enAtencion = porcentajes.filter(
     (p) => p !== null && p >= 60 && p < 90,
   ).length;
 
-  // En pantalla chica las tarjetas van en una sola columna, en tablet de dos en dos y en compu las cuatro.
+  // Grid con size responsivo para acomodar las tarjetas según la pantalla
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -302,26 +295,25 @@ const ResumenDelDia = ({ fecha }: { fecha: string }) => {
   );
 };
 
-// La pantalla completa del tablero. La exporto porque App.tsx la usa como dashboard.
+// Pantalla del tablero que App.tsx usa como dashboard de React Admin
 export const Tablero = () => {
-  // Reviso el rol porque el profe pidió permisos por rol y el tablero es solo del supervisor.
+  // usePermissions da el rol guardado en sessionStorage
   const { permissions, isPending } = usePermissions();
-  // La fecha que se está viendo. Empieza en hoy, con la fecha local en formato AAAA-MM-DD.
+  // useState con la fecha elegida que empieza en hoy
   const [fecha, setFecha] = useState(new Date().toLocaleDateString("en-CA"));
-  // En pantalla chica cambio la tabla por una lista simple para que no haya scroll de lado.
+  // useMediaQuery con sm cambia la tabla por SimpleList en pantalla chica
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
 
-  // Mientras no sé el rol no dibujo nada, para no enseñar el tablero por error.
+  // Espera isPending para no mostrar el tablero al rol equivocado
   if (isPending) return <span>Cargando…</span>;
 
-  // Cada rol tiene su inicio: Enfermería el suyo, la docente el de ella y el supervisor este tablero.
+  // Enfermería y docente van a su inicio y el supervisor sigue aquí
   if (permissions === "enfermeria") return <InicioEnfermeria />;
   if (permissions !== "supervisor") {
     return <InicioDocente />;
   }
 
-  // La fecha en palabras para el subtítulo. Le pongo las 12:00 para que la zona horaria
-  // no la recorra al día anterior.
+  // Fecha en palabras con toLocaleDateString sin que cambie de día
   const fechaLarga = fecha
     ? new Date(fecha + "T12:00").toLocaleDateString("es-MX", {
         weekday: "long",
@@ -331,8 +323,7 @@ export const Tablero = () => {
       })
     : "Elige una fecha";
 
-  // Título, fecha, tarjetas y tabla. La tabla va sin paginación porque son pocas estancias
-  // y WAVE marcaba el selector de filas por página; con perPage 100 salen todas.
+  // pagination en false y perPage 100 porque son pocas estancias
   return (
     <Stack spacing={2} sx={{ mt: 2, maxWidth: 1280 }}>
       <title>Tablero del supervisor · SIRAI</title>
@@ -389,7 +380,7 @@ export const Tablero = () => {
               rowClick={false}
             />
           ) : (
-            // El título de la tarjeta le da nombre a la tabla para el lector de pantalla.
+            // aria-labelledby usa el título de la tarjeta como nombre de la tabla
             <DataTable
               aria-labelledby="titulo-estancias"
               bulkActionButtons={false}
