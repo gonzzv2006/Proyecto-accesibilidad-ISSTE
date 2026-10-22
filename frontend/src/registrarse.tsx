@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { ROLES } from "./comunes";
 
 // datosVacios es el estado inicial y limpia el formulario al crear
 const datosVacios = { nombre: "", username: "", password: "", rol: "docente" };
@@ -69,7 +70,7 @@ const Registrarse: React.FC = () => {
       <title>Registrar usuario · SIRAI</title>
       <CardHeader
         title="Registrar usuario"
-        subheader="Crea la cuenta de un docente, de Enfermería o de un supervisor."
+        subheader="Crea la cuenta de un docente, de Enfermería, de un administrador o de un supervisor."
         slotProps={{ title: { component: "h1", variant: "h5" } }}
       />
       <CardContent>
@@ -111,9 +112,11 @@ const Registrarse: React.FC = () => {
               onChange={handleChange}
               slotProps={{ select: { native: true } }}
             >
-              <option value="docente">Docente</option>
-              <option value="enfermeria">Enfermería / Trabajo social</option>
-              <option value="supervisor">Supervisor</option>
+              {ROLES.map((rol) => (
+                <option key={rol.id} value={rol.id}>
+                  {rol.name}
+                </option>
+              ))}
             </TextField>
             <Button type="submit" variant="contained">
               Crear usuario
