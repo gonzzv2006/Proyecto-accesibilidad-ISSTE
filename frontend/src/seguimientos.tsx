@@ -1,6 +1,4 @@
 // Seguimientos de faltas con List Edit y Create que atiende Enfermería
-// Hecho con IA (solo estructura): esqueleto del botón con useUpdate y orientación sobre las props de confirmación en BotonesSeguimiento; los datos que actualiza, las notificaciones y la lógica de confirmación los escribimos manualmente.
-// Hecho con IA (solo estructura): esqueleto del Chip de estado EstadoSeguimiento; los estados, colores e íconos los escribimos manualmente.
 import { useState } from "react";
 import {
   List,
@@ -84,6 +82,7 @@ const FaltasAlumno = () => {
 };
 
 // Chip de estado con ícono y texto y ChipCandado si requiereAlta
+// Hecho con IA (solo estructura): esqueleto del Chip de estado EstadoSeguimiento; los estados, colores e íconos los escribimos manualmente.
 const EstadoSeguimiento = () => {
   const seguimiento = useRecordContext();
   if (!seguimiento) return null;
@@ -119,6 +118,7 @@ const TelefonoTutor = () => (
 );
 
 // Botones Llamar tutor Clasificar y Dar alta para cada renglón
+// Hecho con IA (solo estructura): esqueleto del botón con useUpdate y orientación sobre las props de confirmación en BotonesSeguimiento; los datos que actualiza, las notificaciones y la lógica de confirmación los escribimos manualmente.
 const BotonesSeguimiento = () => {
   const seguimiento = useRecordContext();
   // useUpdate manda el PUT e isPending desactiva los botones mientras guarda
@@ -226,7 +226,7 @@ export const SeguimientoList = () => {
   const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("md"));
   const isXs = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   const { permissions } = usePermissions();
-  const detalle = permissions === "enfermeria" || permissions === "supervisor";
+  const detalle = permissions === "enfermeria";
 
   // Filtros con SelectNativo y alwaysOn y el de causa solo si detalle
   const filtros = [
@@ -390,50 +390,45 @@ export const SeguimientoList = () => {
   );
 };
 
-// Edit para clasificar y sin botón Borrar si no es supervisor
-export const SeguimientoEdit = () => {
-  const { permissions } = usePermissions();
-  return (
-    <Edit title="Clasificar seguimiento" sx={{ maxWidth: 720 }}>
-      <SimpleForm
-        toolbar={
-          permissions === "supervisor" ? undefined : (
-            <Toolbar>
-              <SaveButton />
-            </Toolbar>
-          )
-        }
-      >
-        <TituloFormulario texto="Clasificar seguimiento" />
-        <Labeled label="Alumno">
-          <ReferenceField source="alumnoId" reference="alumnos" link={false} />
-        </Labeled>
-        <Labeled label="Faltas">
-          <FaltasAlumno />
-        </Labeled>
-        <Labeled label="Teléfono del tutor">
-          <TelefonoTutor />
-        </Labeled>
-        <SelectNativo
-          source="causa"
-          label="Causa"
-          choices={CAUSAS}
-          helperText="Enfermedad en casa y Accidente fuera de la estancia ponen el candado de «Requiere alta para ingresar»."
-          sinVacio
-        />
-        <DateInput source="fechaRetorno" label="Fecha probable de retorno" />
-        <DateInput source="fechaLlamada" label="Fecha de la llamada" />
-        <SelectNativo
-          source="estado"
-          label="Estado"
-          choices={estadosSeguimiento}
-          sinVacio
-        />
-        <TextInput source="notas" label="Notas" multiline rows={4} />
-      </SimpleForm>
-    </Edit>
-  );
-};
+// Edit para clasificar con Toolbar sin Borrar porque ningún rol borra seguimientos
+export const SeguimientoEdit = () => (
+  <Edit title="Clasificar seguimiento" sx={{ maxWidth: 720 }}>
+    <SimpleForm
+      toolbar={
+        <Toolbar>
+          <SaveButton />
+        </Toolbar>
+      }
+    >
+      <TituloFormulario texto="Clasificar seguimiento" />
+      <Labeled label="Alumno">
+        <ReferenceField source="alumnoId" reference="alumnos" link={false} />
+      </Labeled>
+      <Labeled label="Faltas">
+        <FaltasAlumno />
+      </Labeled>
+      <Labeled label="Teléfono del tutor">
+        <TelefonoTutor />
+      </Labeled>
+      <SelectNativo
+        source="causa"
+        label="Causa"
+        choices={CAUSAS}
+        helperText="Enfermedad en casa y Accidente fuera de la estancia ponen el candado de «Requiere alta para ingresar»."
+        sinVacio
+      />
+      <DateInput source="fechaRetorno" label="Fecha probable de retorno" />
+      <DateInput source="fechaLlamada" label="Fecha de la llamada" />
+      <SelectNativo
+        source="estado"
+        label="Estado"
+        choices={estadosSeguimiento}
+        sinVacio
+      />
+      <TextInput source="notas" label="Notas" multiline rows={4} />
+    </SimpleForm>
+  </Edit>
+);
 
 // Create con estado abierto y fecha de hoy por defecto
 export const SeguimientoCreate = () => (
