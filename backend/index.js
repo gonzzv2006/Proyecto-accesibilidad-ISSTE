@@ -67,17 +67,24 @@ const permisos={
 		"seguimientos":["leer", "crear", "editar", "ver detalle"],
 		"sesion":["renovar"]
 	},
-	// Supervisor puede todo incluso corregir y marcar o cerrar cualquier grupo
-	"supervisor":{
+	// Administrador maneja catálogos historial y corrige pases cerrados de cualquier grupo
+	"administrador":{
+		"estadisticas":["leer"],
 		"estancias":["leer", "crear", "editar", "borrar"],
 		"grupos":["leer", "crear", "editar", "borrar"],
 		"alumnos":["leer", "crear", "editar", "borrar"],
 		"tutores":["leer", "crear", "editar", "borrar"],
-		"asistencias":["leer", "crear", "editar", "borrar", "corregir", "marcar por QR", "marcar cualquier grupo"],
-		"seguimientos":["leer", "crear", "editar", "borrar", "ver detalle"],
-		"pases":["leer", "crear", "editar", "borrar", "cerrar cualquier grupo"],
-		"usuarios":["leer", "crear"],
+		"asistencias":["leer", "editar", "borrar", "corregir", "marcar cualquier grupo"],
+		"pases":["leer", "editar", "borrar"],
+		"usuarios":["leer"],
 		"credenciales":["leer"],
+		"sesion":["renovar"]
+	},
+	// Supervisor solo lee estadisticas y logs y registra usuarios
+	"supervisor":{
+		"estadisticas":["leer"],
+		"usuarios":["leer", "crear"],
+		"logs":["leer"],
 		"sesion":["renovar"]
 	}
 };
@@ -219,6 +226,49 @@ function consultaDeSeguimientos(verifiedToken, req){
 		query._sort="id";
 	}
 	return {"proyeccion":ocultosSeguimiento, "query":query};
+}
+
+// Números del día por estancia con countDocuments y sin nombres de alumnos
+async function calcularEstadisticas(fecha, sorter){
+	let estancias=await db.collection("estancias").find({"eliminado":{"$ne":true}}).sort(sorter).toArray();
+	let filas=[];
+	for(let estancia of estancias){
+		let deLaEstancia={"estanciaId":estancia.id, "eliminado":{"$ne":true}};
+		let grupos=await db.collection("grupos").find(deLaEstancia).project({"id":1}).toArray();
+		let grupoIds=grupos.map((grupo)=>grupo.id);
+		filas.push({
+			"id":estancia.id,
+			"nombre":estancia.nombre,
+			"inscritos":await db.collection("alumnos").countDocuments({...deLaEstancia, "activo":true}),
+			"presentes":await db.collection("asistencias").countDocuments({...deLaEstancia, "fecha":fecha, "estado":"presente"}),
+			"marcados":await db.collection("asistencias").countDocuments({...deLaEstancia, "fecha":fecha, "estado":{"$ne":"pendiente"}}),
+			"grupos":grupos.length,
+			"pasesCerrados":await db.collection("pases").countDocuments({...deLaEstancia, "fecha":fecha}),
+			"seguimientosAbiertos":await db.collection("seguimientos").countDocuments({"grupoId":{"$in":grupoIds}, "estado":"abierto", "eliminado":{"$ne":true}})
+		});
+	}
+	return filas;
+}
+
+// Columnas de logs que se pueden ordenar y las demás usan timestamp
+const columnasDeLogs=["timestamp", "sujeto", "rol", "accion", "objeto", "registro", "ip"];
+
+// filtroDeLogs busca sujeto y accion con RegExp y el día con $gte
+function filtroDeLogs(query){
+	let filtro={};
+	if(typeof query.sujeto=="string" && query.sujeto!=""){
+		filtro["sujeto"]=new RegExp(escaparTexto(query.sujeto), "i");
+	}
+	if(typeof query.accion=="string" && query.accion!=""){
+		filtro["accion"]=new RegExp(escaparTexto(query.accion), "i");
+	}
+	let inicio=new Date(query.fecha+"T00:00:00");
+	if(typeof query.fecha=="string" && /^\d{4}-\d{2}-\d{2}$/.test(query.fecha) && !isNaN(inicio)){
+		let fin=new Date(inicio);
+		fin.setDate(fin.getDate()+1);
+		filtro["timestamp"]={"$gte":inicio, "$lt":fin};
+	}
+	return filtro;
 }
 
 // JsonWebTokenError da 401 y duplicado da 409 y lo demás 500
@@ -373,7 +423,7 @@ app.get("/estancias/:id", async(req, res)=>{
 	}
 });
 
-// PUT /estancias/:id con updateData y solo el supervisor puede editar
+// PUT /estancias/:id con updateData y solo el administrador puede editar
 app.put("/estancias/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -405,7 +455,7 @@ app.delete("/estancias/:id", async(req, res)=>{
 	}
 });
 
-// POST /estancias con createData y solo el supervisor puede crear
+// POST /estancias con createData y solo el administrador puede crear
 app.post("/estancias", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -463,7 +513,7 @@ app.get("/grupos/:id", async(req, res)=>{
 	}
 });
 
-// PUT /grupos/:id solo supervisor y docenteId define quién cierra el pase
+// PUT /grupos/:id solo administrador y docenteId define quién cierra el pase
 app.put("/grupos/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -479,7 +529,7 @@ app.put("/grupos/:id", async(req, res)=>{
 	}
 });
 
-// DELETE /grupos/:id con borrado lógico solo para el supervisor
+// DELETE /grupos/:id con borrado lógico solo para el administrador
 app.delete("/grupos/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -495,7 +545,7 @@ app.delete("/grupos/:id", async(req, res)=>{
 	}
 });
 
-// POST /grupos con createData solo supervisor y asigna el docente responsable
+// POST /grupos con createData solo administrador y asigna el docente responsable
 app.post("/grupos", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -552,7 +602,7 @@ app.get("/alumnos/:id", async(req, res)=>{
 	}
 });
 
-// PUT /alumnos/:id con updateData para docente y supervisor
+// PUT /alumnos/:id con updateData para docente y administrador
 app.put("/alumnos/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -586,7 +636,7 @@ app.delete("/alumnos/:id", async(req, res)=>{
 	}
 });
 
-// POST /alumnos con createData para docente y supervisor
+// POST /alumnos con createData para docente y administrador
 app.post("/alumnos", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -687,7 +737,7 @@ app.put("/tutores/:id", async(req, res)=>{
 	}
 });
 
-// Borrado lógico del tutor con deleteData y solo el supervisor tiene permiso
+// Borrado lógico del tutor con deleteData y solo el administrador tiene permiso
 app.delete("/tutores/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -703,7 +753,7 @@ app.delete("/tutores/:id", async(req, res)=>{
 	}
 });
 
-// POST de tutor con createData permitido a docente y supervisor
+// POST de tutor con createData permitido a docente y administrador
 app.post("/tutores", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -781,7 +831,7 @@ app.put("/asistencias/:id", async(req, res)=>{
 			res.sendStatus(400);
 			return;
 		}
-		// Otro grupo da 403 según grupo.docenteId salvo para el supervisor
+		// Otro grupo da 403 según grupo.docenteId salvo para el administrador
 		let grupo=await db.collection("grupos").findOne({"id":asistencia.grupoId});
 		let esSuGrupo=grupo!=null && verifiedToken.id!=null && grupo.docenteId==verifiedToken.id;
 		if(!esSuGrupo && !tienePermiso(verifiedToken.rol, "asistencias", "marcar cualquier grupo")){
@@ -795,7 +845,7 @@ app.put("/asistencias/:id", async(req, res)=>{
 		req.body["estanciaId"]=asistencia.estanciaId;
 		req.body["fecha"]=asistencia.fecha;
 		req.body["usuarioId"]=verifiedToken.id;
-		// buscarPaseCerrado limita la corrección al supervisor y el docente recibe 403
+		// buscarPaseCerrado limita la corrección al administrador y el docente recibe 403
 		let pase=await buscarPaseCerrado(asistencia.grupoId, asistencia.fecha);
 		if(pase!=null && !tienePermiso(verifiedToken.rol, "asistencias", "corregir")){
 			await log(req, verifiedToken, "acceso denegado: editar pase cerrado", "asistencias", Number(req.params.id));
@@ -827,7 +877,7 @@ app.put("/asistencias/:id", async(req, res)=>{
 	}
 });
 
-// DELETE de asistencia como borrado lógico con deleteData solo para el supervisor
+// DELETE de asistencia como borrado lógico con deleteData solo para el administrador
 app.delete("/asistencias/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -1041,7 +1091,7 @@ app.put("/seguimientos/:id", async(req, res)=>{
 	}
 });
 
-// Solo el supervisor borra seguimientos y deleteData marca eliminado con $set
+// DELETE de seguimiento con deleteData y ningún rol tiene borrar en permisos
 app.delete("/seguimientos/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -1137,7 +1187,7 @@ app.get("/pases/:id", async(req, res)=>{
 	}
 });
 
-// PUT de pase con updateData que ninguna pantalla llama y solo supervisor
+// PUT de pase con updateData que ninguna pantalla llama y solo administrador
 app.put("/pases/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -1186,7 +1236,7 @@ app.post("/pases", async(req, res)=>{
 			res.sendStatus(400);
 			return;
 		}
-		// Cerrar el pase de otro grupo da 403 salvo para el supervisor
+		// Cerrar el pase de otro grupo da 403 sin cerrar cualquier grupo
 		let esSuGrupo=verifiedToken.id!=null && grupo.docenteId==verifiedToken.id;
 		if(!esSuGrupo && !tienePermiso(verifiedToken.rol, "pases", "cerrar cualquier grupo")){
 			await log(req, verifiedToken, "acceso denegado: cerrar pase de otro grupo", "pases");
@@ -1235,7 +1285,7 @@ app.get("/usuarios", async (req,res)=>{
 	}
 });
 
-// Un usuario por id con getOne y solo el supervisor tiene acceso
+// Un usuario por id con getOne para supervisor y administrador
 app.get("/usuarios/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -1247,6 +1297,65 @@ app.get("/usuarios/:id", async(req, res)=>{
 		}
 		await log(req, verifiedToken, "ver registro", "usuarios", Number(req.params.id));
 		await getOne("usuarios", Number(req.params.id), req, res);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /estadisticas con calcularEstadisticas para el tablero sin nombres de alumnos
+app.get("/estadisticas", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "estadisticas", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "estadisticas");
+			res.sendStatus(403);
+			return;
+		}
+		// typeof y RegExp exigen la fecha como AAAA-MM-DD o responde 400
+		let fecha=req.query.fecha;
+		if(typeof fecha!="string" || !/^\d{4}-\d{2}-\d{2}$/.test(fecha)){
+			res.sendStatus(400);
+			return;
+		}
+		await log(req, verifiedToken, "consultar datos", "estadisticas");
+		let sorter={};
+		sorter[req.query._sort=="nombre"?"nombre":"id"]=req.query._order=="DESC"?-1:1;
+		let data=await calcularEstadisticas(fecha, sorter);
+		res.set("Access-Control-Expose-Headers", "X-Total-Count");
+		res.set("X-Total-Count", data.length);
+		res.json(data);
+	}catch(error){
+		manejarError(error, res);
+	}
+});
+
+// GET /logs sin POST PUT ni DELETE así nadie edita la bitácora
+app.get("/logs", async (req,res)=>{
+	try{
+		let token=req.get("Authentication");
+		let verifiedToken=await jwt.verify(token, await process.env.LLAVESECRETA);
+		if(!tienePermiso(verifiedToken.rol, "logs", "leer")){
+			await log(req, verifiedToken, "acceso denegado: leer", "logs");
+			res.sendStatus(403);
+			return;
+		}
+		// log registra también la consulta de la bitácora
+		await log(req, verifiedToken, "consultar datos", "logs");
+		let sorter={};
+		sorter[columnasDeLogs.includes(req.query._sort)?req.query._sort:"timestamp"]=req.query._order=="ASC"?1:-1;
+		sorter["_id"]=req.query._order=="ASC"?1:-1;
+		let inicio=Number.isSafeInteger(Number(req.query._start))?Math.max(Number(req.query._start), 0):0;
+		let fin=Number.isSafeInteger(Number(req.query._end))?Number(req.query._end):inicio+25;
+		let cuantos=Math.min(Math.max(fin-inicio, 1), 1000);
+		let filtro=filtroDeLogs(req.query);
+		// countDocuments con skip y limit para no leer toda la colección
+		let total=await db.collection("logs").countDocuments(filtro);
+		let data=await db.collection("logs").find(filtro).sort(sorter).skip(inicio).limit(cuantos).project({"timestamp":1, "sujeto":1, "rol":1, "accion":1, "objeto":1, "registro":1, "ip":1}).toArray();
+		res.set("Access-Control-Expose-Headers", "X-Total-Count");
+		res.set("X-Total-Count", total);
+		// map cambia _id por id en texto porque React Admin lo pide
+		res.json(data.map(({_id, ...resto})=>({"id":String(_id), ...resto})));
 	}catch(error){
 		manejarError(error, res);
 	}
@@ -1268,7 +1377,7 @@ app.post("/registrarse", async(req, res)=>{
 		let rol=req.body.rol;
 		// Texto no vacío con typeof y rol válido o responde 400
 		let datosCompletos=typeof nuevoUsuario=="string" && nuevoUsuario!="" && typeof pass=="string" && pass!="" && typeof nombre=="string" && nombre!="";
-		let rolValido=rol=="docente" || rol=="enfermeria" || rol=="supervisor";
+		let rolValido=rol=="docente" || rol=="enfermeria" || rol=="administrador" || rol=="supervisor";
 		if(!datosCompletos || !rolValido){
 			res.sendStatus(400);
 			return;
