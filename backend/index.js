@@ -606,6 +606,7 @@ app.post("/alumnos", async(req, res)=>{
 });
 
 // GET /credenciales/:id único que devuelve codigoQR con Cache-Control no-store
+// Hecho con IA (solo estructura): molde de la ruta GET /credenciales/:id con verificación de token y permiso; la consulta a MongoDB y la respuesta las escribimos manualmente.
 app.get("/credenciales/:id", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");
@@ -882,6 +883,7 @@ app.post("/asistencias", async(req, res)=>{
 });
 
 // Escaneo QR que marca presente o responde un JSON con motivo
+// Hecho con IA (solo estructura): patrón inicial de la validación por grupo (esSuGrupo) en POST /asistencias/qr; las condiciones y permisos los escribimos manualmente.
 app.post("/asistencias/qr", async(req, res)=>{
 	try{
 		let token=req.get("Authentication");

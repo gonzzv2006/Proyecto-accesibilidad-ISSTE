@@ -1,4 +1,6 @@
 // CRUD de alumnos con List filtrable y formularios Edit y Create
+// Hecho con IA (solo estructura): alternancia con useMediaQuery entre SimpleList y DataTable en AlumnoList; primaryText y secondaryText los escribimos manualmente.
+// Hecho con IA (solo estructura): Edit con SimpleForm vacío en AlumnoEdit; los inputs los escribimos manualmente.
 import {
   List,
   DataTable,
