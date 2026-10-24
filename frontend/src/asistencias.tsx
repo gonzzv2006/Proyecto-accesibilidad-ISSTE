@@ -1,6 +1,4 @@
 // Pase de lista donde useUpdate guarda incidencias y useCreate cierra el pase
-// Hecho con IA (solo estructura): esqueleto del Exporter exportarAsistencias con fetchRelatedRecords y descargarCSV; las columnas del CSV las escribimos manualmente.
-// Hecho con IA (solo estructura): arreglo de filtros asistenciaFilters con ReferenceInput vacíos; las referencias y los campos los escribimos manualmente.
 import { lazy, Suspense, useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import {
@@ -98,12 +96,15 @@ export const IncidenciaDelAlumno = () => {
     { ids: [asistencia?.alumnoId] },
     { enabled: !!asistencia },
   );
-  const { data: candados } = useGetList("seguimientos", CANDADOS);
+  const cerrado = (pase.total ?? 0) > 0;
+  // Candados solo con pase abierto porque el administrador no lee seguimientos
+  const { data: candados } = useGetList("seguimientos", CANDADOS, {
+    enabled: pase.isSuccess && !cerrado,
+  });
 
   if (!asistencia) return null;
-  // Solo ChipIncidencia mientras carga o con pase cerrado sin rol supervisor
-  const cerrado = (pase.total ?? 0) > 0;
-  if (pase.isPending || (cerrado && permissions !== "supervisor")) {
+  // Solo ChipIncidencia mientras carga o con pase cerrado sin rol administrador
+  if (pase.isPending || (cerrado && permissions !== "administrador")) {
     return <ChipIncidencia estado={asistencia.estado} />;
   }
   const alumno = alumnos?.[0];
@@ -418,6 +419,7 @@ const EmpezarPaseDeLista = () => {
 };
 
 // Exporter del CSV con fetchRelatedRecords para nombres en vez de ids
+// Hecho con IA (solo estructura): esqueleto del Exporter exportarAsistencias con fetchRelatedRecords y descargarCSV; las columnas del CSV las escribimos manualmente.
 const exportarAsistencias: Exporter = async (
   asistencias,
   fetchRelatedRecords,
@@ -470,6 +472,7 @@ const TablaDelPase = () => {
 export const AsistenciaList = () => {
   const { identity } = useGetIdentity();
   // ReferenceInput muestra solo los grupos del docenteId de useGetIdentity
+  // Hecho con IA (solo estructura): arreglo de filtros asistenciaFilters con ReferenceInput vacíos; las referencias y los campos los escribimos manualmente.
   const asistenciaFilters = [
     <ReferenceInput
       key="grupoId"
