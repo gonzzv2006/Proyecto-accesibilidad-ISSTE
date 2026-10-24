@@ -1,4 +1,5 @@
 // CRUD de tutores con buscador y formularios con validación
+// Hecho con IA (solo estructura): imports y componentes vacíos de TutorList, TutorEdit y TutorCreate; los campos, validaciones, filtros y lista los escribimos manualmente.
 import {
   List,
   DataTable,

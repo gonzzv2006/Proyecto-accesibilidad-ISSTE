@@ -1,4 +1,5 @@
 // Inicio de Enfermería con saludo y tres conteos de seguimientos
+// Hecho con IA (solo estructura): imports y función vacía de TarjetaDeSeguimientos; las props, la consulta y el diseño los escribimos manualmente.
 import type { ReactNode } from "react";
 import { Title, useGetIdentity, useGetList } from "react-admin";
 import { Button, Grid, Stack, Typography } from "@mui/material";

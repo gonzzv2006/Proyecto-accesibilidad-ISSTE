@@ -1,4 +1,5 @@
 // Pase de lista donde useUpdate guarda incidencias y useCreate cierra el pase
+// Hecho con IA (solo estructura): esqueleto del Exporter exportarAsistencias con fetchRelatedRecords y descargarCSV; las columnas del CSV las escribimos manualmente.
 import { lazy, Suspense, useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import {

@@ -1,4 +1,5 @@
 // Seguimientos de faltas con List Edit y Create que atiende Enfermería
+// Hecho con IA (solo estructura): esqueleto del botón con useUpdate en BotonesSeguimiento; los datos que actualiza, las notificaciones y la confirmación los escribimos manualmente.
 import { useState } from "react";
 import {
   List,

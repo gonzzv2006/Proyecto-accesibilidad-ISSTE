@@ -1,5 +1,6 @@
 // Leonardo André Flores Mendoza A01782221, Gonzalo Zamarrón Orrantia A01782739, Patricio Carreras Báez A01754749
 // Componente App con Admin de tema guinda y recursos según el rol
+// Hecho con IA (solo estructura): registro del Resource usuarios sin menú ni ícono.
 
 import {
   Admin,
